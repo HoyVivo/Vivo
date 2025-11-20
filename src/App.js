@@ -324,49 +324,50 @@ function App() {
     const isLiked = user && post.likedBy?.includes(user.id);
 
     return (
-      <div className="bg-white rounded-3xl shadow-xl mb-6 overflow-hidden transform transition-all hover:scale-[1.02] border-2 border-orange-100">
+      <div className="bg-white rounded-3xl shadow-2xl mb-8 overflow-hidden transform transition-all hover:scale-[1.02] border-4 border-orange-200">
         {/* Header con imagen grande */}
-        <div className={`bg-gradient-to-br ${getCategoryColor()} p-8 text-white relative overflow-hidden`}>
-          <div className="absolute top-0 right-0 text-9xl opacity-20">{post.image}</div>
+        <div className={`bg-gradient-to-br ${getCategoryColor()} p-8 md:p-10 text-white relative overflow-hidden`}>
+          <div className="absolute top-0 right-0 text-[12rem] opacity-30 animate-pulse">{post.image}</div>
+          <div className="absolute bottom-0 left-0 text-7xl opacity-20">✨</div>
           <div className="relative z-10">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <div className="text-5xl">{post.avatar}</div>
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-4">
+                <div className="text-6xl drop-shadow-lg">{post.avatar}</div>
                 <div>
-                  <p className="text-xl font-bold">{post.author}</p>
-                  <p className="text-sm opacity-90">{post.authorCity}</p>
+                  <p className="text-2xl md:text-3xl font-bold drop-shadow">{post.author}</p>
+                  <p className="text-lg md:text-xl opacity-90">{post.authorCity}</p>
                 </div>
               </div>
-              <div className="flex items-center gap-2 bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full">
+              <div className="flex items-center gap-2 bg-white/30 backdrop-blur-sm px-5 py-3 rounded-full shadow-lg">
                 {getTypeIcon()}
-                <span className="text-sm font-bold">{getTypeLabel()}</span>
+                <span className="text-base md:text-lg font-bold">{getTypeLabel()}</span>
               </div>
             </div>
-            <h3 className="text-3xl font-bold mb-2">{post.title}</h3>
+            <h3 className="text-3xl md:text-4xl font-bold mb-3 drop-shadow-lg leading-tight">{post.title}</h3>
           </div>
         </div>
 
         {/* Contenido */}
-        <div className="p-6">
-          <p className="text-2xl text-gray-700 mb-6 leading-relaxed">{post.description}</p>
+        <div className="p-6 md:p-8">
+          <p className="text-2xl md:text-3xl text-gray-700 mb-8 leading-relaxed font-medium">{post.description}</p>
 
           {/* Detalles */}
-          <div className="space-y-3 mb-6">
+          <div className="space-y-4 mb-8">
             {post.date && (
-              <div className="flex items-center gap-3 text-xl text-gray-600 bg-orange-50 p-4 rounded-2xl">
-                <Calendar className="w-6 h-6 text-orange-500" />
-                <span className="font-semibold">{post.date} {post.time && `· ${post.time}`}</span>
+              <div className="flex items-center gap-4 text-xl md:text-2xl text-gray-700 bg-gradient-to-r from-orange-100 to-orange-200 p-5 rounded-3xl shadow-md border-2 border-orange-300">
+                <Calendar className="w-8 h-8 text-orange-600" />
+                <span className="font-bold">{post.date} {post.time && `· ${post.time}`}</span>
               </div>
             )}
             {post.location && (
-              <div className="flex items-center gap-3 text-xl text-gray-600 bg-green-50 p-4 rounded-2xl">
-                <MapPin className="w-6 h-6 text-green-500" />
-                <span className="font-semibold">{post.location}</span>
+              <div className="flex items-center gap-4 text-xl md:text-2xl text-gray-700 bg-gradient-to-r from-green-100 to-green-200 p-5 rounded-3xl shadow-md border-2 border-green-300">
+                <MapPin className="w-8 h-8 text-green-600" />
+                <span className="font-bold">{post.location}</span>
               </div>
             )}
             {post.rating && (
-              <div className="flex items-center gap-3 text-xl text-yellow-600 bg-yellow-50 p-4 rounded-2xl">
-                <Star className="w-6 h-6 fill-yellow-400" />
+              <div className="flex items-center gap-4 text-xl md:text-2xl text-gray-700 bg-gradient-to-r from-yellow-100 to-yellow-200 p-5 rounded-3xl shadow-md border-2 border-yellow-300">
+                <Star className="w-8 h-8 fill-yellow-400 text-yellow-600" />
                 <span className="font-bold">{post.rating} / 5 estrellas</span>
               </div>
             )}
@@ -385,23 +386,23 @@ function App() {
           </div>
 
           {/* Botones de interacción */}
-          <div className="flex gap-4 pt-6 border-t-2 border-gray-100">
+          <div className="flex gap-4 md:gap-6 pt-8 border-t-4 border-orange-100">
             <button 
               onClick={() => handleLike(post.id)}
-              className={`flex-1 flex items-center justify-center gap-3 py-5 rounded-2xl text-2xl font-bold transition-all ${
+              className={`flex-1 flex items-center justify-center gap-3 py-6 md:py-7 rounded-3xl text-2xl md:text-3xl font-bold transition-all shadow-lg ${
                 isLiked 
-                  ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-lg' 
-                  : 'bg-gray-100 text-gray-700 hover:bg-gradient-to-r hover:from-red-400 hover:to-pink-400 hover:text-white'
+                  ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-2xl scale-105' 
+                  : 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 hover:from-red-400 hover:to-pink-400 hover:text-white hover:scale-105 border-3 border-gray-300'
               }`}
             >
-              <Heart className={`w-8 h-8 ${isLiked ? 'fill-white' : ''}`} />
+              <Heart className={`w-9 h-9 md:w-10 md:h-10 ${isLiked ? 'fill-white' : ''}`} />
               <span>{post.likes}</span>
             </button>
             <button 
               onClick={() => handleVerify(post.id)}
-              className="flex-1 flex items-center justify-center gap-3 py-5 rounded-2xl text-2xl font-bold bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:from-green-600 hover:to-emerald-600 transition-all shadow-lg"
+              className="flex-1 flex items-center justify-center gap-3 py-6 md:py-7 rounded-3xl text-2xl md:text-3xl font-bold bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:from-green-600 hover:to-emerald-600 transition-all shadow-lg hover:scale-105 hover:shadow-2xl"
             >
-              <CheckCircle className="w-8 h-8" />
+              <CheckCircle className="w-9 h-9 md:w-10 md:h-10" />
               <span>¡Yo fui!</span>
             </button>
           </div>
@@ -411,17 +412,18 @@ function App() {
   };
 
   const FeedView = () => (
-    <div>
+    <div className="px-2">
       {!user && (
-        <div className="bg-gradient-to-br from-orange-500 via-red-500 to-pink-500 rounded-3xl shadow-2xl p-10 mb-8 text-white text-center relative overflow-hidden">
-          <div className="absolute top-0 right-0 text-9xl opacity-20">🌟</div>
+        <div className="bg-gradient-to-br from-orange-400 via-red-400 to-pink-400 rounded-3xl shadow-2xl p-8 md:p-10 mb-8 text-white text-center relative overflow-hidden">
+          <div className="absolute top-0 right-0 text-9xl opacity-30 animate-bounce">🌟</div>
+          <div className="absolute bottom-0 left-0 text-7xl opacity-20">✨</div>
           <div className="relative z-10">
-            <Sparkles className="w-20 h-20 mx-auto mb-6 animate-pulse" />
-            <h2 className="text-4xl font-bold mb-4">¡Bienvenido/a a VIVO!</h2>
-            <p className="text-2xl mb-8 leading-relaxed">La red social donde los jubilados nunca se aburren</p>
+            <Sparkles className="w-24 h-24 mx-auto mb-6 animate-pulse drop-shadow-lg" />
+            <h2 className="text-4xl md:text-5xl font-bold mb-5 drop-shadow-lg">¡Bienvenido/a a VIVO!</h2>
+            <p className="text-2xl md:text-3xl mb-8 leading-relaxed font-semibold">La red social donde los jubilados nunca se aburren</p>
             <button
               onClick={() => setShowAuth(true)}
-              className="bg-white text-orange-600 px-12 py-6 rounded-full text-2xl font-bold hover:bg-orange-50 transition-all shadow-2xl transform hover:scale-105"
+              className="bg-white text-orange-600 px-12 py-6 rounded-full text-2xl md:text-3xl font-bold hover:bg-orange-50 transition-all shadow-2xl transform hover:scale-105"
             >
               🎉 Unirse Gratis
             </button>
@@ -430,27 +432,27 @@ function App() {
       )}
 
       {/* Buscador y filtros */}
-      <div className="bg-white rounded-3xl shadow-xl p-6 mb-8 border-2 border-orange-100">
+      <div className="bg-gradient-to-br from-white to-orange-50 rounded-3xl shadow-xl p-6 md:p-8 mb-8 border-4 border-orange-200">
         <div className="relative mb-6">
-          <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 text-orange-400 w-8 h-8" />
+          <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 text-orange-500 w-8 h-8" />
           <input
             type="text"
             placeholder="🔍 Buscar eventos, lugares..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-20 pr-6 py-6 text-2xl border-3 border-orange-200 rounded-2xl focus:border-orange-400 focus:outline-none bg-orange-50"
+            className="w-full pl-20 pr-6 py-7 text-2xl border-4 border-orange-300 rounded-3xl focus:border-orange-500 focus:outline-none bg-white shadow-inner"
           />
         </div>
         
-        <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+        <div className="flex gap-3 overflow-x-auto pb-3 scrollbar-hide">
           {categories.map(cat => (
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-8 py-4 rounded-2xl text-xl font-bold whitespace-nowrap transition-all shadow-md ${
+              className={`px-8 py-5 rounded-2xl text-xl md:text-2xl font-bold whitespace-nowrap transition-all shadow-lg ${
                 selectedCategory === cat
-                  ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white scale-105'
-                  : 'bg-gray-100 text-gray-700 hover:bg-orange-100 hover:text-orange-600'
+                  ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white scale-110 shadow-xl'
+                  : 'bg-white text-gray-700 hover:bg-gradient-to-r hover:from-orange-100 hover:to-red-100 hover:text-orange-600 border-3 border-orange-200'
               }`}
             >
               {cat}
@@ -461,10 +463,10 @@ function App() {
 
       {/* Posts */}
       {filteredPosts.length === 0 ? (
-        <div className="bg-white rounded-3xl shadow-xl p-16 text-center">
-          <div className="text-8xl mb-6">😔</div>
-          <p className="text-3xl text-gray-500 mb-4 font-bold">No hay publicaciones</p>
-          <p className="text-2xl text-gray-400">¡Sé el primero en publicar algo!</p>
+        <div className="bg-gradient-to-br from-white to-orange-100 rounded-3xl shadow-2xl p-16 md:p-20 text-center border-4 border-orange-200">
+          <div className="text-9xl mb-8 animate-bounce">😔</div>
+          <p className="text-3xl md:text-4xl text-gray-700 mb-6 font-bold">No hay publicaciones</p>
+          <p className="text-2xl md:text-3xl text-gray-500 font-semibold">¡Sé el primero en publicar algo!</p>
         </div>
       ) : (
         filteredPosts.map(post => <PostCard key={post.id} post={post} />)
@@ -792,18 +794,18 @@ function App() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-red-50 to-pink-50">
+    <div className="min-h-screen bg-gradient-to-br from-orange-100 via-red-100 to-pink-100">
       {/* Header */}
       <header className="bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 shadow-2xl sticky top-0 z-40">
-        <div className="max-w-6xl mx-auto px-4 py-5">
+        <div className="max-w-6xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="text-5xl">🌟</div>
+              <div className="text-5xl animate-pulse">🌟</div>
               <div>
-                <h1 className="text-4xl font-bold text-white">
+                <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg">
                   VIVO
                 </h1>
-                <p className="text-lg text-white/90">Nunca dejes de vivir</p>
+                <p className="text-lg md:text-xl text-white/90 font-semibold">Nunca dejes de vivir</p>
               </div>
             </div>
             
@@ -834,7 +836,7 @@ function App() {
       </header>
 
       {/* Main content */}
-      <main className="max-w-6xl mx-auto px-4 py-8 pb-32 md:pb-8">
+      <main className="max-w-6xl mx-auto px-6 py-8 pb-32 md:pb-8">
         <div className="grid md:grid-cols-3 gap-8">
           {/* Sidebar - Desktop only */}
           <div className="hidden md:block">
@@ -916,52 +918,52 @@ function App() {
       {user && (
         <button
           onClick={() => setShowNewPost(true)}
-          className="fixed bottom-24 md:bottom-8 right-8 bg-gradient-to-r from-orange-500 to-red-500 text-white p-8 rounded-full shadow-2xl hover:shadow-3xl transition-all hover:scale-110 z-30"
+          className="fixed bottom-32 md:bottom-10 right-6 md:right-8 bg-gradient-to-r from-yellow-400 to-orange-400 text-white p-8 md:p-10 rounded-full shadow-2xl hover:shadow-3xl transition-all hover:scale-110 z-30 animate-bounce border-4 border-white"
         >
-          <Plus className="w-10 h-10" />
+          <Plus className="w-12 h-12 md:w-14 md:h-14" />
         </button>
       )}
 
       {/* Menú inferior - Mobile only */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t-4 border-orange-200 px-4 py-4 z-40 shadow-2xl">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 px-4 py-5 z-40 shadow-2xl border-t-4 border-orange-600">
         <div className="flex justify-around items-center">
           <button
             onClick={() => setCurrentView('feed')}
             className={`flex flex-col items-center gap-2 ${
-              currentView === 'feed' ? 'text-orange-500' : 'text-gray-600'
+              currentView === 'feed' ? 'text-white scale-110' : 'text-white/70'
             }`}
           >
-            <Home className="w-9 h-9" />
-            <span className="text-base font-bold">Inicio</span>
+            <Home className="w-10 h-10 drop-shadow-lg" />
+            <span className="text-base font-bold drop-shadow">Inicio</span>
           </button>
           <button
             onClick={() => setCurrentView('calendar')}
             className={`flex flex-col items-center gap-2 ${
-              currentView === 'calendar' ? 'text-orange-500' : 'text-gray-600'
+              currentView === 'calendar' ? 'text-white scale-110' : 'text-white/70'
             }`}
           >
-            <Calendar className="w-9 h-9" />
-            <span className="text-base font-bold">Agenda</span>
+            <Calendar className="w-10 h-10 drop-shadow-lg" />
+            <span className="text-base font-bold drop-shadow">Agenda</span>
           </button>
           {user && (
             <button
               onClick={() => setShowNewPost(true)}
-              className="flex flex-col items-center gap-2 text-orange-600"
+              className="flex flex-col items-center gap-2"
             >
-              <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white p-4 rounded-full -mt-10 shadow-xl">
-                <Plus className="w-9 h-9" />
+              <div className="bg-yellow-400 text-orange-600 p-5 rounded-full -mt-12 shadow-2xl border-4 border-white animate-pulse">
+                <Plus className="w-10 h-10" />
               </div>
-              <span className="text-base font-bold">Publicar</span>
+              <span className="text-base font-bold text-white drop-shadow">Publicar</span>
             </button>
           )}
           <button
             onClick={() => setCurrentView('profile')}
             className={`flex flex-col items-center gap-2 ${
-              currentView === 'profile' ? 'text-orange-500' : 'text-gray-600'
+              currentView === 'profile' ? 'text-white scale-110' : 'text-white/70'
             }`}
           >
-            <User className="w-9 h-9" />
-            <span className="text-base font-bold">Perfil</span>
+            <User className="w-10 h-10 drop-shadow-lg" />
+            <span className="text-base font-bold drop-shadow">Perfil</span>
           </button>
         </div>
       </nav>
