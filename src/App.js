@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, MapPin, Users, BookOpen, Heart, MessageCircle, Plus, Search, Award, Home, User, Bell, Star, CheckCircle, LogOut, LogIn, X } from 'lucide-react';
+import { Calendar, MapPin, Users, BookOpen, Heart, MessageCircle, Plus, Search, Award, Home, User, Bell, Star, CheckCircle, LogOut, LogIn, X, TrendingUp, Sparkles } from 'lucide-react';
 
 const mockPosts = [
   {
@@ -19,6 +19,7 @@ const mockPosts = [
     likedBy: [],
     comments: [],
     verified: 3,
+    image: '🧘‍♀️',
     createdAt: new Date().toISOString()
   },
   {
@@ -36,6 +37,7 @@ const mockPosts = [
     likes: 34,
     likedBy: [],
     comments: [],
+    image: '☕',
     createdAt: new Date().toISOString()
   },
   {
@@ -53,6 +55,7 @@ const mockPosts = [
     likes: 15,
     likedBy: [],
     comments: [],
+    image: '🎭',
     createdAt: new Date().toISOString()
   }
 ];
@@ -244,6 +247,7 @@ function App() {
       likedBy: [],
       comments: [],
       verified: 0,
+      image: '✨',
       createdAt: new Date().toISOString()
     };
 
@@ -288,100 +292,119 @@ function App() {
   const PostCard = ({ post }) => {
     const getTypeIcon = () => {
       switch(post.type) {
-        case 'event': return <Calendar className="w-6 h-6" />;
-        case 'place': return <MapPin className="w-6 h-6" />;
-        case 'companion': return <Users className="w-6 h-6" />;
-        case 'tutorial': return <BookOpen className="w-6 h-6" />;
-        default: return <Heart className="w-6 h-6" />;
+        case 'event': return <Calendar className="w-5 h-5" />;
+        case 'place': return <MapPin className="w-5 h-5" />;
+        case 'companion': return <Users className="w-5 h-5" />;
+        case 'tutorial': return <BookOpen className="w-5 h-5" />;
+        default: return <Heart className="w-5 h-5" />;
       }
     };
 
     const getTypeLabel = () => {
       switch(post.type) {
-        case 'event': return '🎉 Evento';
-        case 'place': return '📍 Lugar';
-        case 'companion': return '👥 Busco Compañía';
-        case 'tutorial': return '📚 Tutorial';
-        default: return '✨ Experiencia';
+        case 'event': return 'Evento';
+        case 'place': return 'Lugar';
+        case 'companion': return 'Busco Compañía';
+        case 'tutorial': return 'Tutorial';
+        default: return 'Experiencia';
+      }
+    };
+
+    const getCategoryColor = () => {
+      switch(post.category) {
+        case 'Cultural': return 'from-purple-400 to-pink-400';
+        case 'Deportivo': return 'from-green-400 to-emerald-400';
+        case 'Social': return 'from-blue-400 to-cyan-400';
+        case 'Educativo': return 'from-yellow-400 to-orange-400';
+        case 'Ocio': return 'from-red-400 to-rose-400';
+        default: return 'from-gray-400 to-gray-500';
       }
     };
 
     const isLiked = user && post.likedBy?.includes(user.id);
 
     return (
-      <div className="bg-white rounded-2xl shadow-lg p-6 mb-6 border-2 border-gray-100">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <div className="text-4xl">{post.avatar}</div>
-            <div>
-              <p className="text-xl font-bold text-gray-800">{post.author}</p>
-              <p className="text-lg text-gray-500">{post.authorCity}</p>
+      <div className="bg-white rounded-3xl shadow-xl mb-6 overflow-hidden transform transition-all hover:scale-[1.02] border-2 border-orange-100">
+        {/* Header con imagen grande */}
+        <div className={`bg-gradient-to-br ${getCategoryColor()} p-8 text-white relative overflow-hidden`}>
+          <div className="absolute top-0 right-0 text-9xl opacity-20">{post.image}</div>
+          <div className="relative z-10">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="text-5xl">{post.avatar}</div>
+                <div>
+                  <p className="text-xl font-bold">{post.author}</p>
+                  <p className="text-sm opacity-90">{post.authorCity}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 bg-white/30 backdrop-blur-sm px-4 py-2 rounded-full">
+                {getTypeIcon()}
+                <span className="text-sm font-bold">{getTypeLabel()}</span>
+              </div>
             </div>
-          </div>
-          <div className="flex items-center gap-2 bg-blue-100 px-4 py-2 rounded-full">
-            {getTypeIcon()}
-            <span className="text-lg font-semibold text-blue-700">{getTypeLabel()}</span>
+            <h3 className="text-3xl font-bold mb-2">{post.title}</h3>
           </div>
         </div>
 
-        <h3 className="text-2xl font-bold text-gray-900 mb-3">{post.title}</h3>
-        <p className="text-xl text-gray-700 mb-4 leading-relaxed">{post.description}</p>
+        {/* Contenido */}
+        <div className="p-6">
+          <p className="text-2xl text-gray-700 mb-6 leading-relaxed">{post.description}</p>
 
-        <div className="space-y-2 mb-4">
-          {post.date && (
-            <div className="flex items-center gap-2 text-lg text-gray-600">
-              <Calendar className="w-5 h-5" />
-              <span className="font-semibold">{post.date} {post.time && `a las ${post.time}`}</span>
-            </div>
-          )}
-          {post.location && (
-            <div className="flex items-center gap-2 text-lg text-gray-600">
-              <MapPin className="w-5 h-5" />
-              <span className="font-semibold">{post.location}</span>
-            </div>
-          )}
-          {post.rating && (
-            <div className="flex items-center gap-2 text-lg text-yellow-600">
-              <Star className="w-5 h-5 fill-yellow-400" />
-              <span className="font-bold">{post.rating} / 5</span>
-            </div>
-          )}
-        </div>
+          {/* Detalles */}
+          <div className="space-y-3 mb-6">
+            {post.date && (
+              <div className="flex items-center gap-3 text-xl text-gray-600 bg-orange-50 p-4 rounded-2xl">
+                <Calendar className="w-6 h-6 text-orange-500" />
+                <span className="font-semibold">{post.date} {post.time && `· ${post.time}`}</span>
+              </div>
+            )}
+            {post.location && (
+              <div className="flex items-center gap-3 text-xl text-gray-600 bg-green-50 p-4 rounded-2xl">
+                <MapPin className="w-6 h-6 text-green-500" />
+                <span className="font-semibold">{post.location}</span>
+              </div>
+            )}
+            {post.rating && (
+              <div className="flex items-center gap-3 text-xl text-yellow-600 bg-yellow-50 p-4 rounded-2xl">
+                <Star className="w-6 h-6 fill-yellow-400" />
+                <span className="font-bold">{post.rating} / 5 estrellas</span>
+              </div>
+            )}
+          </div>
 
-        <span className="inline-block bg-purple-100 text-purple-700 px-4 py-2 rounded-full text-lg font-semibold mb-4">
-          {post.category}
-        </span>
-
-        {post.verified > 0 && (
-          <div className="flex items-center gap-2 bg-green-100 px-4 py-2 rounded-full mb-4 inline-flex">
-            <CheckCircle className="w-5 h-5 text-green-600" />
-            <span className="text-lg text-green-700 font-semibold">
-              {post.verified} personas confirmaron esto
+          <div className="flex items-center gap-3 mb-6">
+            <span className={`inline-block bg-gradient-to-r ${getCategoryColor()} text-white px-6 py-3 rounded-full text-lg font-bold shadow-lg`}>
+              {post.category}
             </span>
+            {post.verified > 0 && (
+              <div className="flex items-center gap-2 bg-green-100 px-5 py-3 rounded-full">
+                <CheckCircle className="w-5 h-5 text-green-600" />
+                <span className="text-lg text-green-700 font-bold">{post.verified} ✓</span>
+              </div>
+            )}
           </div>
-        )}
 
-        <div className="flex gap-6 pt-4 border-t-2 border-gray-100">
-          <button 
-            onClick={() => handleLike(post.id)}
-            className={`flex items-center gap-2 text-xl transition-colors ${
-              isLiked ? 'text-red-500' : 'text-gray-600 hover:text-red-500'
-            }`}
-          >
-            <Heart className={`w-7 h-7 ${isLiked ? 'fill-red-500' : ''}`} />
-            <span className="font-bold">{post.likes}</span>
-          </button>
-          <button className="flex items-center gap-2 text-xl text-gray-600 hover:text-blue-500 transition-colors">
-            <MessageCircle className="w-7 h-7" />
-            <span className="font-bold">{post.comments?.length || 0}</span>
-          </button>
-          <button 
-            onClick={() => handleVerify(post.id)}
-            className="flex items-center gap-2 text-xl text-green-600 hover:text-green-700 transition-colors ml-auto font-bold"
-          >
-            <CheckCircle className="w-7 h-7" />
-            <span>¡Yo fui!</span>
-          </button>
+          {/* Botones de interacción */}
+          <div className="flex gap-4 pt-6 border-t-2 border-gray-100">
+            <button 
+              onClick={() => handleLike(post.id)}
+              className={`flex-1 flex items-center justify-center gap-3 py-5 rounded-2xl text-2xl font-bold transition-all ${
+                isLiked 
+                  ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-lg' 
+                  : 'bg-gray-100 text-gray-700 hover:bg-gradient-to-r hover:from-red-400 hover:to-pink-400 hover:text-white'
+              }`}
+            >
+              <Heart className={`w-8 h-8 ${isLiked ? 'fill-white' : ''}`} />
+              <span>{post.likes}</span>
+            </button>
+            <button 
+              onClick={() => handleVerify(post.id)}
+              className="flex-1 flex items-center justify-center gap-3 py-5 rounded-2xl text-2xl font-bold bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:from-green-600 hover:to-emerald-600 transition-all shadow-lg"
+            >
+              <CheckCircle className="w-8 h-8" />
+              <span>¡Yo fui!</span>
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -390,39 +413,44 @@ function App() {
   const FeedView = () => (
     <div>
       {!user && (
-        <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl shadow-lg p-8 mb-6 text-white text-center">
-          <h2 className="text-3xl font-bold mb-3">¡Bienvenido/a a VIVO!</h2>
-          <p className="text-xl mb-6">La red social donde los jubilados nunca se aburren</p>
-          <button
-            onClick={() => setShowAuth(true)}
-            className="bg-white text-blue-600 px-8 py-4 rounded-xl text-xl font-bold hover:bg-gray-100 transition-colors"
-          >
-            Unirse Gratis
-          </button>
+        <div className="bg-gradient-to-br from-orange-500 via-red-500 to-pink-500 rounded-3xl shadow-2xl p-10 mb-8 text-white text-center relative overflow-hidden">
+          <div className="absolute top-0 right-0 text-9xl opacity-20">🌟</div>
+          <div className="relative z-10">
+            <Sparkles className="w-20 h-20 mx-auto mb-6 animate-pulse" />
+            <h2 className="text-4xl font-bold mb-4">¡Bienvenido/a a VIVO!</h2>
+            <p className="text-2xl mb-8 leading-relaxed">La red social donde los jubilados nunca se aburren</p>
+            <button
+              onClick={() => setShowAuth(true)}
+              className="bg-white text-orange-600 px-12 py-6 rounded-full text-2xl font-bold hover:bg-orange-50 transition-all shadow-2xl transform hover:scale-105"
+            >
+              🎉 Unirse Gratis
+            </button>
+          </div>
         </div>
       )}
 
-      <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
-        <div className="relative mb-4">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-6 h-6" />
+      {/* Buscador y filtros */}
+      <div className="bg-white rounded-3xl shadow-xl p-6 mb-8 border-2 border-orange-100">
+        <div className="relative mb-6">
+          <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 text-orange-400 w-8 h-8" />
           <input
             type="text"
-            placeholder="Buscar eventos, lugares..."
+            placeholder="🔍 Buscar eventos, lugares..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-14 pr-6 py-4 text-xl border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none"
+            className="w-full pl-20 pr-6 py-6 text-2xl border-3 border-orange-200 rounded-2xl focus:border-orange-400 focus:outline-none bg-orange-50"
           />
         </div>
         
-        <div className="flex gap-3 overflow-x-auto pb-2">
+        <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
           {categories.map(cat => (
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-6 py-3 rounded-xl text-lg font-semibold whitespace-nowrap transition-colors ${
+              className={`px-8 py-4 rounded-2xl text-xl font-bold whitespace-nowrap transition-all shadow-md ${
                 selectedCategory === cat
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white scale-105'
+                  : 'bg-gray-100 text-gray-700 hover:bg-orange-100 hover:text-orange-600'
               }`}
             >
               {cat}
@@ -431,10 +459,12 @@ function App() {
         </div>
       </div>
 
+      {/* Posts */}
       {filteredPosts.length === 0 ? (
-        <div className="bg-white rounded-2xl shadow-lg p-12 text-center">
-          <p className="text-2xl text-gray-500 mb-4">No hay publicaciones en esta categoría</p>
-          <p className="text-xl text-gray-400">¡Sé el primero en publicar algo!</p>
+        <div className="bg-white rounded-3xl shadow-xl p-16 text-center">
+          <div className="text-8xl mb-6">😔</div>
+          <p className="text-3xl text-gray-500 mb-4 font-bold">No hay publicaciones</p>
+          <p className="text-2xl text-gray-400">¡Sé el primero en publicar algo!</p>
         </div>
       ) : (
         filteredPosts.map(post => <PostCard key={post.id} post={post} />)
@@ -445,12 +475,12 @@ function App() {
   const ProfileView = () => {
     if (!user) {
       return (
-        <div className="bg-white rounded-2xl shadow-lg p-12 text-center">
-          <User className="w-24 h-24 mx-auto mb-4 text-gray-300" />
-          <h2 className="text-3xl font-bold mb-4">Inicia sesión para ver tu perfil</h2>
+        <div className="bg-white rounded-3xl shadow-xl p-16 text-center">
+          <User className="w-32 h-32 mx-auto mb-8 text-gray-300" />
+          <h2 className="text-4xl font-bold mb-6">Inicia sesión para ver tu perfil</h2>
           <button
             onClick={() => setShowAuth(true)}
-            className="bg-blue-500 text-white px-8 py-4 rounded-xl text-xl font-bold hover:bg-blue-600 transition-colors"
+            className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-12 py-6 rounded-full text-2xl font-bold hover:from-orange-600 hover:to-red-600 transition-all shadow-xl"
           >
             Iniciar Sesión
           </button>
@@ -460,81 +490,89 @@ function App() {
 
     return (
       <div>
-        <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl shadow-lg p-8 mb-6 text-white">
-          <div className="text-6xl mb-4 text-center">{user.avatar}</div>
-          <h2 className="text-3xl font-bold text-center mb-2">{user.name}</h2>
-          <p className="text-xl text-center opacity-90">{userCity}</p>
+        {/* Perfil header */}
+        <div className="bg-gradient-to-br from-orange-500 via-red-500 to-pink-500 rounded-3xl shadow-2xl p-10 mb-8 text-white">
+          <div className="text-8xl mb-6 text-center">{user.avatar}</div>
+          <h2 className="text-4xl font-bold text-center mb-3">{user.name}</h2>
+          <p className="text-2xl text-center opacity-90 mb-2">{userCity}</p>
           {user.age && (
-            <p className="text-lg text-center opacity-80 mt-1">{user.age} años</p>
+            <p className="text-xl text-center opacity-80">{user.age} años</p>
           )}
           
-          <div className="mt-6 bg-white/20 rounded-xl p-6">
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-xl font-semibold">Mis Puntos</span>
-              <span className="text-4xl font-bold">{userPoints}</span>
+          {/* Puntos */}
+          <div className="mt-8 bg-white/20 backdrop-blur-sm rounded-2xl p-8">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <Star className="w-10 h-10 fill-white" />
+                <span className="text-2xl font-semibold">Mis Puntos</span>
+              </div>
+              <span className="text-5xl font-bold">{userPoints}</span>
             </div>
-            <div className="w-full bg-white/30 rounded-full h-4">
+            <div className="w-full bg-white/30 rounded-full h-6 overflow-hidden">
               <div 
-                className="bg-white h-4 rounded-full transition-all"
+                className="bg-white h-6 rounded-full transition-all duration-500"
                 style={{ width: `${(userPoints % 100)}%` }}
               ></div>
             </div>
-            <p className="text-lg mt-2 opacity-90">
+            <p className="text-xl mt-4 opacity-90 text-center">
               {100 - (userPoints % 100)} puntos para la siguiente insignia
             </p>
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
-          <h3 className="text-2xl font-bold mb-4 flex items-center gap-2">
-            <Award className="w-7 h-7 text-yellow-500" />
+        {/* Insignias */}
+        <div className="bg-white rounded-3xl shadow-xl p-8 mb-8 border-2 border-orange-100">
+          <h3 className="text-3xl font-bold mb-6 flex items-center gap-3">
+            <Award className="w-10 h-10 text-yellow-500" />
             Mis Insignias
           </h3>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-6">
             {badges.map((badge, index) => (
               <div 
                 key={index}
-                className={`p-6 rounded-xl text-center transition-all ${
+                className={`p-8 rounded-2xl text-center transition-all ${
                   userPoints >= badge.points
-                    ? 'bg-gradient-to-br from-yellow-100 to-yellow-200 border-2 border-yellow-400'
+                    ? 'bg-gradient-to-br from-yellow-200 to-orange-200 border-4 border-yellow-400 shadow-xl scale-105'
                     : 'bg-gray-100 opacity-50'
                 }`}
               >
-                <div className="text-5xl mb-2">{badge.icon}</div>
-                <p className="text-xl font-bold text-gray-800">{badge.name}</p>
-                <p className="text-sm text-gray-600 mb-1">{badge.desc}</p>
-                <p className="text-lg text-gray-600">{badge.points} pts</p>
+                <div className="text-6xl mb-4">{badge.icon}</div>
+                <p className="text-2xl font-bold text-gray-800 mb-2">{badge.name}</p>
+                <p className="text-lg text-gray-600 mb-2">{badge.desc}</p>
+                <p className="text-xl text-gray-600 font-semibold">{badge.points} pts</p>
                 {userPoints >= badge.points && (
-                  <p className="text-sm text-green-600 font-bold mt-2">¡Conseguida!</p>
+                  <p className="text-lg text-green-600 font-bold mt-3">✅ ¡Conseguida!</p>
                 )}
               </div>
             ))}
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
-          <h3 className="text-2xl font-bold mb-4">Mis Estadísticas</h3>
-          <div className="space-y-4">
-            <div className="flex justify-between items-center text-xl">
-              <span className="text-gray-600">Publicaciones:</span>
-              <span className="font-bold text-2xl">{userStats.posts}</span>
+        {/* Estadísticas */}
+        <div className="bg-white rounded-3xl shadow-xl p-8 mb-8 border-2 border-orange-100">
+          <h3 className="text-3xl font-bold mb-6">📊 Mis Estadísticas</h3>
+          <div className="space-y-6">
+            <div className="flex justify-between items-center text-2xl bg-gradient-to-r from-blue-50 to-cyan-50 p-6 rounded-2xl">
+              <span className="text-gray-700 font-semibold">📝 Publicaciones:</span>
+              <span className="font-bold text-3xl text-blue-600">{userStats.posts}</span>
             </div>
-            <div className="flex justify-between items-center text-xl">
-              <span className="text-gray-600">Eventos asistidos:</span>
-              <span className="font-bold text-2xl">{userStats.eventsAttended}</span>
+            <div className="flex justify-between items-center text-2xl bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-2xl">
+              <span className="text-gray-700 font-semibold">🎉 Eventos:</span>
+              <span className="font-bold text-3xl text-green-600">{userStats.eventsAttended}</span>
             </div>
-            <div className="flex justify-between items-center text-xl">
-              <span className="text-gray-600">Amigos:</span>
-              <span className="font-bold text-2xl">{userStats.friends}</span>
+            <div className="flex justify-between items-center text-2xl bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-2xl">
+              <span className="text-gray-700 font-semibold">👥 Amigos:</span>
+              <span className="font-bold text-3xl text-purple-600">{userStats.friends}</span>
             </div>
           </div>
         </div>
 
+        {/* Botón cerrar sesión */}
         <button
           onClick={handleLogout}
-          className="w-full bg-red-500 text-white px-6 py-4 rounded-xl text-xl font-bold hover:bg-red-600 transition-colors flex items-center justify-center gap-2"
+          className="w-full bg-gradient-to-r from-red-500 to-rose-500 text-white px-8 py-6 rounded-2xl text-2xl font-bold hover:from-red-600 hover:to-rose-600 transition-all shadow-xl flex items-center justify-center gap-4"
         >
-          <LogOut className="w-6 h-6" />
+          <LogOut className="w-8 h-8" />
           Cerrar Sesión
         </button>
       </div>
@@ -542,46 +580,46 @@ function App() {
   };
 
   const AuthModal = () => (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-3xl font-bold text-gray-900">
-            {isLogin ? 'Iniciar Sesión' : 'Registro'}
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+      <div className="bg-white rounded-3xl shadow-2xl max-w-lg w-full p-10 max-h-[90vh] overflow-y-auto">
+        <div className="flex justify-between items-center mb-8">
+          <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-600">
+            {isLogin ? '👋 Bienvenido' : '🎉 Únete'}
           </h2>
           <button onClick={() => setShowAuth(false)} className="text-gray-500 hover:text-gray-700">
-            <X className="w-8 h-8" />
+            <X className="w-10 h-10" />
           </button>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-6">
           {!isLogin && (
             <>
               <div>
-                <label className="block text-lg font-semibold mb-2 text-gray-700">Nombre completo</label>
+                <label className="block text-2xl font-bold mb-3 text-gray-700">Nombre completo</label>
                 <input
                   type="text"
                   value={authForm.name}
                   onChange={(e) => setAuthForm({...authForm, name: e.target.value})}
                   placeholder="Tu nombre"
-                  className="w-full p-4 text-xl border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none"
+                  className="w-full p-5 text-2xl border-3 border-gray-200 rounded-2xl focus:border-orange-400 focus:outline-none"
                 />
               </div>
               <div>
-                <label className="block text-lg font-semibold mb-2 text-gray-700">Edad</label>
+                <label className="block text-2xl font-bold mb-3 text-gray-700">Edad</label>
                 <input
                   type="number"
                   value={authForm.age}
                   onChange={(e) => setAuthForm({...authForm, age: e.target.value})}
-                  placeholder="Debe ser mayor de 60"
-                  className="w-full p-4 text-xl border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none"
+                  placeholder="Mayor de 60"
+                  className="w-full p-5 text-2xl border-3 border-gray-200 rounded-2xl focus:border-orange-400 focus:outline-none"
                 />
               </div>
               <div>
-                <label className="block text-lg font-semibold mb-2 text-gray-700">Ciudad</label>
+                <label className="block text-2xl font-bold mb-3 text-gray-700">Ciudad</label>
                 <select
                   value={authForm.city}
                   onChange={(e) => setAuthForm({...authForm, city: e.target.value})}
-                  className="w-full p-4 text-xl border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none"
+                  className="w-full p-5 text-2xl border-3 border-gray-200 rounded-2xl focus:border-orange-400 focus:outline-none"
                 >
                   <option>Madrid</option>
                   <option>Barcelona</option>
@@ -597,39 +635,39 @@ function App() {
           )}
 
           <div>
-            <label className="block text-lg font-semibold mb-2 text-gray-700">Email</label>
+            <label className="block text-2xl font-bold mb-3 text-gray-700">Email</label>
             <input
               type="email"
               value={authForm.email}
               onChange={(e) => setAuthForm({...authForm, email: e.target.value})}
               placeholder="tu@email.com"
-              className="w-full p-4 text-xl border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none"
+              className="w-full p-5 text-2xl border-3 border-gray-200 rounded-2xl focus:border-orange-400 focus:outline-none"
             />
           </div>
 
           <div>
-            <label className="block text-lg font-semibold mb-2 text-gray-700">Contraseña</label>
+            <label className="block text-2xl font-bold mb-3 text-gray-700">Contraseña</label>
             <input
               type="password"
               value={authForm.password}
               onChange={(e) => setAuthForm({...authForm, password: e.target.value})}
               placeholder="••••••••"
-              className="w-full p-4 text-xl border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none"
+              className="w-full p-5 text-2xl border-3 border-gray-200 rounded-2xl focus:border-orange-400 focus:outline-none"
             />
           </div>
 
           <button
             onClick={handleAuth}
-            className="w-full bg-blue-500 text-white px-6 py-4 rounded-xl text-xl font-bold hover:bg-blue-600 transition-colors"
+            className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white px-8 py-6 rounded-2xl text-2xl font-bold hover:from-orange-600 hover:to-red-600 transition-all shadow-xl"
           >
-            {isLogin ? 'Entrar' : 'Registrarse'}
+            {isLogin ? '🚀 Entrar' : '🎉 Registrarse'}
           </button>
 
           <button
             onClick={() => setIsLogin(!isLogin)}
-            className="w-full text-blue-500 text-lg hover:underline"
+            className="w-full text-orange-500 text-xl hover:underline font-semibold"
           >
-            {isLogin ? '¿No tienes cuenta? Regístrate' : '¿Ya tienes cuenta? Inicia sesión'}
+            {isLogin ? '¿No tienes cuenta? Regístrate aquí' : '¿Ya tienes cuenta? Inicia sesión'}
           </button>
         </div>
       </div>
@@ -637,92 +675,94 @@ function App() {
   );
 
   const NewPostModal = () => (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-3xl font-bold text-gray-900">Nueva Publicación</h2>
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+      <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-8">
+        <div className="flex justify-between items-center mb-8">
+          <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-600">
+            ✨ Nueva Publicación
+          </h2>
           <button onClick={() => setShowNewPost(false)} className="text-gray-500 hover:text-gray-700">
-            <X className="w-8 h-8" />
+            <X className="w-10 h-10" />
           </button>
         </div>
 
         <div className="space-y-6">
           <div>
-            <label className="block text-xl font-semibold mb-3 text-gray-700">Tipo de publicación</label>
+            <label className="block text-2xl font-bold mb-3 text-gray-700">Tipo</label>
             <select
               value={newPost.type}
               onChange={(e) => setNewPost({...newPost, type: e.target.value})}
-              className="w-full p-4 text-xl border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none"
+              className="w-full p-5 text-2xl border-3 border-gray-200 rounded-2xl focus:border-orange-400 focus:outline-none"
             >
               <option value="event">🎉 Evento</option>
-              <option value="place">📍 Lugar Recomendado</option>
+              <option value="place">📍 Lugar</option>
               <option value="companion">👥 Busco Compañía</option>
               <option value="tutorial">📚 Tutorial</option>
             </select>
           </div>
 
           <div>
-            <label className="block text-xl font-semibold mb-3 text-gray-700">Título</label>
+            <label className="block text-2xl font-bold mb-3 text-gray-700">Título</label>
             <input
               type="text"
               value={newPost.title}
               onChange={(e) => setNewPost({...newPost, title: e.target.value})}
-              placeholder="Ej: Clase de Yoga en el Parque"
-              className="w-full p-4 text-xl border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none"
+              placeholder="Ej: Clase de Yoga"
+              className="w-full p-5 text-2xl border-3 border-gray-200 rounded-2xl focus:border-orange-400 focus:outline-none"
             />
           </div>
 
           <div>
-            <label className="block text-xl font-semibold mb-3 text-gray-700">Descripción</label>
+            <label className="block text-2xl font-bold mb-3 text-gray-700">Descripción</label>
             <textarea
               value={newPost.description}
               onChange={(e) => setNewPost({...newPost, description: e.target.value})}
               placeholder="Cuenta los detalles..."
               rows="4"
-              className="w-full p-4 text-xl border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none"
+              className="w-full p-5 text-2xl border-3 border-gray-200 rounded-2xl focus:border-orange-400 focus:outline-none"
             />
           </div>
 
           {(newPost.type === 'event' || newPost.type === 'companion') && (
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-xl font-semibold mb-3 text-gray-700">Fecha</label>
+                <label className="block text-2xl font-bold mb-3 text-gray-700">Fecha</label>
                 <input
                   type="date"
                   value={newPost.date}
                   onChange={(e) => setNewPost({...newPost, date: e.target.value})}
-                  className="w-full p-4 text-xl border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none"
+                  className="w-full p-5 text-2xl border-3 border-gray-200 rounded-2xl focus:border-orange-400 focus:outline-none"
                 />
               </div>
               <div>
-                <label className="block text-xl font-semibold mb-3 text-gray-700">Hora</label>
+                <label className="block text-2xl font-bold mb-3 text-gray-700">Hora</label>
                 <input
                   type="time"
                   value={newPost.time}
                   onChange={(e) => setNewPost({...newPost, time: e.target.value})}
-                  className="w-full p-4 text-xl border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none"
+                  className="w-full p-5 text-2xl border-3 border-gray-200 rounded-2xl focus:border-orange-400 focus:outline-none"
                 />
               </div>
             </div>
           )}
 
           <div>
-            <label className="block text-xl font-semibold mb-3 text-gray-700">Ubicación</label>
+            <label className="block text-2xl font-bold mb-3 text-gray-700">Ubicación</label>
             <input
               type="text"
               value={newPost.location}
               onChange={(e) => setNewPost({...newPost, location: e.target.value})}
               placeholder="Ej: Parque del Retiro"
-              className="w-full p-4 text-xl border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none"
+              className="w-full p-5 text-2xl border-3 border-gray-200 rounded-2xl focus:border-orange-400 focus:outline-none"
             />
           </div>
 
           <div>
-            <label className="block text-xl font-semibold mb-3 text-gray-700">Categoría</label>
+            <label className="block text-2xl font-bold mb-3 text-gray-700">Categoría</label>
             <select
               value={newPost.category}
               onChange={(e) => setNewPost({...newPost, category: e.target.value})}
-              className="w-full p-4 text-xl border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none"
+              className="w-full p-5 text-2xl border-3 border-gray-200 rounded-2xl focus:border-orange-400 focus:outline-none"
             >
               <option value="Cultural">Cultural</option>
               <option value="Deportivo">Deportivo</option>
@@ -735,15 +775,15 @@ function App() {
           <div className="flex gap-4 pt-4">
             <button
               onClick={() => setShowNewPost(false)}
-              className="flex-1 px-6 py-4 bg-gray-200 text-gray-700 rounded-xl text-xl font-semibold hover:bg-gray-300 transition-colors"
+              className="flex-1 px-8 py-5 bg-gray-200 text-gray-700 rounded-2xl text-2xl font-bold hover:bg-gray-300 transition-all"
             >
               Cancelar
             </button>
             <button
               onClick={handleNewPost}
-              className="flex-1 px-6 py-4 bg-blue-500 text-white rounded-xl text-xl font-semibold hover:bg-blue-600 transition-colors"
+              className="flex-1 px-8 py-5 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-2xl text-2xl font-bold hover:from-orange-600 hover:to-red-600 transition-all shadow-xl"
             >
-              Publicar (+{newPost.type === 'event' ? '50' : '30'} pts)
+              Publicar 🎉
             </button>
           </div>
         </div>
@@ -752,38 +792,39 @@ function App() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50">
-      <header className="bg-white shadow-md sticky top-0 z-40">
-        <div className="max-w-6xl mx-auto px-4 py-4">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-red-50 to-pink-50">
+      {/* Header */}
+      <header className="bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 shadow-2xl sticky top-0 z-40">
+        <div className="max-w-6xl mx-auto px-4 py-5">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="text-4xl">✨</div>
+            <div className="flex items-center gap-4">
+              <div className="text-5xl">🌟</div>
               <div>
-                <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+                <h1 className="text-4xl font-bold text-white">
                   VIVO
                 </h1>
-                <p className="text-lg text-gray-600">Nunca dejes de vivir</p>
+                <p className="text-lg text-white/90">Nunca dejes de vivir</p>
               </div>
             </div>
             
             <div className="flex items-center gap-4">
               {user && (
-                <div className="hidden md:flex items-center gap-2 bg-yellow-100 px-4 py-2 rounded-full">
-                  <Star className="w-6 h-6 text-yellow-600 fill-yellow-400" />
-                  <span className="text-xl font-bold text-yellow-700">{userPoints} pts</span>
+                <div className="hidden md:flex items-center gap-3 bg-white/20 backdrop-blur-sm px-5 py-3 rounded-full">
+                  <Star className="w-7 h-7 text-yellow-300 fill-yellow-300" />
+                  <span className="text-2xl font-bold text-white">{userPoints}</span>
                 </div>
               )}
               {user ? (
-                <button className="p-3 hover:bg-gray-100 rounded-full relative">
-                  <Bell className="w-7 h-7 text-gray-600" />
-                  <span className="absolute top-2 right-2 w-3 h-3 bg-red-500 rounded-full"></span>
+                <button className="p-4 bg-white/20 backdrop-blur-sm hover:bg-white/30 rounded-full relative transition-all">
+                  <Bell className="w-8 h-8 text-white" />
+                  <span className="absolute top-3 right-3 w-4 h-4 bg-yellow-400 rounded-full"></span>
                 </button>
               ) : (
                 <button
                   onClick={() => setShowAuth(true)}
-                  className="flex items-center gap-2 bg-blue-500 text-white px-6 py-3 rounded-xl text-lg font-bold hover:bg-blue-600 transition-colors"
+                  className="flex items-center gap-3 bg-white text-orange-600 px-8 py-4 rounded-full text-xl font-bold hover:bg-orange-50 transition-all shadow-xl"
                 >
-                  <LogIn className="w-6 h-6" />
+                  <LogIn className="w-7 h-7" />
                   Entrar
                 </button>
               )}
@@ -792,53 +833,55 @@ function App() {
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 py-6">
-        <div className="grid md:grid-cols-3 gap-6">
+      {/* Main content */}
+      <main className="max-w-6xl mx-auto px-4 py-8 pb-32 md:pb-8">
+        <div className="grid md:grid-cols-3 gap-8">
+          {/* Sidebar - Desktop only */}
           <div className="hidden md:block">
-            <div className="bg-white rounded-2xl shadow-lg p-6 sticky top-24">
-              <nav className="space-y-3">
+            <div className="bg-white rounded-3xl shadow-xl p-6 sticky top-28 border-2 border-orange-100">
+              <nav className="space-y-4">
                 <button
                   onClick={() => setCurrentView('feed')}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xl font-semibold transition-colors ${
+                  className={`w-full flex items-center gap-4 px-6 py-5 rounded-2xl text-2xl font-bold transition-all ${
                     currentView === 'feed'
-                      ? 'bg-blue-500 text-white'
-                      : 'text-gray-700 hover:bg-gray-100'
+                      ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg'
+                      : 'text-gray-700 hover:bg-orange-50'
                   }`}
                 >
-                  <Home className="w-6 h-6" />
+                  <Home className="w-7 h-7" />
                   Inicio
                 </button>
                 <button
                   onClick={() => setCurrentView('profile')}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xl font-semibold transition-colors ${
+                  className={`w-full flex items-center gap-4 px-6 py-5 rounded-2xl text-2xl font-bold transition-all ${
                     currentView === 'profile'
-                      ? 'bg-blue-500 text-white'
-                      : 'text-gray-700 hover:bg-gray-100'
+                      ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg'
+                      : 'text-gray-700 hover:bg-orange-50'
                   }`}
                 >
-                  <User className="w-6 h-6" />
+                  <User className="w-7 h-7" />
                   Mi Perfil
                 </button>
                 <button
                   onClick={() => setCurrentView('calendar')}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xl font-semibold transition-colors ${
+                  className={`w-full flex items-center gap-4 px-6 py-5 rounded-2xl text-2xl font-bold transition-all ${
                     currentView === 'calendar'
-                      ? 'bg-blue-500 text-white'
-                      : 'text-gray-700 hover:bg-gray-100'
+                      ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg'
+                      : 'text-gray-700 hover:bg-orange-50'
                   }`}
                 >
-                  <Calendar className="w-6 h-6" />
+                  <Calendar className="w-7 h-7" />
                   Mi Agenda
                 </button>
               </nav>
 
               {user && (
-                <div className="mt-6 pt-6 border-t-2 border-gray-100">
-                  <p className="text-lg text-gray-600 mb-3">Tu ciudad:</p>
+                <div className="mt-8 pt-8 border-t-2 border-gray-100">
+                  <p className="text-xl text-gray-600 mb-4 font-semibold">Tu ciudad:</p>
                   <select
                     value={userCity}
                     onChange={(e) => setUserCity(e.target.value)}
-                    className="w-full p-3 text-lg border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none"
+                    className="w-full p-4 text-xl border-3 border-gray-200 rounded-2xl focus:border-orange-400 focus:outline-none"
                   >
                     <option>Madrid</option>
                     <option>Barcelona</option>
@@ -854,72 +897,76 @@ function App() {
             </div>
           </div>
 
+          {/* Content area */}
           <div className="md:col-span-2">
             {currentView === 'feed' && <FeedView />}
             {currentView === 'profile' && <ProfileView />}
             {currentView === 'calendar' && (
-              <div className="bg-white rounded-2xl shadow-lg p-8 text-center">
-                <Calendar className="w-24 h-24 mx-auto mb-4 text-blue-500" />
-                <h2 className="text-3xl font-bold mb-2">Mi Agenda</h2>
-                <p className="text-xl text-gray-600">Próximamente: Calendario personalizado con todos tus eventos guardados</p>
+              <div className="bg-white rounded-3xl shadow-xl p-12 text-center border-2 border-orange-100">
+                <Calendar className="w-32 h-32 mx-auto mb-8 text-orange-500" />
+                <h2 className="text-4xl font-bold mb-4">Mi Agenda</h2>
+                <p className="text-2xl text-gray-600">Próximamente: Calendario personalizado con todos tus eventos</p>
               </div>
             )}
           </div>
         </div>
       </main>
 
+      {/* Botón flotante para crear publicación */}
       {user && (
         <button
           onClick={() => setShowNewPost(true)}
-          className="fixed bottom-6 right-6 bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 rounded-full shadow-2xl hover:shadow-3xl transition-all hover:scale-110"
+          className="fixed bottom-24 md:bottom-8 right-8 bg-gradient-to-r from-orange-500 to-red-500 text-white p-8 rounded-full shadow-2xl hover:shadow-3xl transition-all hover:scale-110 z-30"
         >
-          <Plus className="w-8 h-8" />
+          <Plus className="w-10 h-10" />
         </button>
       )}
 
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t-2 border-gray-200 px-4 py-3">
+      {/* Menú inferior - Mobile only */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t-4 border-orange-200 px-4 py-4 z-40 shadow-2xl">
         <div className="flex justify-around items-center">
           <button
             onClick={() => setCurrentView('feed')}
-            className={`flex flex-col items-center gap-1 ${
-              currentView === 'feed' ? 'text-blue-500' : 'text-gray-600'
+            className={`flex flex-col items-center gap-2 ${
+              currentView === 'feed' ? 'text-orange-500' : 'text-gray-600'
             }`}
           >
-            <Home className="w-7 h-7" />
-            <span className="text-sm font-semibold">Inicio</span>
+            <Home className="w-9 h-9" />
+            <span className="text-base font-bold">Inicio</span>
           </button>
           <button
             onClick={() => setCurrentView('calendar')}
-            className={`flex flex-col items-center gap-1 ${
-              currentView === 'calendar' ? 'text-blue-500' : 'text-gray-600'
+            className={`flex flex-col items-center gap-2 ${
+              currentView === 'calendar' ? 'text-orange-500' : 'text-gray-600'
             }`}
           >
-            <Calendar className="w-7 h-7" />
-            <span className="text-sm font-semibold">Agenda</span>
+            <Calendar className="w-9 h-9" />
+            <span className="text-base font-bold">Agenda</span>
           </button>
           {user && (
             <button
               onClick={() => setShowNewPost(true)}
-              className="flex flex-col items-center gap-1 text-purple-600"
+              className="flex flex-col items-center gap-2 text-orange-600"
             >
-              <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-3 rounded-full -mt-8">
-                <Plus className="w-7 h-7" />
+              <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white p-4 rounded-full -mt-10 shadow-xl">
+                <Plus className="w-9 h-9" />
               </div>
-              <span className="text-sm font-semibold">Publicar</span>
+              <span className="text-base font-bold">Publicar</span>
             </button>
           )}
           <button
             onClick={() => setCurrentView('profile')}
-            className={`flex flex-col items-center gap-1 ${
-              currentView === 'profile' ? 'text-blue-500' : 'text-gray-600'
+            className={`flex flex-col items-center gap-2 ${
+              currentView === 'profile' ? 'text-orange-500' : 'text-gray-600'
             }`}
           >
-            <User className="w-7 h-7" />
-            <span className="text-sm font-semibold">Perfil</span>
+            <User className="w-9 h-9" />
+            <span className="text-base font-bold">Perfil</span>
           </button>
         </div>
       </nav>
 
+      {/* Modals */}
       {showNewPost && <NewPostModal />}
       {showAuth && <AuthModal />}
     </div>
