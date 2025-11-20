@@ -156,13 +156,9 @@ function App() {
       setShowAuth(false);
       alert('¡Bienvenido/a a VIVO! 🎉');
     } else {
-      if (!authForm.email || !authForm.password || !authForm.name || !authForm.age) {
+      // CAMBIO: Sin restricción de edad
+      if (!authForm.email || !authForm.password || !authForm.name) {
         alert('Por favor completa todos los campos');
-        return;
-      }
-
-      if (parseInt(authForm.age) < 60) {
-        alert('VIVO es exclusivo para mayores de 60 años 😊');
         return;
       }
 
@@ -171,7 +167,7 @@ function App() {
         email: authForm.email,
         name: authForm.name,
         city: authForm.city,
-        age: authForm.age,
+        age: authForm.age || '',
         avatar: '😊',
         points: 100,
         stats: { posts: 0, eventsAttended: 0, friends: 0 }
@@ -412,7 +408,7 @@ function App() {
   };
 
   const FeedView = () => (
-    <div className="px-2">
+    <div className="px-4 md:px-2">
       {!user && (
         <div className="bg-gradient-to-br from-orange-400 via-red-400 to-pink-400 rounded-3xl shadow-2xl p-8 md:p-10 mb-8 text-white text-center relative overflow-hidden">
           <div className="absolute top-0 right-0 text-9xl opacity-30 animate-bounce">🌟</div>
@@ -431,16 +427,16 @@ function App() {
         </div>
       )}
 
-      {/* Buscador y filtros */}
-      <div className="bg-gradient-to-br from-white to-orange-50 rounded-3xl shadow-xl p-6 md:p-8 mb-8 border-4 border-orange-200">
+      {/* Buscador y filtros - CON COLOR */}
+      <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-3xl shadow-xl p-6 md:p-8 mb-8 border-4 border-blue-200">
         <div className="relative mb-6">
-          <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 text-orange-500 w-8 h-8" />
+          <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 text-blue-500 w-8 h-8" />
           <input
             type="text"
             placeholder="🔍 Buscar eventos, lugares..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-20 pr-6 py-7 text-2xl border-4 border-orange-300 rounded-3xl focus:border-orange-500 focus:outline-none bg-white shadow-inner"
+            className="w-full pl-20 pr-6 py-7 text-2xl border-4 border-blue-300 rounded-3xl focus:border-blue-500 focus:outline-none bg-white shadow-inner"
           />
         </div>
         
@@ -451,8 +447,8 @@ function App() {
               onClick={() => setSelectedCategory(cat)}
               className={`px-8 py-5 rounded-2xl text-xl md:text-2xl font-bold whitespace-nowrap transition-all shadow-lg ${
                 selectedCategory === cat
-                  ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white scale-110 shadow-xl'
-                  : 'bg-white text-gray-700 hover:bg-gradient-to-r hover:from-orange-100 hover:to-red-100 hover:text-orange-600 border-3 border-orange-200'
+                  ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white scale-110 shadow-xl'
+                  : 'bg-white text-gray-700 hover:bg-gradient-to-r hover:from-blue-100 hover:to-indigo-100 hover:text-blue-600 border-3 border-blue-200'
               }`}
             >
               {cat}
@@ -463,7 +459,7 @@ function App() {
 
       {/* Posts */}
       {filteredPosts.length === 0 ? (
-        <div className="bg-gradient-to-br from-white to-orange-100 rounded-3xl shadow-2xl p-16 md:p-20 text-center border-4 border-orange-200">
+        <div className="bg-gradient-to-br from-pink-50 to-rose-100 rounded-3xl shadow-2xl p-16 md:p-20 text-center border-4 border-pink-200">
           <div className="text-9xl mb-8 animate-bounce">😔</div>
           <p className="text-3xl md:text-4xl text-gray-700 mb-6 font-bold">No hay publicaciones</p>
           <p className="text-2xl md:text-3xl text-gray-500 font-semibold">¡Sé el primero en publicar algo!</p>
@@ -477,12 +473,12 @@ function App() {
   const ProfileView = () => {
     if (!user) {
       return (
-        <div className="bg-white rounded-3xl shadow-xl p-16 text-center">
-          <User className="w-32 h-32 mx-auto mb-8 text-gray-300" />
-          <h2 className="text-4xl font-bold mb-6">Inicia sesión para ver tu perfil</h2>
+        <div className="bg-gradient-to-br from-purple-50 to-pink-100 rounded-3xl shadow-xl p-16 text-center border-4 border-purple-200 mx-4 md:mx-0">
+          <User className="w-32 h-32 mx-auto mb-8 text-purple-400" />
+          <h2 className="text-4xl font-bold mb-6 text-gray-800">Inicia sesión para ver tu perfil</h2>
           <button
             onClick={() => setShowAuth(true)}
-            className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-12 py-6 rounded-full text-2xl font-bold hover:from-orange-600 hover:to-red-600 transition-all shadow-xl"
+            className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-12 py-6 rounded-full text-2xl font-bold hover:from-purple-600 hover:to-pink-600 transition-all shadow-xl"
           >
             Iniciar Sesión
           </button>
@@ -491,7 +487,7 @@ function App() {
     }
 
     return (
-      <div>
+      <div className="px-4 md:px-0">
         {/* Perfil header */}
         <div className="bg-gradient-to-br from-orange-500 via-red-500 to-pink-500 rounded-3xl shadow-2xl p-10 mb-8 text-white">
           <div className="text-8xl mb-6 text-center">{user.avatar}</div>
@@ -522,10 +518,10 @@ function App() {
           </div>
         </div>
 
-        {/* Insignias */}
-        <div className="bg-white rounded-3xl shadow-xl p-8 mb-8 border-2 border-orange-100">
-          <h3 className="text-3xl font-bold mb-6 flex items-center gap-3">
-            <Award className="w-10 h-10 text-yellow-500" />
+        {/* Insignias - CON COLOR */}
+        <div className="bg-gradient-to-br from-yellow-50 to-amber-100 rounded-3xl shadow-xl p-8 mb-8 border-4 border-yellow-200">
+          <h3 className="text-3xl font-bold mb-6 flex items-center gap-3 text-gray-800">
+            <Award className="w-10 h-10 text-yellow-600" />
             Mis Insignias
           </h3>
           <div className="grid grid-cols-2 gap-6">
@@ -535,7 +531,7 @@ function App() {
                 className={`p-8 rounded-2xl text-center transition-all ${
                   userPoints >= badge.points
                     ? 'bg-gradient-to-br from-yellow-200 to-orange-200 border-4 border-yellow-400 shadow-xl scale-105'
-                    : 'bg-gray-100 opacity-50'
+                    : 'bg-white/70 opacity-50 border-2 border-gray-300'
                 }`}
               >
                 <div className="text-6xl mb-4">{badge.icon}</div>
@@ -550,19 +546,19 @@ function App() {
           </div>
         </div>
 
-        {/* Estadísticas */}
-        <div className="bg-white rounded-3xl shadow-xl p-8 mb-8 border-2 border-orange-100">
-          <h3 className="text-3xl font-bold mb-6">📊 Mis Estadísticas</h3>
+        {/* Estadísticas - CON COLOR */}
+        <div className="bg-gradient-to-br from-green-50 to-emerald-100 rounded-3xl shadow-xl p-8 mb-8 border-4 border-green-200">
+          <h3 className="text-3xl font-bold mb-6 text-gray-800">📊 Mis Estadísticas</h3>
           <div className="space-y-6">
-            <div className="flex justify-between items-center text-2xl bg-gradient-to-r from-blue-50 to-cyan-50 p-6 rounded-2xl">
+            <div className="flex justify-between items-center text-2xl bg-white/80 p-6 rounded-2xl shadow-md border-2 border-blue-200">
               <span className="text-gray-700 font-semibold">📝 Publicaciones:</span>
               <span className="font-bold text-3xl text-blue-600">{userStats.posts}</span>
             </div>
-            <div className="flex justify-between items-center text-2xl bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-2xl">
+            <div className="flex justify-between items-center text-2xl bg-white/80 p-6 rounded-2xl shadow-md border-2 border-green-200">
               <span className="text-gray-700 font-semibold">🎉 Eventos:</span>
               <span className="font-bold text-3xl text-green-600">{userStats.eventsAttended}</span>
             </div>
-            <div className="flex justify-between items-center text-2xl bg-gradient-to-r from-purple-50 to-pink-50 p-6 rounded-2xl">
+            <div className="flex justify-between items-center text-2xl bg-white/80 p-6 rounded-2xl shadow-md border-2 border-purple-200">
               <span className="text-gray-700 font-semibold">👥 Amigos:</span>
               <span className="font-bold text-3xl text-purple-600">{userStats.friends}</span>
             </div>
@@ -583,7 +579,7 @@ function App() {
 
   const AuthModal = () => (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-3xl shadow-2xl max-w-lg w-full p-10 max-h-[90vh] overflow-y-auto">
+      <div className="bg-gradient-to-br from-white to-orange-50 rounded-3xl shadow-2xl max-w-lg w-full p-10 max-h-[90vh] overflow-y-auto border-4 border-orange-200">
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-600">
             {isLogin ? '👋 Bienvenido' : '🎉 Únete'}
@@ -603,17 +599,17 @@ function App() {
                   value={authForm.name}
                   onChange={(e) => setAuthForm({...authForm, name: e.target.value})}
                   placeholder="Tu nombre"
-                  className="w-full p-5 text-2xl border-3 border-gray-200 rounded-2xl focus:border-orange-400 focus:outline-none"
+                  className="w-full p-5 text-2xl border-3 border-orange-200 rounded-2xl focus:border-orange-400 focus:outline-none bg-white shadow-inner"
                 />
               </div>
               <div>
-                <label className="block text-2xl font-bold mb-3 text-gray-700">Edad</label>
+                <label className="block text-2xl font-bold mb-3 text-gray-700">Edad (opcional)</label>
                 <input
                   type="number"
                   value={authForm.age}
                   onChange={(e) => setAuthForm({...authForm, age: e.target.value})}
-                  placeholder="Mayor de 60"
-                  className="w-full p-5 text-2xl border-3 border-gray-200 rounded-2xl focus:border-orange-400 focus:outline-none"
+                  placeholder="Tu edad"
+                  className="w-full p-5 text-2xl border-3 border-orange-200 rounded-2xl focus:border-orange-400 focus:outline-none bg-white shadow-inner"
                 />
               </div>
               <div>
@@ -621,7 +617,7 @@ function App() {
                 <select
                   value={authForm.city}
                   onChange={(e) => setAuthForm({...authForm, city: e.target.value})}
-                  className="w-full p-5 text-2xl border-3 border-gray-200 rounded-2xl focus:border-orange-400 focus:outline-none"
+                  className="w-full p-5 text-2xl border-3 border-orange-200 rounded-2xl focus:border-orange-400 focus:outline-none bg-white shadow-inner"
                 >
                   <option>Madrid</option>
                   <option>Barcelona</option>
@@ -643,7 +639,7 @@ function App() {
               value={authForm.email}
               onChange={(e) => setAuthForm({...authForm, email: e.target.value})}
               placeholder="tu@email.com"
-              className="w-full p-5 text-2xl border-3 border-gray-200 rounded-2xl focus:border-orange-400 focus:outline-none"
+              className="w-full p-5 text-2xl border-3 border-orange-200 rounded-2xl focus:border-orange-400 focus:outline-none bg-white shadow-inner"
             />
           </div>
 
@@ -654,7 +650,7 @@ function App() {
               value={authForm.password}
               onChange={(e) => setAuthForm({...authForm, password: e.target.value})}
               placeholder="••••••••"
-              className="w-full p-5 text-2xl border-3 border-gray-200 rounded-2xl focus:border-orange-400 focus:outline-none"
+              className="w-full p-5 text-2xl border-3 border-orange-200 rounded-2xl focus:border-orange-400 focus:outline-none bg-white shadow-inner"
             />
           </div>
 
@@ -678,9 +674,9 @@ function App() {
 
   const NewPostModal = () => (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-8">
+      <div className="bg-gradient-to-br from-white to-blue-50 rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-8 border-4 border-blue-200">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-600">
+          <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
             ✨ Nueva Publicación
           </h2>
           <button onClick={() => setShowNewPost(false)} className="text-gray-500 hover:text-gray-700">
@@ -694,7 +690,7 @@ function App() {
             <select
               value={newPost.type}
               onChange={(e) => setNewPost({...newPost, type: e.target.value})}
-              className="w-full p-5 text-2xl border-3 border-gray-200 rounded-2xl focus:border-orange-400 focus:outline-none"
+              className="w-full p-5 text-2xl border-3 border-blue-200 rounded-2xl focus:border-blue-400 focus:outline-none bg-white shadow-inner"
             >
               <option value="event">🎉 Evento</option>
               <option value="place">📍 Lugar</option>
@@ -710,7 +706,7 @@ function App() {
               value={newPost.title}
               onChange={(e) => setNewPost({...newPost, title: e.target.value})}
               placeholder="Ej: Clase de Yoga"
-              className="w-full p-5 text-2xl border-3 border-gray-200 rounded-2xl focus:border-orange-400 focus:outline-none"
+              className="w-full p-5 text-2xl border-3 border-blue-200 rounded-2xl focus:border-blue-400 focus:outline-none bg-white shadow-inner"
             />
           </div>
 
@@ -721,7 +717,7 @@ function App() {
               onChange={(e) => setNewPost({...newPost, description: e.target.value})}
               placeholder="Cuenta los detalles..."
               rows="4"
-              className="w-full p-5 text-2xl border-3 border-gray-200 rounded-2xl focus:border-orange-400 focus:outline-none"
+              className="w-full p-5 text-2xl border-3 border-blue-200 rounded-2xl focus:border-blue-400 focus:outline-none bg-white shadow-inner"
             />
           </div>
 
@@ -733,7 +729,7 @@ function App() {
                   type="date"
                   value={newPost.date}
                   onChange={(e) => setNewPost({...newPost, date: e.target.value})}
-                  className="w-full p-5 text-2xl border-3 border-gray-200 rounded-2xl focus:border-orange-400 focus:outline-none"
+                  className="w-full p-5 text-2xl border-3 border-blue-200 rounded-2xl focus:border-blue-400 focus:outline-none bg-white shadow-inner"
                 />
               </div>
               <div>
@@ -742,7 +738,7 @@ function App() {
                   type="time"
                   value={newPost.time}
                   onChange={(e) => setNewPost({...newPost, time: e.target.value})}
-                  className="w-full p-5 text-2xl border-3 border-gray-200 rounded-2xl focus:border-orange-400 focus:outline-none"
+                  className="w-full p-5 text-2xl border-3 border-blue-200 rounded-2xl focus:border-blue-400 focus:outline-none bg-white shadow-inner"
                 />
               </div>
             </div>
@@ -755,7 +751,7 @@ function App() {
               value={newPost.location}
               onChange={(e) => setNewPost({...newPost, location: e.target.value})}
               placeholder="Ej: Parque del Retiro"
-              className="w-full p-5 text-2xl border-3 border-gray-200 rounded-2xl focus:border-orange-400 focus:outline-none"
+              className="w-full p-5 text-2xl border-3 border-blue-200 rounded-2xl focus:border-blue-400 focus:outline-none bg-white shadow-inner"
             />
           </div>
 
@@ -764,7 +760,7 @@ function App() {
             <select
               value={newPost.category}
               onChange={(e) => setNewPost({...newPost, category: e.target.value})}
-              className="w-full p-5 text-2xl border-3 border-gray-200 rounded-2xl focus:border-orange-400 focus:outline-none"
+              className="w-full p-5 text-2xl border-3 border-blue-200 rounded-2xl focus:border-blue-400 focus:outline-none bg-white shadow-inner"
             >
               <option value="Cultural">Cultural</option>
               <option value="Deportivo">Deportivo</option>
@@ -783,7 +779,7 @@ function App() {
             </button>
             <button
               onClick={handleNewPost}
-              className="flex-1 px-8 py-5 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-2xl text-2xl font-bold hover:from-orange-600 hover:to-red-600 transition-all shadow-xl"
+              className="flex-1 px-8 py-5 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-2xl text-2xl font-bold hover:from-blue-600 hover:to-indigo-600 transition-all shadow-xl"
             >
               Publicar 🎉
             </button>
@@ -797,7 +793,7 @@ function App() {
     <div className="min-h-screen bg-gradient-to-br from-orange-100 via-red-100 to-pink-100">
       {/* Header */}
       <header className="bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 shadow-2xl sticky top-0 z-40">
-        <div className="max-w-6xl mx-auto px-6 py-6">
+        <div className="max-w-6xl mx-auto px-4 md:px-6 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="text-5xl animate-pulse">🌟</div>
@@ -836,18 +832,18 @@ function App() {
       </header>
 
       {/* Main content */}
-      <main className="max-w-6xl mx-auto px-6 py-8 pb-32 md:pb-8">
+      <main className="max-w-6xl mx-auto px-4 md:px-6 py-8 pb-32 md:pb-8">
         <div className="grid md:grid-cols-3 gap-8">
-          {/* Sidebar - Desktop only */}
+          {/* Sidebar - Desktop only - CON COLOR */}
           <div className="hidden md:block">
-            <div className="bg-white rounded-3xl shadow-xl p-6 sticky top-28 border-2 border-orange-100">
+            <div className="bg-gradient-to-br from-purple-50 to-pink-100 rounded-3xl shadow-xl p-6 sticky top-28 border-4 border-purple-200">
               <nav className="space-y-4">
                 <button
                   onClick={() => setCurrentView('feed')}
                   className={`w-full flex items-center gap-4 px-6 py-5 rounded-2xl text-2xl font-bold transition-all ${
                     currentView === 'feed'
-                      ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg'
-                      : 'text-gray-700 hover:bg-orange-50'
+                      ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
+                      : 'text-gray-700 hover:bg-white/70'
                   }`}
                 >
                   <Home className="w-7 h-7" />
@@ -857,8 +853,8 @@ function App() {
                   onClick={() => setCurrentView('profile')}
                   className={`w-full flex items-center gap-4 px-6 py-5 rounded-2xl text-2xl font-bold transition-all ${
                     currentView === 'profile'
-                      ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg'
-                      : 'text-gray-700 hover:bg-orange-50'
+                      ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
+                      : 'text-gray-700 hover:bg-white/70'
                   }`}
                 >
                   <User className="w-7 h-7" />
@@ -868,8 +864,8 @@ function App() {
                   onClick={() => setCurrentView('calendar')}
                   className={`w-full flex items-center gap-4 px-6 py-5 rounded-2xl text-2xl font-bold transition-all ${
                     currentView === 'calendar'
-                      ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg'
-                      : 'text-gray-700 hover:bg-orange-50'
+                      ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
+                      : 'text-gray-700 hover:bg-white/70'
                   }`}
                 >
                   <Calendar className="w-7 h-7" />
@@ -878,12 +874,12 @@ function App() {
               </nav>
 
               {user && (
-                <div className="mt-8 pt-8 border-t-2 border-gray-100">
+                <div className="mt-8 pt-8 border-t-2 border-purple-200">
                   <p className="text-xl text-gray-600 mb-4 font-semibold">Tu ciudad:</p>
                   <select
                     value={userCity}
                     onChange={(e) => setUserCity(e.target.value)}
-                    className="w-full p-4 text-xl border-3 border-gray-200 rounded-2xl focus:border-orange-400 focus:outline-none"
+                    className="w-full p-4 text-xl border-3 border-purple-200 rounded-2xl focus:border-purple-400 focus:outline-none bg-white"
                   >
                     <option>Madrid</option>
                     <option>Barcelona</option>
@@ -904,9 +900,9 @@ function App() {
             {currentView === 'feed' && <FeedView />}
             {currentView === 'profile' && <ProfileView />}
             {currentView === 'calendar' && (
-              <div className="bg-white rounded-3xl shadow-xl p-12 text-center border-2 border-orange-100">
-                <Calendar className="w-32 h-32 mx-auto mb-8 text-orange-500" />
-                <h2 className="text-4xl font-bold mb-4">Mi Agenda</h2>
+              <div className="bg-gradient-to-br from-green-50 to-teal-100 rounded-3xl shadow-xl p-12 text-center border-4 border-green-200 mx-4 md:mx-0">
+                <Calendar className="w-32 h-32 mx-auto mb-8 text-green-500" />
+                <h2 className="text-4xl font-bold mb-4 text-gray-800">Mi Agenda</h2>
                 <p className="text-2xl text-gray-600">Próximamente: Calendario personalizado con todos tus eventos</p>
               </div>
             )}
