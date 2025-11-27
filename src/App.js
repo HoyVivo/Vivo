@@ -219,21 +219,47 @@ function App() {
     }));
   };
 
+  const handleComment = (postId, commentText) => {
+    if (!user) {
+      alert('Inicia sesión para comentar 😊');
+      return;
+    }
+
+    if (!commentText.trim()) return;
+
+    setPosts(posts.map(post => {
+      if (post.id === postId) {
+        return {
+          ...post,
+          comments: [
+            ...(post.comments || []),
+            {
+              id: Date.now().toString(),
+              author: user.name,
+              authorAvatar: user.avatar,
+              text: commentText,
+              timestamp: new Date().toISOString()
+            }
+          ]
+        };
+      }
+      return post;
+    }));
+  };
+
   const handleNewPost = () => {
     if (!user) {
-      alert('Inicia sesión para publicar 😊');
+      alert('Inicia sesión para crear publicaciones 😊');
       return;
     }
 
     if (!newPost.title || !newPost.description) {
-      alert('Por favor completa título y descripción');
+      alert('Por favor completa al menos el título y la descripción');
       return;
     }
 
-    const pointsEarned = newPost.type === 'event' ? 50 : 30;
-    
     const post = {
-      id: 'post_' + Date.now(),
+      id: Date.now().toString(),
       ...newPost,
       author: user.name,
       authorId: user.id,
@@ -243,12 +269,12 @@ function App() {
       likedBy: [],
       comments: [],
       verified: 0,
-      image: '✨',
+      image: newPost.type === 'event' ? '📅' : newPost.type === 'place' ? '📍' : '🤝',
       createdAt: new Date().toISOString()
     };
 
     setPosts([post, ...posts]);
-    setUserPoints(userPoints + pointsEarned);
+    setUserPoints(userPoints + 50);
     setUserStats({
       ...userStats,
       posts: userStats.posts + 1
@@ -265,190 +291,164 @@ function App() {
     });
     
     setShowNewPost(false);
-    alert(`¡Publicación creada! Has ganado ${pointsEarned} puntos 🎉`);
-  };
-
-  const handleVerify = (postId) => {
-    if (!user) {
-      alert('Inicia sesión para verificar eventos 😊');
-      return;
-    }
-
-    setPosts(posts.map(post => 
-      post.id === postId ? { ...post, verified: post.verified + 1 } : post
-    ));
-
-    setUserPoints(userPoints + 10);
-    setUserStats({
-      ...userStats,
-      eventsAttended: userStats.eventsAttended + 1
-    });
+    alert('¡Publicación creada! +50 puntos 🎉');
   };
 
   const PostCard = ({ post }) => {
-    const getTypeIcon = () => {
-      switch(post.type) {
-        case 'event': return <Calendar className="w-5 h-5" />;
-        case 'place': return <MapPin className="w-5 h-5" />;
-        case 'companion': return <Users className="w-5 h-5" />;
-        case 'tutorial': return <BookOpen className="w-5 h-5" />;
-        default: return <Heart className="w-5 h-5" />;
-      }
-    };
-
-    const getTypeLabel = () => {
-      switch(post.type) {
-        case 'event': return 'Evento';
-        case 'place': return 'Lugar';
-        case 'companion': return 'Busco Compañía';
-        case 'tutorial': return 'Tutorial';
-        default: return 'Experiencia';
-      }
-    };
-
-    const getCategoryColor = () => {
-      switch(post.category) {
-        case 'Cultural': return 'from-purple-400 to-pink-400';
-        case 'Deportivo': return 'from-green-400 to-emerald-400';
-        case 'Social': return 'from-blue-400 to-cyan-400';
-        case 'Educativo': return 'from-yellow-400 to-orange-400';
-        case 'Ocio': return 'from-red-400 to-rose-400';
-        default: return 'from-gray-400 to-gray-500';
-      }
-    };
-
+    const [showComments, setShowComments] = useState(false);
+    const [commentText, setCommentText] = useState('');
     const isLiked = user && post.likedBy?.includes(user.id);
 
     return (
-      <div className="bg-white rounded-3xl shadow-2xl mb-8 overflow-hidden transform transition-all hover:scale-[1.02] border-4 border-orange-200">
-        {/* Header con imagen grande */}
-        <div className={`bg-gradient-to-br ${getCategoryColor()} p-8 md:p-10 text-white relative overflow-hidden`}>
-          <div className="absolute top-0 right-0 text-[12rem] opacity-30 animate-pulse">{post.image}</div>
-          <div className="absolute bottom-0 left-0 text-7xl opacity-20">✨</div>
-          <div className="relative z-10">
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-4">
-                <div className="text-6xl drop-shadow-lg">{post.avatar}</div>
-                <div>
-                  <p className="text-2xl md:text-3xl font-bold drop-shadow">{post.author}</p>
-                  <p className="text-lg md:text-xl opacity-90">{post.authorCity}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2 bg-white/30 backdrop-blur-sm px-5 py-3 rounded-full shadow-lg">
-                {getTypeIcon()}
-                <span className="text-base md:text-lg font-bold">{getTypeLabel()}</span>
-              </div>
+      <div className="bg-white rounded-3xl shadow-xl p-8 mb-6 border-4 border-orange-200 hover:border-orange-300 transition-all">
+        <div className="flex items-start gap-4 mb-6">
+          <div className="text-5xl">{post.avatar}</div>
+          <div className="flex-1">
+            <div className="flex items-center gap-3 mb-2">
+              <h3 className="text-2xl font-bold text-gray-800">{post.author}</h3>
+              {post.verified >= 3 && (
+                <CheckCircle className="w-7 h-7 text-blue-500 fill-blue-500" />
+              )}
             </div>
-            <h3 className="text-3xl md:text-4xl font-bold mb-3 drop-shadow-lg leading-tight">{post.title}</h3>
+            <p className="text-xl text-gray-600">{post.authorCity}</p>
           </div>
+          <span className="px-5 py-2 bg-gradient-to-r from-orange-400 to-pink-400 text-white rounded-full text-lg font-bold shadow-lg">
+            {post.category}
+          </span>
         </div>
 
-        {/* Contenido */}
-        <div className="p-6 md:p-8">
-          <p className="text-2xl md:text-3xl text-gray-700 mb-8 leading-relaxed font-medium">{post.description}</p>
-
-          {/* Detalles */}
-          <div className="space-y-4 mb-8">
-            {post.date && (
-              <div className="flex items-center gap-4 text-xl md:text-2xl text-gray-700 bg-gradient-to-r from-orange-100 to-orange-200 p-5 rounded-3xl shadow-md border-2 border-orange-300">
-                <Calendar className="w-8 h-8 text-orange-600" />
-                <span className="font-bold">{post.date} {post.time && `· ${post.time}`}</span>
-              </div>
-            )}
-            {post.location && (
-              <div className="flex items-center gap-4 text-xl md:text-2xl text-gray-700 bg-gradient-to-r from-green-100 to-green-200 p-5 rounded-3xl shadow-md border-2 border-green-300">
-                <MapPin className="w-8 h-8 text-green-600" />
-                <span className="font-bold">{post.location}</span>
-              </div>
-            )}
-            {post.rating && (
-              <div className="flex items-center gap-4 text-xl md:text-2xl text-gray-700 bg-gradient-to-r from-yellow-100 to-yellow-200 p-5 rounded-3xl shadow-md border-2 border-yellow-300">
-                <Star className="w-8 h-8 fill-yellow-400 text-yellow-600" />
-                <span className="font-bold">{post.rating} / 5 estrellas</span>
-              </div>
-            )}
+        <div className="mb-6">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="text-4xl">{post.image}</span>
+            <h4 className="text-3xl font-bold text-gray-900">{post.title}</h4>
           </div>
-
-          <div className="flex items-center gap-3 mb-6">
-            <span className={`inline-block bg-gradient-to-r ${getCategoryColor()} text-white px-6 py-3 rounded-full text-lg font-bold shadow-lg`}>
-              {post.category}
-            </span>
-            {post.verified > 0 && (
-              <div className="flex items-center gap-2 bg-green-100 px-5 py-3 rounded-full">
-                <CheckCircle className="w-5 h-5 text-green-600" />
-                <span className="text-lg text-green-700 font-bold">{post.verified} ✓</span>
+          <p className="text-2xl text-gray-700 leading-relaxed mb-4">{post.description}</p>
+          
+          {post.type === 'event' && (
+            <div className="flex flex-wrap gap-4 mt-4">
+              <div className="flex items-center gap-2 bg-blue-50 px-5 py-3 rounded-2xl border-2 border-blue-200">
+                <Calendar className="w-6 h-6 text-blue-600" />
+                <span className="text-xl font-semibold text-blue-800">{post.date}</span>
               </div>
-            )}
-          </div>
-
-          {/* Botones de interacción */}
-          <div className="flex gap-4 md:gap-6 pt-8 border-t-4 border-orange-100">
-            <button 
-              onClick={() => handleLike(post.id)}
-              className={`flex-1 flex items-center justify-center gap-3 py-6 md:py-7 rounded-3xl text-2xl md:text-3xl font-bold transition-all shadow-lg ${
-                isLiked 
-                  ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-2xl scale-105' 
-                  : 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 hover:from-red-400 hover:to-pink-400 hover:text-white hover:scale-105 border-3 border-gray-300'
-              }`}
-            >
-              <Heart className={`w-9 h-9 md:w-10 md:h-10 ${isLiked ? 'fill-white' : ''}`} />
-              <span>{post.likes}</span>
-            </button>
-            <button 
-              onClick={() => handleVerify(post.id)}
-              className="flex-1 flex items-center justify-center gap-3 py-6 md:py-7 rounded-3xl text-2xl md:text-3xl font-bold bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:from-green-600 hover:to-emerald-600 transition-all shadow-lg hover:scale-105 hover:shadow-2xl"
-            >
-              <CheckCircle className="w-9 h-9 md:w-10 md:h-10" />
-              <span>¡Yo fui!</span>
-            </button>
-          </div>
+              {post.time && (
+                <div className="flex items-center gap-2 bg-purple-50 px-5 py-3 rounded-2xl border-2 border-purple-200">
+                  <span className="text-xl font-semibold text-purple-800">{post.time}</span>
+                </div>
+              )}
+            </div>
+          )}
+          
+          {post.location && (
+            <div className="flex items-center gap-2 mt-4 bg-green-50 px-5 py-3 rounded-2xl border-2 border-green-200 w-fit">
+              <MapPin className="w-6 h-6 text-green-600" />
+              <span className="text-xl font-semibold text-green-800">{post.location}</span>
+            </div>
+          )}
         </div>
+
+        <div className="flex items-center gap-6 pt-6 border-t-2 border-gray-200">
+          <button
+            onClick={() => handleLike(post.id)}
+            className={`flex items-center gap-3 px-6 py-4 rounded-2xl text-xl font-bold transition-all ${
+              isLiked
+                ? 'bg-red-500 text-white shadow-lg'
+                : 'bg-gray-100 text-gray-700 hover:bg-red-50'
+            }`}
+          >
+            <Heart className={`w-7 h-7 ${isLiked ? 'fill-white' : ''}`} />
+            {post.likes}
+          </button>
+          <button
+            onClick={() => setShowComments(!showComments)}
+            className="flex items-center gap-3 px-6 py-4 bg-gray-100 text-gray-700 rounded-2xl text-xl font-bold hover:bg-blue-50 transition-all"
+          >
+            <MessageCircle className="w-7 h-7" />
+            {post.comments?.length || 0}
+          </button>
+        </div>
+
+        {showComments && (
+          <div className="mt-6 pt-6 border-t-2 border-gray-200">
+            {user && (
+              <div className="flex gap-4 mb-6">
+                <input
+                  type="text"
+                  value={commentText}
+                  onChange={(e) => setCommentText(e.target.value)}
+                  placeholder="Escribe un comentario..."
+                  className="flex-1 px-6 py-4 text-xl border-2 border-gray-300 rounded-2xl focus:border-blue-400 focus:outline-none"
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      handleComment(post.id, commentText);
+                      setCommentText('');
+                    }
+                  }}
+                />
+                <button
+                  onClick={() => {
+                    handleComment(post.id, commentText);
+                    setCommentText('');
+                  }}
+                  className="px-8 py-4 bg-blue-500 text-white rounded-2xl text-xl font-bold hover:bg-blue-600 transition-all"
+                >
+                  Enviar
+                </button>
+              </div>
+            )}
+            <div className="space-y-4">
+              {post.comments?.map(comment => (
+                <div key={comment.id} className="flex gap-4 bg-gray-50 p-5 rounded-2xl">
+                  <span className="text-3xl">{comment.authorAvatar}</span>
+                  <div>
+                    <p className="font-bold text-xl text-gray-800">{comment.author}</p>
+                    <p className="text-xl text-gray-700">{comment.text}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     );
   };
 
   const FeedView = () => (
-    <div className="px-4 md:px-2">
+    <div className="space-y-6">
       {!user && (
-        <div className="bg-gradient-to-br from-orange-400 via-red-400 to-pink-400 rounded-3xl shadow-2xl p-8 md:p-10 mb-8 text-white text-center relative overflow-hidden">
-          <div className="absolute top-0 right-0 text-9xl opacity-30 animate-bounce">🌟</div>
-          <div className="absolute bottom-0 left-0 text-7xl opacity-20">✨</div>
-          <div className="relative z-10">
-            <Sparkles className="w-24 h-24 mx-auto mb-6 animate-pulse drop-shadow-lg" />
-            <h2 className="text-4xl md:text-5xl font-bold mb-5 drop-shadow-lg">¡Bienvenido/a a VIVO!</h2>
-            <p className="text-2xl md:text-3xl mb-8 leading-relaxed font-semibold">La red social donde los jubilados nunca se aburren</p>
-            <button
-              onClick={() => setShowAuth(true)}
-              className="bg-white text-orange-600 px-12 py-6 rounded-full text-2xl md:text-3xl font-bold hover:bg-orange-50 transition-all shadow-2xl transform hover:scale-105"
-            >
-              🎉 Unirse Gratis
-            </button>
-          </div>
+        <div className="bg-gradient-to-br from-yellow-50 to-orange-100 rounded-3xl shadow-xl p-12 text-center mb-8 border-4 border-yellow-200 mx-4 md:mx-0">
+          <div className="text-6xl mb-6">🌟</div>
+          <h2 className="text-4xl font-bold mb-4 text-gray-800">¡Bienvenido/a a VIVO!</h2>
+          <p className="text-2xl text-gray-600 mb-8">La red social donde los jubilados nunca se aburren</p>
+          <button
+            onClick={() => setShowAuth(true)}
+            className="px-12 py-6 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-full text-2xl font-bold hover:from-orange-600 hover:to-red-600 transition-all shadow-xl"
+          >
+            Únirse Gratis
+          </button>
         </div>
       )}
 
-      {/* Buscador y filtros - CON COLOR */}
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-3xl shadow-xl p-6 md:p-8 mb-8 border-4 border-blue-200">
-        <div className="relative mb-6">
-          <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 text-blue-500 w-8 h-8" />
+      {/* CAMBIO: Caja de búsqueda con color */}
+      <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-3xl shadow-xl p-8 mb-8 border-4 border-blue-200 mx-4 md:mx-0">
+        <div className="relative">
+          <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-8 h-8 text-blue-400" />
           <input
             type="text"
-            placeholder="🔍 Buscar eventos, lugares..."
+            placeholder="Buscar eventos, lugares..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-20 pr-6 py-7 text-2xl border-4 border-blue-300 rounded-3xl focus:border-blue-500 focus:outline-none bg-white shadow-inner"
+            className="w-full pl-20 pr-6 py-6 text-2xl border-3 border-blue-200 rounded-2xl focus:border-blue-400 focus:outline-none bg-white shadow-inner"
           />
         </div>
-        
-        <div className="flex gap-3 overflow-x-auto pb-3 scrollbar-hide">
+        <div className="flex flex-wrap gap-3 mt-6">
           {categories.map(cat => (
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-8 py-5 rounded-2xl text-xl md:text-2xl font-bold whitespace-nowrap transition-all shadow-lg ${
+              className={`px-6 py-4 rounded-2xl text-xl font-bold transition-all ${
                 selectedCategory === cat
-                  ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white scale-110 shadow-xl'
-                  : 'bg-white text-gray-700 hover:bg-gradient-to-r hover:from-blue-100 hover:to-indigo-100 hover:text-blue-600 border-3 border-blue-200'
+                  ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-lg'
+                  : 'bg-white text-gray-700 hover:bg-blue-50 border-2 border-blue-200'
               }`}
             >
               {cat}
@@ -457,167 +457,190 @@ function App() {
         </div>
       </div>
 
-      {/* Posts */}
-      {filteredPosts.length === 0 ? (
-        <div className="bg-gradient-to-br from-pink-50 to-rose-100 rounded-3xl shadow-2xl p-16 md:p-20 text-center border-4 border-pink-200">
-          <div className="text-9xl mb-8 animate-bounce">😔</div>
-          <p className="text-3xl md:text-4xl text-gray-700 mb-6 font-bold">No hay publicaciones</p>
-          <p className="text-2xl md:text-3xl text-gray-500 font-semibold">¡Sé el primero en publicar algo!</p>
-        </div>
-      ) : (
-        filteredPosts.map(post => <PostCard key={post.id} post={post} />)
-      )}
+      <div className="mx-4 md:mx-0">
+        {filteredPosts.map(post => (
+          <PostCard key={post.id} post={post} />
+        ))}
+      </div>
     </div>
   );
 
   const ProfileView = () => {
     if (!user) {
       return (
-        <div className="bg-gradient-to-br from-purple-50 to-pink-100 rounded-3xl shadow-xl p-16 text-center border-4 border-purple-200 mx-4 md:mx-0">
+        <div className="bg-gradient-to-br from-purple-50 to-pink-100 rounded-3xl shadow-xl p-12 text-center border-4 border-purple-200 mx-4 md:mx-0">
           <User className="w-32 h-32 mx-auto mb-8 text-purple-400" />
-          <h2 className="text-4xl font-bold mb-6 text-gray-800">Inicia sesión para ver tu perfil</h2>
+          <h2 className="text-4xl font-bold mb-4 text-gray-800">Inicia sesión</h2>
+          <p className="text-2xl text-gray-600 mb-8">Crea una cuenta para ver tu perfil</p>
           <button
             onClick={() => setShowAuth(true)}
-            className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-12 py-6 rounded-full text-2xl font-bold hover:from-purple-600 hover:to-pink-600 transition-all shadow-xl"
+            className="px-12 py-6 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full text-2xl font-bold hover:from-purple-600 hover:to-pink-600 transition-all shadow-xl"
           >
-            Iniciar Sesión
+            Crear Cuenta
           </button>
         </div>
       );
     }
 
     return (
-      <div className="px-4 md:px-0">
-        {/* Perfil header */}
-        <div className="bg-gradient-to-br from-orange-500 via-red-500 to-pink-500 rounded-3xl shadow-2xl p-10 mb-8 text-white">
-          <div className="text-8xl mb-6 text-center">{user.avatar}</div>
-          <h2 className="text-4xl font-bold text-center mb-3">{user.name}</h2>
-          <p className="text-2xl text-center opacity-90 mb-2">{userCity}</p>
-          {user.age && (
-            <p className="text-xl text-center opacity-80">{user.age} años</p>
-          )}
+      <div className="space-y-6 mx-4 md:mx-0">
+        <div className="bg-gradient-to-br from-purple-50 to-pink-100 rounded-3xl shadow-xl p-12 border-4 border-purple-200">
+          <div className="flex items-center gap-6 mb-8">
+            <div className="text-7xl">{user.avatar}</div>
+            <div>
+              <h2 className="text-4xl font-bold text-gray-800">{user.name}</h2>
+              <p className="text-2xl text-gray-600">{userCity}</p>
+            </div>
+          </div>
           
-          {/* Puntos */}
-          <div className="mt-8 bg-white/20 backdrop-blur-sm rounded-2xl p-8">
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-3">
-                <Star className="w-10 h-10 fill-white" />
-                <span className="text-2xl font-semibold">Mis Puntos</span>
-              </div>
-              <span className="text-5xl font-bold">{userPoints}</span>
-            </div>
-            <div className="w-full bg-white/30 rounded-full h-6 overflow-hidden">
-              <div 
-                className="bg-white h-6 rounded-full transition-all duration-500"
-                style={{ width: `${(userPoints % 100)}%` }}
-              ></div>
-            </div>
-            <p className="text-xl mt-4 opacity-90 text-center">
-              {100 - (userPoints % 100)} puntos para la siguiente insignia
-            </p>
+          <div className="flex items-center gap-4 mb-8">
+            <Star className="w-10 h-10 text-yellow-500 fill-yellow-500" />
+            <span className="text-4xl font-bold text-gray-800">{userPoints} puntos</span>
           </div>
+
+          <div className="grid grid-cols-3 gap-6 mb-8">
+            <div className="bg-white p-6 rounded-2xl text-center border-2 border-purple-200">
+              <div className="text-4xl font-bold text-purple-600">{userStats.posts}</div>
+              <div className="text-xl text-gray-600 mt-2">Publicaciones</div>
+            </div>
+            <div className="bg-white p-6 rounded-2xl text-center border-2 border-purple-200">
+              <div className="text-4xl font-bold text-pink-600">{userStats.eventsAttended}</div>
+              <div className="text-xl text-gray-600 mt-2">Eventos</div>
+            </div>
+            <div className="bg-white p-6 rounded-2xl text-center border-2 border-purple-200">
+              <div className="text-4xl font-bold text-indigo-600">{userStats.friends}</div>
+              <div className="text-xl text-gray-600 mt-2">Amigos</div>
+            </div>
+          </div>
+
+          <button
+            onClick={handleLogout}
+            className="w-full px-8 py-5 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-2xl text-2xl font-bold hover:from-red-600 hover:to-pink-600 transition-all shadow-xl flex items-center justify-center gap-3"
+          >
+            <LogOut className="w-7 h-7" />
+            Cerrar Sesión
+          </button>
         </div>
 
-        {/* Insignias - CON COLOR */}
-        <div className="bg-gradient-to-br from-yellow-50 to-amber-100 rounded-3xl shadow-xl p-8 mb-8 border-4 border-yellow-200">
-          <h3 className="text-3xl font-bold mb-6 flex items-center gap-3 text-gray-800">
+        {/* CAMBIO: Sección de insignias con color */}
+        <div className="bg-gradient-to-br from-yellow-50 to-amber-100 rounded-3xl shadow-xl p-12 border-4 border-yellow-200">
+          <h3 className="text-3xl font-bold mb-8 text-gray-800 flex items-center gap-3">
             <Award className="w-10 h-10 text-yellow-600" />
-            Mis Insignias
+            Insignias
           </h3>
-          <div className="grid grid-cols-2 gap-6">
-            {badges.map((badge, index) => (
-              <div 
-                key={index}
-                className={`p-8 rounded-2xl text-center transition-all ${
-                  userPoints >= badge.points
-                    ? 'bg-gradient-to-br from-yellow-200 to-orange-200 border-4 border-yellow-400 shadow-xl scale-105'
-                    : 'bg-white/70 opacity-50 border-2 border-gray-300'
-                }`}
-              >
-                <div className="text-6xl mb-4">{badge.icon}</div>
-                <p className="text-2xl font-bold text-gray-800 mb-2">{badge.name}</p>
-                <p className="text-lg text-gray-600 mb-2">{badge.desc}</p>
-                <p className="text-xl text-gray-600 font-semibold">{badge.points} pts</p>
-                {userPoints >= badge.points && (
-                  <p className="text-lg text-green-600 font-bold mt-3">✅ ¡Conseguida!</p>
-                )}
-              </div>
-            ))}
+          <div className="grid md:grid-cols-2 gap-6">
+            {badges.map(badge => {
+              const earned = userPoints >= badge.points;
+              return (
+                <div
+                  key={badge.name}
+                  className={`p-8 rounded-2xl border-3 ${
+                    earned
+                      ? 'bg-gradient-to-br from-yellow-100 to-amber-200 border-yellow-400 shadow-lg'
+                      : 'bg-white border-gray-200'
+                  }`}
+                >
+                  <div className="flex items-center gap-4 mb-4">
+                    <span className="text-5xl">{badge.icon}</span>
+                    <div>
+                      <h4 className="text-2xl font-bold text-gray-800">{badge.name}</h4>
+                      <p className="text-lg text-gray-600">{badge.desc}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xl font-semibold text-gray-700">{badge.points} puntos</span>
+                    {earned && <CheckCircle className="w-8 h-8 text-green-500 fill-green-500" />}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
 
-        {/* Estadísticas - CON COLOR */}
-        <div className="bg-gradient-to-br from-green-50 to-emerald-100 rounded-3xl shadow-xl p-8 mb-8 border-4 border-green-200">
-          <h3 className="text-3xl font-bold mb-6 text-gray-800">📊 Mis Estadísticas</h3>
+        {/* CAMBIO: Estadísticas con color */}
+        <div className="bg-gradient-to-br from-green-50 to-emerald-100 rounded-3xl shadow-xl p-12 border-4 border-green-200">
+          <h3 className="text-3xl font-bold mb-8 text-gray-800 flex items-center gap-3">
+            <TrendingUp className="w-10 h-10 text-green-600" />
+            Tu Progreso
+          </h3>
           <div className="space-y-6">
-            <div className="flex justify-between items-center text-2xl bg-white/80 p-6 rounded-2xl shadow-md border-2 border-blue-200">
-              <span className="text-gray-700 font-semibold">📝 Publicaciones:</span>
-              <span className="font-bold text-3xl text-blue-600">{userStats.posts}</span>
-            </div>
-            <div className="flex justify-between items-center text-2xl bg-white/80 p-6 rounded-2xl shadow-md border-2 border-green-200">
-              <span className="text-gray-700 font-semibold">🎉 Eventos:</span>
-              <span className="font-bold text-3xl text-green-600">{userStats.eventsAttended}</span>
-            </div>
-            <div className="flex justify-between items-center text-2xl bg-white/80 p-6 rounded-2xl shadow-md border-2 border-purple-200">
-              <span className="text-gray-700 font-semibold">👥 Amigos:</span>
-              <span className="font-bold text-3xl text-purple-600">{userStats.friends}</span>
+            <div>
+              <div className="flex justify-between mb-3">
+                <span className="text-2xl font-semibold text-gray-700">Nivel de Actividad</span>
+                <span className="text-2xl font-bold text-green-600">{Math.min(100, Math.floor((userPoints / 1000) * 100))}%</span>
+              </div>
+              <div className="h-6 bg-gray-200 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-green-400 to-emerald-500 rounded-full transition-all duration-500"
+                  style={{ width: `${Math.min(100, (userPoints / 1000) * 100)}%` }}
+                ></div>
+              </div>
             </div>
           </div>
         </div>
-
-        {/* Botón cerrar sesión */}
-        <button
-          onClick={handleLogout}
-          className="w-full bg-gradient-to-r from-red-500 to-rose-500 text-white px-8 py-6 rounded-2xl text-2xl font-bold hover:from-red-600 hover:to-rose-600 transition-all shadow-xl flex items-center justify-center gap-4"
-        >
-          <LogOut className="w-8 h-8" />
-          Cerrar Sesión
-        </button>
       </div>
     );
   };
 
   const AuthModal = () => (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-      <div className="bg-gradient-to-br from-white to-orange-50 rounded-3xl shadow-2xl max-w-lg w-full p-10 max-h-[90vh] overflow-y-auto border-4 border-orange-200">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+      <div className="bg-white rounded-3xl shadow-2xl p-12 max-w-2xl w-full max-h-[90vh] overflow-y-auto border-4 border-orange-200">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-600">
-            {isLogin ? '👋 Bienvenido' : '🎉 Únete'}
+          <h2 className="text-4xl font-bold text-gray-800">
+            {isLogin ? 'Iniciar Sesión' : 'Crear Cuenta'}
           </h2>
-          <button onClick={() => setShowAuth(false)} className="text-gray-500 hover:text-gray-700">
-            <X className="w-10 h-10" />
+          <button
+            onClick={() => setShowAuth(false)}
+            className="p-3 hover:bg-gray-100 rounded-full transition-all"
+          >
+            <X className="w-8 h-8 text-gray-600" />
           </button>
         </div>
 
         <div className="space-y-6">
           {!isLogin && (
+            <div>
+              <label className="block text-2xl font-bold mb-3 text-gray-700">Nombre</label>
+              <input
+                type="text"
+                value={authForm.name}
+                onChange={(e) => setAuthForm({...authForm, name: e.target.value})}
+                className="w-full p-5 text-2xl border-3 border-gray-300 rounded-2xl focus:border-orange-400 focus:outline-none"
+                placeholder="Tu nombre"
+              />
+            </div>
+          )}
+
+          <div>
+            <label className="block text-2xl font-bold mb-3 text-gray-700">Email</label>
+            <input
+              type="email"
+              value={authForm.email}
+              onChange={(e) => setAuthForm({...authForm, email: e.target.value})}
+              className="w-full p-5 text-2xl border-3 border-gray-300 rounded-2xl focus:border-orange-400 focus:outline-none"
+              placeholder="tu@email.com"
+            />
+          </div>
+
+          <div>
+            <label className="block text-2xl font-bold mb-3 text-gray-700">Contraseña</label>
+            <input
+              type="password"
+              value={authForm.password}
+              onChange={(e) => setAuthForm({...authForm, password: e.target.value})}
+              className="w-full p-5 text-2xl border-3 border-gray-300 rounded-2xl focus:border-orange-400 focus:outline-none"
+              placeholder="••••••"
+            />
+          </div>
+
+          {!isLogin && (
             <>
-              <div>
-                <label className="block text-2xl font-bold mb-3 text-gray-700">Nombre completo</label>
-                <input
-                  type="text"
-                  value={authForm.name}
-                  onChange={(e) => setAuthForm({...authForm, name: e.target.value})}
-                  placeholder="Tu nombre"
-                  className="w-full p-5 text-2xl border-3 border-orange-200 rounded-2xl focus:border-orange-400 focus:outline-none bg-white shadow-inner"
-                />
-              </div>
-              <div>
-                <label className="block text-2xl font-bold mb-3 text-gray-700">Edad (opcional)</label>
-                <input
-                  type="number"
-                  value={authForm.age}
-                  onChange={(e) => setAuthForm({...authForm, age: e.target.value})}
-                  placeholder="Tu edad"
-                  className="w-full p-5 text-2xl border-3 border-orange-200 rounded-2xl focus:border-orange-400 focus:outline-none bg-white shadow-inner"
-                />
-              </div>
               <div>
                 <label className="block text-2xl font-bold mb-3 text-gray-700">Ciudad</label>
                 <select
                   value={authForm.city}
                   onChange={(e) => setAuthForm({...authForm, city: e.target.value})}
-                  className="w-full p-5 text-2xl border-3 border-orange-200 rounded-2xl focus:border-orange-400 focus:outline-none bg-white shadow-inner"
+                  className="w-full p-5 text-2xl border-3 border-gray-300 rounded-2xl focus:border-orange-400 focus:outline-none bg-white"
                 >
                   <option>Madrid</option>
                   <option>Barcelona</option>
@@ -629,43 +652,33 @@ function App() {
                   <option>Zamora</option>
                 </select>
               </div>
+
+              {/* CAMBIO: Edad opcional */}
+              <div>
+                <label className="block text-2xl font-bold mb-3 text-gray-700">Edad (opcional)</label>
+                <input
+                  type="number"
+                  value={authForm.age}
+                  onChange={(e) => setAuthForm({...authForm, age: e.target.value})}
+                  className="w-full p-5 text-2xl border-3 border-gray-300 rounded-2xl focus:border-orange-400 focus:outline-none"
+                  placeholder="Tu edad"
+                />
+              </div>
             </>
           )}
 
-          <div>
-            <label className="block text-2xl font-bold mb-3 text-gray-700">Email</label>
-            <input
-              type="email"
-              value={authForm.email}
-              onChange={(e) => setAuthForm({...authForm, email: e.target.value})}
-              placeholder="tu@email.com"
-              className="w-full p-5 text-2xl border-3 border-orange-200 rounded-2xl focus:border-orange-400 focus:outline-none bg-white shadow-inner"
-            />
-          </div>
-
-          <div>
-            <label className="block text-2xl font-bold mb-3 text-gray-700">Contraseña</label>
-            <input
-              type="password"
-              value={authForm.password}
-              onChange={(e) => setAuthForm({...authForm, password: e.target.value})}
-              placeholder="••••••••"
-              className="w-full p-5 text-2xl border-3 border-orange-200 rounded-2xl focus:border-orange-400 focus:outline-none bg-white shadow-inner"
-            />
-          </div>
-
           <button
             onClick={handleAuth}
-            className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white px-8 py-6 rounded-2xl text-2xl font-bold hover:from-orange-600 hover:to-red-600 transition-all shadow-xl"
+            className="w-full px-8 py-6 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-2xl text-2xl font-bold hover:from-orange-600 hover:to-red-600 transition-all shadow-xl"
           >
-            {isLogin ? '🚀 Entrar' : '🎉 Registrarse'}
+            {isLogin ? 'Entrar' : 'Crear Cuenta'}
           </button>
 
           <button
             onClick={() => setIsLogin(!isLogin)}
-            className="w-full text-orange-500 text-xl hover:underline font-semibold"
+            className="w-full text-2xl text-orange-600 hover:text-orange-700 font-semibold"
           >
-            {isLogin ? '¿No tienes cuenta? Regístrate aquí' : '¿Ya tienes cuenta? Inicia sesión'}
+            {isLogin ? '¿No tienes cuenta? Regístrate' : '¿Ya tienes cuenta? Inicia sesión'}
           </button>
         </div>
       </div>
@@ -673,14 +686,15 @@ function App() {
   );
 
   const NewPostModal = () => (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-      <div className="bg-gradient-to-br from-white to-blue-50 rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-8 border-4 border-blue-200">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+      <div className="bg-gradient-to-br from-orange-50 to-yellow-100 rounded-3xl shadow-2xl p-12 max-w-3xl w-full max-h-[90vh] overflow-y-auto border-4 border-orange-300">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
-            ✨ Nueva Publicación
-          </h2>
-          <button onClick={() => setShowNewPost(false)} className="text-gray-500 hover:text-gray-700">
-            <X className="w-10 h-10" />
+          <h2 className="text-4xl font-bold text-gray-800">Nueva Publicación</h2>
+          <button
+            onClick={() => setShowNewPost(false)}
+            className="p-3 hover:bg-white/50 rounded-full transition-all"
+          >
+            <X className="w-8 h-8 text-gray-600" />
           </button>
         </div>
 
@@ -690,12 +704,11 @@ function App() {
             <select
               value={newPost.type}
               onChange={(e) => setNewPost({...newPost, type: e.target.value})}
-              className="w-full p-5 text-2xl border-3 border-blue-200 rounded-2xl focus:border-blue-400 focus:outline-none bg-white shadow-inner"
+              className="w-full p-5 text-2xl border-3 border-orange-200 rounded-2xl focus:border-orange-400 focus:outline-none bg-white shadow-inner"
             >
-              <option value="event">🎉 Evento</option>
-              <option value="place">📍 Lugar</option>
-              <option value="companion">👥 Busco Compañía</option>
-              <option value="tutorial">📚 Tutorial</option>
+              <option value="event">Evento</option>
+              <option value="place">Lugar</option>
+              <option value="companion">Busco Compañía</option>
             </select>
           </div>
 
@@ -705,8 +718,8 @@ function App() {
               type="text"
               value={newPost.title}
               onChange={(e) => setNewPost({...newPost, title: e.target.value})}
-              placeholder="Ej: Clase de Yoga"
-              className="w-full p-5 text-2xl border-3 border-blue-200 rounded-2xl focus:border-blue-400 focus:outline-none bg-white shadow-inner"
+              className="w-full p-5 text-2xl border-3 border-orange-200 rounded-2xl focus:border-orange-400 focus:outline-none shadow-inner"
+              placeholder="Título llamativo"
             />
           </div>
 
@@ -715,21 +728,20 @@ function App() {
             <textarea
               value={newPost.description}
               onChange={(e) => setNewPost({...newPost, description: e.target.value})}
-              placeholder="Cuenta los detalles..."
-              rows="4"
-              className="w-full p-5 text-2xl border-3 border-blue-200 rounded-2xl focus:border-blue-400 focus:outline-none bg-white shadow-inner"
+              className="w-full p-5 text-2xl border-3 border-orange-200 rounded-2xl focus:border-orange-400 focus:outline-none h-40 shadow-inner"
+              placeholder="Cuéntanos más..."
             />
           </div>
 
-          {(newPost.type === 'event' || newPost.type === 'companion') && (
-            <div className="grid grid-cols-2 gap-4">
+          {newPost.type === 'event' && (
+            <>
               <div>
                 <label className="block text-2xl font-bold mb-3 text-gray-700">Fecha</label>
                 <input
                   type="date"
                   value={newPost.date}
                   onChange={(e) => setNewPost({...newPost, date: e.target.value})}
-                  className="w-full p-5 text-2xl border-3 border-blue-200 rounded-2xl focus:border-blue-400 focus:outline-none bg-white shadow-inner"
+                  className="w-full p-5 text-2xl border-3 border-orange-200 rounded-2xl focus:border-orange-400 focus:outline-none bg-white shadow-inner"
                 />
               </div>
               <div>
@@ -738,10 +750,10 @@ function App() {
                   type="time"
                   value={newPost.time}
                   onChange={(e) => setNewPost({...newPost, time: e.target.value})}
-                  className="w-full p-5 text-2xl border-3 border-blue-200 rounded-2xl focus:border-blue-400 focus:outline-none bg-white shadow-inner"
+                  className="w-full p-5 text-2xl border-3 border-orange-200 rounded-2xl focus:border-orange-400 focus:outline-none bg-white shadow-inner"
                 />
               </div>
-            </div>
+            </>
           )}
 
           <div>
@@ -750,8 +762,8 @@ function App() {
               type="text"
               value={newPost.location}
               onChange={(e) => setNewPost({...newPost, location: e.target.value})}
-              placeholder="Ej: Parque del Retiro"
-              className="w-full p-5 text-2xl border-3 border-blue-200 rounded-2xl focus:border-blue-400 focus:outline-none bg-white shadow-inner"
+              className="w-full p-5 text-2xl border-3 border-orange-200 rounded-2xl focus:border-orange-400 focus:outline-none shadow-inner"
+              placeholder="¿Dónde?"
             />
           </div>
 
@@ -760,7 +772,7 @@ function App() {
             <select
               value={newPost.category}
               onChange={(e) => setNewPost({...newPost, category: e.target.value})}
-              className="w-full p-5 text-2xl border-3 border-blue-200 rounded-2xl focus:border-blue-400 focus:outline-none bg-white shadow-inner"
+              className="w-full p-5 text-2xl border-3 border-orange-200 rounded-2xl focus:border-orange-400 focus:outline-none bg-white shadow-inner"
             >
               <option value="Cultural">Cultural</option>
               <option value="Deportivo">Deportivo</option>
@@ -779,7 +791,7 @@ function App() {
             </button>
             <button
               onClick={handleNewPost}
-              className="flex-1 px-8 py-5 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-2xl text-2xl font-bold hover:from-blue-600 hover:to-indigo-600 transition-all shadow-xl"
+              className="flex-1 px-8 py-5 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-2xl text-2xl font-bold hover:from-orange-600 hover:to-red-600 transition-all shadow-xl"
             >
               Publicar 🎉
             </button>
@@ -799,7 +811,7 @@ function App() {
               <div className="text-5xl animate-pulse">🌟</div>
               <div>
                 <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg">
-                  VIVO
+                  VIVO-CORRECTO
                 </h1>
                 <p className="text-lg md:text-xl text-white/90 font-semibold">Nunca dejes de vivir</p>
               </div>
