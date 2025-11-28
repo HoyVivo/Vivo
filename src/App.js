@@ -811,7 +811,7 @@ function App() {
               <div className="text-5xl animate-pulse">🌟</div>
               <div>
                 <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg">
-                  VIVO-CORRECTO
+                  Hpy Vivo
                 </h1>
                 <p className="text-lg md:text-xl text-white/90 font-semibold">Nunca dejes de vivir</p>
               </div>
