@@ -16,8 +16,16 @@ code {
     monospace;
 }
 /* Escala automática para móviles */
-@media (max-width: 768px) {
+/* Ajuste automático para móviles pequeños */
+@media (max-width: 640px) {
+  body {
+    transform: scale(0.35);
+    transform-origin: 0 0;
+    width: 285%;
+    min-height: 285vh;
+  }
+  
   html {
-    zoom: 0.55;
+    overflow-x: hidden;
   }
 }
