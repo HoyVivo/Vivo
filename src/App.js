@@ -330,8 +330,8 @@ function App() {
               <div className="flex items-center gap-4">
                 <div className="text-6xl drop-shadow-lg">{post.avatar}</div>
                 <div>
-                  <p className="text-2xl md:text-3xl font-bold drop-shadow">{post.author}</p>
-                  <p className="text-lg md:text-xl opacity-90">{post.authorCity}</p>
+                  <p className="text-4xl md:text-3xl lg:text-2xl font-bold drop-shadow">{post.author}</p>
+                  <p className="text-2xl md:text-xl lg:text-lg opacity-90">{post.authorCity}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2 bg-white/30 backdrop-blur-sm px-5 py-3 rounded-full shadow-lg">
@@ -339,30 +339,30 @@ function App() {
                 <span className="text-base md:text-lg font-bold">{getTypeLabel()}</span>
               </div>
             </div>
-            <h3 className="text-3xl md:text-4xl font-bold mb-3 drop-shadow-lg leading-tight">{post.title}</h3>
+            <h3 className="text-5xl md:text-4xl lg:text-3xl font-bold mb-3 drop-shadow-lg leading-tight">{post.title}</h3>
           </div>
         </div>
 
         {/* Contenido */}
         <div className="p-6 md:p-8">
-          <p className="text-2xl md:text-3xl text-gray-700 mb-8 leading-relaxed font-medium">{post.description}</p>
+          <p className="text-3xl md:text-3xl lg:text-2xl text-gray-700 mb-8 leading-relaxed font-medium">{post.description}</p>
 
           {/* Detalles */}
           <div className="space-y-4 mb-8">
             {post.date && (
-              <div className="flex items-center gap-4 text-xl md:text-2xl text-gray-700 bg-gradient-to-r from-orange-100 to-orange-200 p-5 rounded-3xl shadow-md border-2 border-orange-300">
+              <div className="flex items-center gap-4 text-2xl md:text-2xl lg:text-xl text-gray-700 bg-gradient-to-r from-orange-100 to-orange-200 p-5 rounded-3xl shadow-md border-2 border-orange-300">
                 <Calendar className="w-8 h-8 text-orange-600" />
                 <span className="font-bold">{post.date} {post.time && `· ${post.time}`}</span>
               </div>
             )}
             {post.location && (
-              <div className="flex items-center gap-4 text-xl md:text-2xl text-gray-700 bg-gradient-to-r from-green-100 to-green-200 p-5 rounded-3xl shadow-md border-2 border-green-300">
+              <div className="flex items-center gap-4 text-2xl md:text-2xl lg:text-xl text-gray-700 bg-gradient-to-r from-green-100 to-green-200 p-5 rounded-3xl shadow-md border-2 border-green-300">
                 <MapPin className="w-8 h-8 text-green-600" />
                 <span className="font-bold">{post.location}</span>
               </div>
             )}
             {post.rating && (
-              <div className="flex items-center gap-4 text-xl md:text-2xl text-gray-700 bg-gradient-to-r from-yellow-100 to-yellow-200 p-5 rounded-3xl shadow-md border-2 border-yellow-300">
+              <div className="flex items-center gap-4 text-2xl md:text-2xl lg:text-xl text-gray-700 bg-gradient-to-r from-yellow-100 to-yellow-200 p-5 rounded-3xl shadow-md border-2 border-yellow-300">
                 <Star className="w-8 h-8 fill-yellow-400 text-yellow-600" />
                 <span className="font-bold">{post.rating} / 5 estrellas</span>
               </div>
@@ -385,7 +385,7 @@ function App() {
           <div className="flex gap-4 md:gap-6 pt-8 border-t-4 border-orange-100">
             <button 
               onClick={() => handleLike(post.id)}
-              className={`flex-1 flex items-center justify-center gap-3 py-6 md:py-7 rounded-3xl text-2xl md:text-3xl font-bold transition-all shadow-lg ${
+              className={`flex-1 flex items-center justify-center gap-3 py-6 md:py-7 rounded-3xl text-3xl md:text-3xl lg:text-2xl font-bold transition-all shadow-lg ${
                 isLiked 
                   ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-2xl scale-105' 
                   : 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 hover:from-red-400 hover:to-pink-400 hover:text-white hover:scale-105 border-3 border-gray-300'
@@ -396,7 +396,7 @@ function App() {
             </button>
             <button 
               onClick={() => handleVerify(post.id)}
-              className="flex-1 flex items-center justify-center gap-3 py-6 md:py-7 rounded-3xl text-2xl md:text-3xl font-bold bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:from-green-600 hover:to-emerald-600 transition-all shadow-lg hover:scale-105 hover:shadow-2xl"
+              className="flex-1 flex items-center justify-center gap-3 py-6 md:py-7 rounded-3xl text-3xl md:text-3xl lg:text-2xl font-bold bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:from-green-600 hover:to-emerald-600 transition-all shadow-lg hover:scale-105 hover:shadow-2xl"
             >
               <CheckCircle className="w-9 h-9 md:w-10 md:h-10" />
               <span>¡Yo fui!</span>
@@ -415,11 +415,11 @@ function App() {
           <div className="absolute bottom-0 left-0 text-7xl opacity-20">✨</div>
           <div className="relative z-10">
             <Sparkles className="w-24 h-24 mx-auto mb-6 animate-pulse drop-shadow-lg" />
-            <h2 className="text-4xl md:text-5xl font-bold mb-5 drop-shadow-lg">¡Bienvenido/a a VIVO!</h2>
-            <p className="text-2xl md:text-3xl mb-8 leading-relaxed font-semibold">La red social donde los jubilados nunca se aburren</p>
+            <h2 className="text-6xl md:text-5xl lg:text-4xl font-bold mb-5 drop-shadow-lg">¡Bienvenido/a a Hoy Vivo!</h2>
+            <p className="text-3xl md:text-3xl lg:text-2xl mb-8 leading-relaxed font-semibold">La red social donde los jubilados nunca se aburren</p>
             <button
               onClick={() => setShowAuth(true)}
-              className="bg-white text-orange-600 px-12 py-6 rounded-full text-2xl md:text-3xl font-bold hover:bg-orange-50 transition-all shadow-2xl transform hover:scale-105"
+              className="bg-white text-orange-600 px-12 py-6 rounded-full text-3xl md:text-3xl lg:text-2xl font-bold hover:bg-orange-50 transition-all shadow-2xl transform hover:scale-105"
             >
               🎉 Unirse Gratis
             </button>
@@ -436,7 +436,7 @@ function App() {
             placeholder="🔍 Buscar eventos, lugares..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-20 pr-6 py-7 text-2xl border-4 border-blue-300 rounded-3xl focus:border-blue-500 focus:outline-none bg-white shadow-inner"
+            className="w-full pl-20 pr-6 py-7 text-3xl md:text-2xl lg:text-xl border-4 border-blue-300 rounded-3xl focus:border-blue-500 focus:outline-none bg-white shadow-inner"
           />
         </div>
         
@@ -445,7 +445,7 @@ function App() {
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-8 py-5 rounded-2xl text-xl md:text-2xl font-bold whitespace-nowrap transition-all shadow-lg ${
+              className={`px-8 py-5 rounded-2xl text-2xl md:text-2xl lg:text-xl font-bold whitespace-nowrap transition-all shadow-lg ${
                 selectedCategory === cat
                   ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white scale-110 shadow-xl'
                   : 'bg-white text-gray-700 hover:bg-gradient-to-r hover:from-blue-100 hover:to-indigo-100 hover:text-blue-600 border-3 border-blue-200'
@@ -798,10 +798,10 @@ function App() {
             <div className="flex items-center gap-4">
               <div className="text-5xl animate-pulse">🌟</div>
               <div>
-                <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg">
-                  VIVO
+                <h1 className="text-6xl md:text-5xl lg:text-4xl font-bold text-white drop-shadow-lg">
+                  Hoy Vivo
                 </h1>
-                <p className="text-lg md:text-xl text-white/90 font-semibold">Nunca dejes de vivir</p>
+                <p className="text-xl md:text-xl lg:text-lg text-white/90 font-semibold">Nunca dejes de vivir</p>
               </div>
             </div>
             
