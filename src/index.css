@@ -19,10 +19,10 @@ code {
 /* Ajuste automático para móviles pequeños */
 @media (max-width: 640px) {
   body {
-    transform: scale(0.35);
+    transform: scale(0.75);
     transform-origin: 0 0;
-    width: 285%;
-    min-height: 285vh;
+    width: 133%;
+    min-height: 133vh;
   }
   
   html {
