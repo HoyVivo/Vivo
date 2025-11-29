@@ -320,78 +320,78 @@ function App() {
     const isLiked = user && post.likedBy?.includes(user.id);
 
     return (
-      <div className="bg-white rounded-2xl md:rounded-3xl shadow-lg md:shadow-2xl mb-4 md:mb-8 overflow-hidden transform transition-all hover:scale-[1.01] md:hover:scale-[1.02] border-2 md:border-4 border-orange-200">
+      <div className="bg-white rounded-3xl shadow-2xl mb-8 overflow-hidden transform transition-all hover:scale-[1.02] border-4 border-orange-200 mx-4 md:mx-2">
         {/* Header con imagen grande */}
-        <div className={`bg-gradient-to-br ${getCategoryColor()} p-4 md:p-8 lg:p-10 text-white relative overflow-hidden`}>
-          <div className="absolute top-0 right-0 text-[8rem] md:text-[12rem] opacity-30 animate-pulse">{post.image}</div>
-          <div className="absolute bottom-0 left-0 text-4xl md:text-7xl opacity-20">✨</div>
+        <div className={`bg-gradient-to-br ${getCategoryColor()} p-8 md:p-10 text-white relative overflow-hidden`}>
+          <div className="absolute top-0 right-0 text-[12rem] opacity-30 animate-pulse">{post.image}</div>
+          <div className="absolute bottom-0 left-0 text-7xl opacity-20">✨</div>
           <div className="relative z-10">
-            <div className="flex items-center justify-between mb-3 md:mb-6">
-              <div className="flex items-center gap-2 md:gap-4">
-                <div className="text-4xl md:text-6xl drop-shadow-lg">{post.avatar}</div>
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-4">
+                <div className="text-6xl drop-shadow-lg">{post.avatar}</div>
                 <div>
-                  <p className="text-lg md:text-2xl lg:text-3xl font-bold drop-shadow">{post.author}</p>
-                  <p className="text-sm md:text-lg lg:text-xl opacity-90">{post.authorCity}</p>
+                  <p className="text-2xl md:text-3xl font-bold drop-shadow">{post.author}</p>
+                  <p className="text-lg md:text-xl opacity-90">{post.authorCity}</p>
                 </div>
               </div>
-              <div className="flex items-center gap-1 md:gap-2 bg-white/30 backdrop-blur-sm px-2 py-1 md:px-5 md:py-3 rounded-full shadow-md md:shadow-lg">
+              <div className="flex items-center gap-2 bg-white/30 backdrop-blur-sm px-5 py-3 rounded-full shadow-lg">
                 {getTypeIcon()}
-                <span className="text-xs md:text-base lg:text-lg font-bold hidden sm:inline">{getTypeLabel()}</span>
+                <span className="text-base md:text-lg font-bold">{getTypeLabel()}</span>
               </div>
             </div>
-            <h3 className="text-xl md:text-3xl lg:text-4xl font-bold mb-2 md:mb-3 drop-shadow-lg leading-tight">{post.title}</h3>
+            <h3 className="text-3xl md:text-4xl font-bold mb-3 drop-shadow-lg leading-tight">{post.title}</h3>
           </div>
         </div>
 
         {/* Contenido */}
-        <div className="p-4 md:p-6 lg:p-8">
-          <p className="text-base md:text-2xl lg:text-3xl text-gray-700 mb-4 md:mb-8 leading-relaxed font-medium">{post.description}</p>
+        <div className="p-6 md:p-8">
+          <p className="text-2xl md:text-3xl text-gray-700 mb-8 leading-relaxed font-medium">{post.description}</p>
 
           {/* Detalles */}
-          <div className="space-y-2 md:space-y-4 mb-4 md:mb-8">
+          <div className="space-y-4 mb-8">
             {post.date && (
-              <div className="flex items-center gap-2 md:gap-4 text-sm md:text-xl lg:text-2xl text-gray-700 bg-gradient-to-r from-orange-100 to-orange-200 p-3 md:p-5 rounded-xl md:rounded-3xl shadow-sm md:shadow-md border border-orange-300 md:border-2">
-                <Calendar className="w-5 h-5 md:w-8 md:h-8 text-orange-600" />
+              <div className="flex items-center gap-4 text-xl md:text-2xl text-gray-700 bg-gradient-to-r from-orange-100 to-orange-200 p-5 rounded-3xl shadow-md border-2 border-orange-300">
+                <Calendar className="w-8 h-8 text-orange-600" />
                 <span className="font-bold">{post.date} {post.time && `· ${post.time}`}</span>
               </div>
             )}
             {post.location && (
-              <div className="flex items-center gap-2 md:gap-4 text-sm md:text-xl lg:text-2xl text-gray-700 bg-gradient-to-r from-green-100 to-green-200 p-3 md:p-5 rounded-xl md:rounded-3xl shadow-sm md:shadow-md border border-green-300 md:border-2">
-                <MapPin className="w-5 h-5 md:w-8 md:h-8 text-green-600" />
+              <div className="flex items-center gap-4 text-xl md:text-2xl text-gray-700 bg-gradient-to-r from-green-100 to-green-200 p-5 rounded-3xl shadow-md border-2 border-green-300">
+                <MapPin className="w-8 h-8 text-green-600" />
                 <span className="font-bold">{post.location}</span>
               </div>
             )}
             {post.rating && (
-              <div className="flex items-center gap-2 md:gap-4 text-sm md:text-xl lg:text-2xl text-gray-700 bg-gradient-to-r from-yellow-100 to-yellow-200 p-3 md:p-5 rounded-xl md:rounded-3xl shadow-sm md:shadow-md border border-yellow-300 md:border-2">
-                <Star className="w-5 h-5 md:w-8 md:h-8 fill-yellow-400 text-yellow-600" />
+              <div className="flex items-center gap-4 text-xl md:text-2xl text-gray-700 bg-gradient-to-r from-yellow-100 to-yellow-200 p-5 rounded-3xl shadow-md border-2 border-yellow-300">
+                <Star className="w-8 h-8 fill-yellow-400 text-yellow-600" />
                 <span className="font-bold">{post.rating} / 5 estrellas</span>
               </div>
             )}
           </div>
 
-          <div className="flex items-center gap-2 md:gap-3 mb-4 md:mb-6">
-            <span className={`inline-block bg-gradient-to-r ${getCategoryColor()} text-white px-3 py-1 md:px-6 md:py-3 rounded-full text-sm md:text-lg font-bold shadow-md md:shadow-lg`}>
+          <div className="flex items-center gap-3 mb-6">
+            <span className={`inline-block bg-gradient-to-r ${getCategoryColor()} text-white px-6 py-3 rounded-full text-lg font-bold shadow-lg`}>
               {post.category}
             </span>
             {post.verified > 0 && (
-              <div className="flex items-center gap-1 md:gap-2 bg-green-100 px-2 py-1 md:px-5 md:py-3 rounded-full">
-                <CheckCircle className="w-4 h-4 md:w-5 md:h-5 text-green-600" />
-                <span className="text-sm md:text-lg text-green-700 font-bold">{post.verified} ✓</span>
+              <div className="flex items-center gap-2 bg-green-100 px-5 py-3 rounded-full">
+                <CheckCircle className="w-5 h-5 text-green-600" />
+                <span className="text-lg text-green-700 font-bold">{post.verified} ✓</span>
               </div>
             )}
           </div>
 
           {/* Botones de interacción */}
-          <div className="flex gap-2 md:gap-4 lg:gap-6 pt-4 md:pt-8 border-t-2 md:border-t-4 border-orange-100">
+          <div className="flex gap-4 md:gap-6 pt-8 border-t-4 border-orange-100">
             <button 
               onClick={() => handleLike(post.id)}
-              className={`flex-1 flex items-center justify-center gap-2 md:gap-3 py-3 md:py-6 lg:py-7 rounded-xl md:rounded-3xl text-base md:text-2xl lg:text-3xl font-bold transition-all shadow-md md:shadow-lg ${
+              className={`flex-1 flex items-center justify-center gap-3 py-6 md:py-7 rounded-3xl text-2xl md:text-3xl font-bold transition-all shadow-lg ${
                 isLiked 
-                  ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-lg md:shadow-2xl scale-105' 
-                  : 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 hover:from-red-400 hover:to-pink-400 hover:text-white hover:scale-105 border border-gray-300 md:border-3'
+                  ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-2xl scale-105' 
+                  : 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 hover:from-red-400 hover:to-pink-400 hover:text-white hover:scale-105 border-3 border-gray-300'
               }`}
             >
-              <Heart className={`w-5 h-5 md:w-9 md:h-9 lg:w-10 lg:h-10 ${isLiked ? 'fill-white' : ''}`} />
+              <Heart className={`w-9 h-9 md:w-10 md:h-10 ${isLiked ? 'fill-white' : ''}`} />
               <span>{post.likes}</span>
             </button>
             <button 
@@ -428,26 +428,26 @@ function App() {
       )}
 
       {/* Buscador y filtros - CON COLOR */}
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl md:rounded-3xl shadow-lg md:shadow-xl p-4 md:p-8 mb-4 md:mb-8 border-2 md:border-4 border-blue-200">
-        <div className="relative mb-4 md:mb-6">
-          <Search className="absolute left-3 md:left-6 top-1/2 transform -translate-y-1/2 text-blue-500 w-5 h-5 md:w-8 md:h-8" />
+      <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-3xl shadow-xl p-4 md:p-8 mb-8 border-4 border-blue-200 mx-4 md:mx-2">
+        <div className="relative mb-6">
+          <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 text-blue-500 w-8 h-8" />
           <input
             type="text"
             placeholder="🔍 Buscar eventos, lugares..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 md:pl-20 pr-3 md:pr-6 py-3 md:py-7 text-base md:text-2xl border-2 md:border-4 border-blue-300 rounded-xl md:rounded-3xl focus:border-blue-500 focus:outline-none bg-white shadow-inner"
+            className="w-full pl-20 pr-6 py-7 text-2xl border-4 border-blue-300 rounded-3xl focus:border-blue-500 focus:outline-none bg-white shadow-inner"
           />
         </div>
         
-        <div className="flex gap-2 md:gap-3 overflow-x-auto pb-2 md:pb-3 scrollbar-hide">
+        <div className="flex gap-3 overflow-x-auto pb-3 scrollbar-hide">
           {categories.map(cat => (
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-4 py-2 md:px-8 md:py-5 rounded-xl md:rounded-2xl text-sm md:text-xl lg:text-2xl font-bold whitespace-nowrap transition-all shadow-md md:shadow-lg ${
+              className={`px-8 py-5 rounded-2xl text-xl md:text-2xl font-bold whitespace-nowrap transition-all shadow-lg ${
                 selectedCategory === cat
-                  ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white scale-105 md:scale-110 shadow-lg md:shadow-xl'
+                  ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white scale-110 shadow-xl'
                   : 'bg-white text-gray-700 hover:bg-gradient-to-r hover:from-blue-100 hover:to-indigo-100 hover:text-blue-600 border-3 border-blue-200'
               }`}
             >
@@ -578,46 +578,46 @@ function App() {
   };
 
   const AuthModal = () => (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-2 md:p-4 z-50">
-      <div className="bg-gradient-to-br from-white to-orange-50 rounded-2xl md:rounded-3xl shadow-xl md:shadow-2xl max-w-lg w-full p-4 md:p-10 max-h-[90vh] overflow-y-auto border-2 md:border-4 border-orange-200">
-        <div className="flex justify-between items-center mb-4 md:mb-8">
-          <h2 className="text-2xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-600">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+      <div className="bg-gradient-to-br from-white to-orange-50 rounded-3xl shadow-2xl max-w-lg w-full p-10 max-h-[90vh] overflow-y-auto border-4 border-orange-200">
+        <div className="flex justify-between items-center mb-8">
+          <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-600">
             {isLogin ? '👋 Bienvenido' : '🎉 Únete'}
           </h2>
           <button onClick={() => setShowAuth(false)} className="text-gray-500 hover:text-gray-700">
-            <X className="w-6 h-6 md:w-10 md:h-10" />
+            <X className="w-10 h-10" />
           </button>
         </div>
 
-        <div className="space-y-3 md:space-y-6">
+        <div className="space-y-6">
           {!isLogin && (
             <>
               <div>
-                <label className="block text-base md:text-2xl font-bold mb-2 md:mb-3 text-gray-700">Nombre completo</label>
+                <label className="block text-2xl font-bold mb-3 text-gray-700">Nombre completo</label>
                 <input
                   type="text"
                   value={authForm.name}
                   onChange={(e) => setAuthForm({...authForm, name: e.target.value})}
                   placeholder="Tu nombre"
-                  className="w-full p-3 md:p-5 text-base md:text-2xl border-2 md:border-3 border-orange-200 rounded-xl md:rounded-2xl focus:border-orange-400 focus:outline-none bg-white shadow-inner"
+                  className="w-full p-5 text-2xl border-3 border-orange-200 rounded-2xl focus:border-orange-400 focus:outline-none bg-white shadow-inner"
                 />
               </div>
               <div>
-                <label className="block text-base md:text-2xl font-bold mb-2 md:mb-3 text-gray-700">Edad (opcional)</label>
+                <label className="block text-2xl font-bold mb-3 text-gray-700">Edad (opcional)</label>
                 <input
                   type="number"
                   value={authForm.age}
                   onChange={(e) => setAuthForm({...authForm, age: e.target.value})}
                   placeholder="Tu edad"
-                  className="w-full p-3 md:p-5 text-base md:text-2xl border-2 md:border-3 border-orange-200 rounded-xl md:rounded-2xl focus:border-orange-400 focus:outline-none bg-white shadow-inner"
+                  className="w-full p-5 text-2xl border-3 border-orange-200 rounded-2xl focus:border-orange-400 focus:outline-none bg-white shadow-inner"
                 />
               </div>
               <div>
-                <label className="block text-base md:text-2xl font-bold mb-2 md:mb-3 text-gray-700">Ciudad</label>
+                <label className="block text-2xl font-bold mb-3 text-gray-700">Ciudad</label>
                 <select
                   value={authForm.city}
                   onChange={(e) => setAuthForm({...authForm, city: e.target.value})}
-                  className="w-full p-3 md:p-5 text-base md:text-2xl border-2 md:border-3 border-orange-200 rounded-xl md:rounded-2xl focus:border-orange-400 focus:outline-none bg-white shadow-inner"
+                  className="w-full p-5 text-2xl border-3 border-orange-200 rounded-2xl focus:border-orange-400 focus:outline-none bg-white shadow-inner"
                 >
                   <option>Madrid</option>
                   <option>Barcelona</option>
@@ -792,20 +792,20 @@ function App() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-100 via-red-100 to-pink-100">
       {/* Header */}
-      <header className="bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 shadow-xl md:shadow-2xl sticky top-0 z-40">
-        <div className="max-w-6xl mx-auto px-3 md:px-6 py-3 md:py-6">
+      <header className="bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 shadow-2xl sticky top-0 z-40">
+        <div className="w-full px-2 md:px-6 py-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 md:gap-4">
-              <div className="text-3xl md:text-5xl animate-pulse">🌟</div>
+            <div className="flex items-center gap-4">
+              <div className="text-5xl animate-pulse">🌟</div>
               <div>
-                <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold text-white drop-shadow-lg">
+                <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg">
                   Hoy Vivo
                 </h1>
-                <p className="text-sm md:text-lg lg:text-xl text-white/90 font-semibold">Nunca dejes de vivir</p>
+                <p className="text-lg md:text-xl text-white/90 font-semibold">Nunca dejes de vivir</p>
               </div>
             </div>
             
-            <div className="flex items-center gap-2 md:gap-4">
+            <div className="flex items-center gap-4">
               {user && (
                 <div className="hidden md:flex items-center gap-3 bg-white/20 backdrop-blur-sm px-5 py-3 rounded-full">
                   <Star className="w-7 h-7 text-yellow-300 fill-yellow-300" />
@@ -813,18 +813,17 @@ function App() {
                 </div>
               )}
               {user ? (
-                <button className="p-3 md:p-4 bg-white/20 backdrop-blur-sm hover:bg-white/30 rounded-full relative transition-all">
-                  <Bell className="w-6 h-6 md:w-8 md:h-8 text-white" />
-                  <span className="absolute top-2 right-2 md:top-3 md:right-3 w-3 h-3 md:w-4 md:h-4 bg-yellow-400 rounded-full"></span>
+                <button className="p-4 bg-white/20 backdrop-blur-sm hover:bg-white/30 rounded-full relative transition-all">
+                  <Bell className="w-8 h-8 text-white" />
+                  <span className="absolute top-3 right-3 w-4 h-4 bg-yellow-400 rounded-full"></span>
                 </button>
               ) : (
                 <button
                   onClick={() => setShowAuth(true)}
-                  className="flex items-center gap-2 md:gap-3 bg-white text-orange-600 px-4 py-2 md:px-8 md:py-4 rounded-full text-base md:text-xl font-bold hover:bg-orange-50 transition-all shadow-lg md:shadow-xl"
+                  className="flex items-center gap-3 bg-white text-orange-600 px-8 py-4 rounded-full text-xl font-bold hover:bg-orange-50 transition-all shadow-xl"
                 >
-                  <LogIn className="w-5 h-5 md:w-7 md:h-7" />
-                  <span className="hidden sm:inline">Entrar</span>
-                  <span className="sm:hidden">+</span>
+                  <LogIn className="w-7 h-7" />
+                  Entrar
                 </button>
               )}
             </div>
@@ -833,7 +832,7 @@ function App() {
       </header>
 
       {/* Main content */}
-      <main className="max-w-6xl mx-auto px-4 md:px-6 py-8 pb-32 md:pb-8">
+      <main className="w-full px-2 md:px-6 py-8 pb-32 md:pb-8">
         <div className="grid md:grid-cols-3 gap-8">
           {/* Sidebar - Desktop only - CON COLOR */}
           <div className="hidden md:block">
