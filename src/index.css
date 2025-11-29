@@ -15,3 +15,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+/* Escala automática para móviles */
+@media (max-width: 768px) {
+  html {
+    zoom: 0.55;
+  }
+}
