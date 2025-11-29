@@ -17,15 +17,17 @@ code {
 }
 /* Escala automática para móviles */
 /* Ajuste automático para móviles pequeños */
+/* Fuentes grandes para móviles SIN escalar el layout */
 @media (max-width: 640px) {
-  body {
-    transform: scale(0.75);
-    transform-origin: 0 0;
-    width: 133%;
-    min-height: 133vh;
+  html {
+    font-size: 24px; /* Base más grande */
   }
   
-  html {
-    overflow-x: hidden;
+  body {
+    zoom: 0.5; /* Encoge TODO al 50% */
+  }
+  
+  * {
+    font-size: inherit !important; /* Las fuentes NO se encogen */
   }
 }
