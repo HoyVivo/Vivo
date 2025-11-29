@@ -320,7 +320,7 @@ function App() {
     const isLiked = user && post.likedBy?.includes(user.id);
 
     return (
-      <div className="bg-white rounded-3xl shadow-2xl mb-8 overflow-hidden transform transition-all hover:scale-[1.02] border-4 border-orange-200 mx-4 md:mx-2">
+      <div className="bg-white rounded-3xl shadow-2xl mb-8 overflow-hidden transform transition-all hover:scale-[1.02] border-4 border-orange-200">
         {/* Header con imagen grande */}
         <div className={`bg-gradient-to-br ${getCategoryColor()} p-8 md:p-10 text-white relative overflow-hidden`}>
           <div className="absolute top-0 right-0 text-[12rem] opacity-30 animate-pulse">{post.image}</div>
@@ -428,7 +428,7 @@ function App() {
       )}
 
       {/* Buscador y filtros - CON COLOR */}
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-3xl shadow-xl p-4 md:p-8 mb-8 border-4 border-blue-200 mx-4 md:mx-2">
+      <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-3xl shadow-xl p-6 md:p-8 mb-8 border-4 border-blue-200">
         <div className="relative mb-6">
           <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 text-blue-500 w-8 h-8" />
           <input
@@ -793,13 +793,13 @@ function App() {
     <div className="min-h-screen bg-gradient-to-br from-orange-100 via-red-100 to-pink-100">
       {/* Header */}
       <header className="bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 shadow-2xl sticky top-0 z-40">
-        <div className="w-full px-2 md:px-6 py-6">
+        <div className="max-w-6xl mx-auto px-4 md:px-6 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="text-5xl animate-pulse">🌟</div>
               <div>
                 <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg">
-                  Hoy Vivo
+                  VIVO
                 </h1>
                 <p className="text-lg md:text-xl text-white/90 font-semibold">Nunca dejes de vivir</p>
               </div>
@@ -832,7 +832,7 @@ function App() {
       </header>
 
       {/* Main content */}
-      <main className="w-full px-2 md:px-6 py-8 pb-32 md:pb-8">
+      <main className="max-w-6xl mx-auto px-4 md:px-6 py-8 pb-32 md:pb-8">
         <div className="grid md:grid-cols-3 gap-8">
           {/* Sidebar - Desktop only - CON COLOR */}
           <div className="hidden md:block">
