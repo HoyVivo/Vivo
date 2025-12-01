@@ -79,7 +79,15 @@ code {
   .text-4xl {
     font-size: 3rem !important;
   }
-  
+  /* ============================================
+   FUENTES GRANDES MÓVIL - Compensa viewport 1280
+   ============================================ */
+@media (max-width: 767px) {
+  /* Aumentar tamaño base usando calc */
+  html {
+    font-size: calc(100vw / 12) !important;
+  }
+}
   .text-5xl {
     font-size: 3.5rem !important;
   }
