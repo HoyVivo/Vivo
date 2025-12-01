@@ -102,7 +102,9 @@ function App() {
     date: '',
     time: '',
     location: '',
-    category: 'Cultural'
+    category: 'Cultural',
+    imageFile: null,
+    imagePreview: null
   });
 
   useEffect(() => {
@@ -330,40 +332,40 @@ function App() {
               <div className="flex items-center gap-2 md:gap-4">
                 <div className="text-5xl md:text-6xl drop-shadow-lg">{post.avatar}</div>
                 <div>
-                  <p className="text-3xl md:text-3xl font-bold drop-shadow">{post.author}</p>
-                  <p className="text-xl md:text-xl opacity-90">{post.authorCity}</p>
+                  <p className="text-3xl md:text-2xl lg:text-3xl font-bold drop-shadow">{post.author}</p>
+                  <p className="text-xl md:text-lg lg:text-xl opacity-90">{post.authorCity}</p>
                 </div>
               </div>
               <div className="hidden sm:flex items-center gap-2 bg-white/30 backdrop-blur-sm px-3 md:px-5 py-2 md:py-3 rounded-full shadow-lg">
                 {getTypeIcon()}
-                <span className="text-sm md:text-lg font-bold">{getTypeLabel()}</span>
+                <span className="text-sm md:text-base lg:text-lg font-bold">{getTypeLabel()}</span>
               </div>
             </div>
-            <h3 className="text-4xl md:text-4xl font-bold mb-2 md:mb-3 drop-shadow-lg leading-tight">{post.title}</h3>
+            <h3 className="text-4xl md:text-3xl lg:text-4xl font-bold mb-2 md:mb-3 drop-shadow-lg leading-tight">{post.title}</h3>
           </div>
         </div>
 
         {/* Contenido */}
         <div className="p-4 md:p-6 lg:p-8">
-          <p className="text-3xl md:text-3xl text-gray-700 mb-6 md:mb-8 leading-relaxed font-medium">{post.description}</p>
+          <p className="text-3xl md:text-2xl lg:text-3xl text-gray-700 mb-6 md:mb-8 leading-relaxed font-medium">{post.description}</p>
 
           {/* Detalles */}
-          <div className="space-y-3 md:space-y-4 mb-6 md:mb-8">
+          <div className="space-y-4 mb-8">
             {post.date && (
-              <div className="flex items-center gap-3 md:gap-4 text-2xl md:text-2xl text-gray-700 bg-gradient-to-r from-orange-100 to-orange-200 p-4 md:p-5 rounded-2xl md:rounded-3xl shadow-md border-2 border-orange-300">
-                <Calendar className="w-7 h-7 md:w-8 md:h-8 text-orange-600 flex-shrink-0" />
+              <div className="flex items-center gap-4 text-xl md:text-2xl text-gray-700 bg-gradient-to-r from-orange-100 to-orange-200 p-5 rounded-3xl shadow-md border-2 border-orange-300">
+                <Calendar className="w-8 h-8 text-orange-600" />
                 <span className="font-bold">{post.date} {post.time && `· ${post.time}`}</span>
               </div>
             )}
             {post.location && (
-              <div className="flex items-center gap-3 md:gap-4 text-2xl md:text-2xl text-gray-700 bg-gradient-to-r from-green-100 to-green-200 p-4 md:p-5 rounded-2xl md:rounded-3xl shadow-md border-2 border-green-300">
-                <MapPin className="w-7 h-7 md:w-8 md:h-8 text-green-600 flex-shrink-0" />
+              <div className="flex items-center gap-4 text-xl md:text-2xl text-gray-700 bg-gradient-to-r from-green-100 to-green-200 p-5 rounded-3xl shadow-md border-2 border-green-300">
+                <MapPin className="w-8 h-8 text-green-600" />
                 <span className="font-bold">{post.location}</span>
               </div>
             )}
             {post.rating && (
-              <div className="flex items-center gap-3 md:gap-4 text-2xl md:text-2xl text-gray-700 bg-gradient-to-r from-yellow-100 to-yellow-200 p-4 md:p-5 rounded-2xl md:rounded-3xl shadow-md border-2 border-yellow-300">
-                <Star className="w-7 h-7 md:w-8 md:h-8 fill-yellow-400 text-yellow-600 flex-shrink-0" />
+              <div className="flex items-center gap-4 text-xl md:text-2xl text-gray-700 bg-gradient-to-r from-yellow-100 to-yellow-200 p-5 rounded-3xl shadow-md border-2 border-yellow-300">
+                <Star className="w-8 h-8 fill-yellow-400 text-yellow-600" />
                 <span className="font-bold">{post.rating} / 5 estrellas</span>
               </div>
             )}
@@ -382,25 +384,24 @@ function App() {
           </div>
 
           {/* Botones de interacción */}
-          <div className="flex gap-3 md:gap-6 pt-4 md:pt-8 border-t-2 md:border-t-4 border-orange-100">
+          <div className="flex gap-4 md:gap-6 pt-8 border-t-4 border-orange-100">
             <button 
               onClick={() => handleLike(post.id)}
-              className={`flex-1 flex items-center justify-center gap-2 md:gap-3 py-4 md:py-7 rounded-2xl md:rounded-3xl text-3xl md:text-3xl font-bold transition-all shadow-md md:shadow-lg ${
+              className={`flex-1 flex items-center justify-center gap-3 py-6 md:py-7 rounded-3xl text-2xl md:text-3xl font-bold transition-all shadow-lg ${
                 isLiked 
-                  ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-lg md:shadow-2xl scale-105' 
-                  : 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 hover:from-red-400 hover:to-pink-400 hover:text-white hover:scale-105 border-2 md:border-3 border-gray-300'
+                  ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-2xl scale-105' 
+                  : 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 hover:from-red-400 hover:to-pink-400 hover:text-white hover:scale-105 border-3 border-gray-300'
               }`}
             >
-              <Heart className={`w-8 h-8 md:w-10 md:h-10 ${isLiked ? 'fill-white' : ''}`} />
+              <Heart className={`w-9 h-9 md:w-10 md:h-10 ${isLiked ? 'fill-white' : ''}`} />
               <span>{post.likes}</span>
             </button>
             <button 
               onClick={() => handleVerify(post.id)}
-              className="flex-1 flex items-center justify-center gap-2 md:gap-3 py-4 md:py-7 rounded-2xl md:rounded-3xl text-3xl md:text-3xl font-bold bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:from-green-600 hover:to-emerald-600 transition-all shadow-md md:shadow-lg hover:scale-105 hover:shadow-lg md:hover:shadow-2xl"
+              className="flex-1 flex items-center justify-center gap-3 py-6 md:py-7 rounded-3xl text-2xl md:text-3xl font-bold bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:from-green-600 hover:to-emerald-600 transition-all shadow-lg hover:scale-105 hover:shadow-2xl"
             >
-              <CheckCircle className="w-8 h-8 md:w-10 md:h-10" />
-              <span className="hidden sm:inline">¡Yo fui!</span>
-              <span className="sm:hidden">✓</span>
+              <CheckCircle className="w-9 h-9 md:w-10 md:h-10" />
+              <span>¡Yo fui!</span>
             </button>
           </div>
         </div>
@@ -411,16 +412,16 @@ function App() {
   const FeedView = () => (
     <div className="px-4 md:px-2">
       {!user && (
-        <div className="bg-gradient-to-br from-orange-400 via-red-400 to-pink-400 rounded-2xl md:rounded-3xl shadow-xl md:shadow-2xl p-6 md:p-10 mb-6 md:mb-8 text-white text-center relative overflow-hidden">
-          <div className="absolute top-0 right-0 text-7xl md:text-9xl opacity-30 animate-bounce">🌟</div>
-          <div className="absolute bottom-0 left-0 text-5xl md:text-7xl opacity-20">✨</div>
+        <div className="bg-gradient-to-br from-orange-400 via-red-400 to-pink-400 rounded-3xl shadow-2xl p-8 md:p-10 mb-8 text-white text-center relative overflow-hidden">
+          <div className="absolute top-0 right-0 text-9xl opacity-30 animate-bounce">🌟</div>
+          <div className="absolute bottom-0 left-0 text-7xl opacity-20">✨</div>
           <div className="relative z-10">
-            <Sparkles className="w-20 h-20 md:w-24 md:h-24 mx-auto mb-4 md:mb-6 animate-pulse drop-shadow-lg" />
-            <h2 className="text-5xl md:text-5xl font-bold mb-4 md:mb-5 drop-shadow-lg">¡Bienvenido/a a Hoy Vivo!</h2>
-            <p className="text-3xl md:text-3xl mb-6 md:mb-8 leading-relaxed font-semibold">La red social donde los jubilados nunca se aburren</p>
+            <Sparkles className="w-24 h-24 mx-auto mb-6 animate-pulse drop-shadow-lg" />
+            <h2 className="text-4xl md:text-5xl font-bold mb-5 drop-shadow-lg">¡Bienvenido/a a VIVO!</h2>
+            <p className="text-2xl md:text-3xl mb-8 leading-relaxed font-semibold">La red social donde los jubilados nunca se aburren</p>
             <button
               onClick={() => setShowAuth(true)}
-              className="bg-white text-orange-600 px-8 py-4 md:px-12 md:py-6 rounded-full text-3xl md:text-3xl font-bold hover:bg-orange-50 transition-all shadow-2xl transform hover:scale-105"
+              className="bg-white text-orange-600 px-12 py-6 rounded-full text-2xl md:text-3xl font-bold hover:bg-orange-50 transition-all shadow-2xl transform hover:scale-105"
             >
               🎉 Unirse Gratis
             </button>
@@ -429,27 +430,27 @@ function App() {
       )}
 
       {/* Buscador y filtros - CON COLOR */}
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl md:rounded-3xl shadow-lg md:shadow-xl p-3 md:p-8 mb-4 md:mb-8 border-2 md:border-4 border-blue-200">
-        <div className="relative mb-4 md:mb-6">
-          <Search className="absolute left-3 md:left-6 top-1/2 transform -translate-y-1/2 text-blue-500 w-6 h-6 md:w-8 md:h-8" />
+      <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-3xl shadow-xl p-6 md:p-8 mb-8 border-4 border-blue-200">
+        <div className="relative mb-6">
+          <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 text-blue-500 w-8 h-8" />
           <input
             type="text"
-            placeholder="🔍 Buscar..."
+            placeholder="🔍 Buscar eventos, lugares..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-12 md:pl-20 pr-3 md:pr-6 py-4 md:py-7 text-2xl md:text-2xl border-2 md:border-4 border-blue-300 rounded-2xl md:rounded-3xl focus:border-blue-500 focus:outline-none bg-white shadow-inner"
+            className="w-full pl-20 pr-6 py-7 text-2xl border-4 border-blue-300 rounded-3xl focus:border-blue-500 focus:outline-none bg-white shadow-inner"
           />
         </div>
         
-        <div className="flex gap-2 md:gap-3 overflow-x-auto pb-2 md:pb-3 scrollbar-hide">
+        <div className="flex gap-3 overflow-x-auto pb-3 scrollbar-hide">
           {categories.map(cat => (
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-5 md:px-8 py-3 md:py-5 rounded-xl md:rounded-2xl text-xl md:text-2xl font-bold whitespace-nowrap transition-all shadow-md md:shadow-lg ${
+              className={`px-8 py-5 rounded-2xl text-xl md:text-2xl font-bold whitespace-nowrap transition-all shadow-lg ${
                 selectedCategory === cat
-                  ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white scale-105 md:scale-110 shadow-lg md:shadow-xl'
-                  : 'bg-white text-gray-700 hover:bg-gradient-to-r hover:from-blue-100 hover:to-indigo-100 hover:text-blue-600 border-2 md:border-3 border-blue-200'
+                  ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white scale-110 shadow-xl'
+                  : 'bg-white text-gray-700 hover:bg-gradient-to-r hover:from-blue-100 hover:to-indigo-100 hover:text-blue-600 border-3 border-blue-200'
               }`}
             >
               {cat}
@@ -771,6 +772,40 @@ function App() {
             </select>
           </div>
 
+          <div>
+            <label className="block text-2xl font-bold mb-3 text-gray-700">📷 Foto o Vídeo</label>
+            <input
+              type="file"
+              accept="image/*,video/*"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  const reader = new FileReader();
+                  reader.onloadend = () => {
+                    setNewPost({...newPost, imageFile: file, imagePreview: reader.result});
+                  };
+                  reader.readAsDataURL(file);
+                }
+              }}
+              className="w-full p-4 text-xl border-3 border-blue-200 rounded-2xl focus:border-blue-400 focus:outline-none bg-white shadow-inner file:mr-4 file:py-3 file:px-6 file:rounded-full file:border-0 file:text-lg file:font-semibold file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200"
+            />
+            {newPost.imagePreview && (
+              <div className="mt-4 relative">
+                <img 
+                  src={newPost.imagePreview} 
+                  alt="Preview" 
+                  className="w-full h-64 object-cover rounded-2xl border-4 border-blue-200"
+                />
+                <button
+                  onClick={() => setNewPost({...newPost, imageFile: null, imagePreview: null})}
+                  className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full hover:bg-red-600"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+            )}
+          </div>
+
           <div className="flex gap-4 pt-4">
             <button
               onClick={() => setShowNewPost(false)}
@@ -794,19 +829,19 @@ function App() {
     <div className="min-h-screen bg-gradient-to-br from-orange-100 via-red-100 to-pink-100">
       {/* Header */}
       <header className="bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 shadow-2xl sticky top-0 z-40">
-        <div className="max-w-6xl mx-auto px-3 py-3 md:px-6 md:py-6">
+        <div className="w-full md:max-w-6xl md:mx-auto px-2 md:px-6 py-3 md:py-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 md:gap-4">
-              <div className="text-4xl md:text-5xl animate-pulse">🌟</div>
+            <div className="flex items-center gap-4">
+              <div className="text-5xl md:text-5xl animate-pulse">🌟</div>
               <div>
-                <h1 className="text-5xl md:text-5xl font-bold text-white drop-shadow-lg">
+                <h1 className="text-5xl md:text-4xl lg:text-5xl font-bold text-white drop-shadow-lg">
                   Hoy Vivo
                 </h1>
-                <p className="text-xl md:text-xl text-white/90 font-semibold">Nunca dejes de vivir</p>
+                <p className="text-xl md:text-lg lg:text-xl text-white/90 font-semibold">Nunca dejes de vivir</p>
               </div>
             </div>
             
-            <div className="flex items-center gap-2 md:gap-4">
+            <div className="flex items-center gap-4">
               {user && (
                 <div className="hidden md:flex items-center gap-3 bg-white/20 backdrop-blur-sm px-5 py-3 rounded-full">
                   <Star className="w-7 h-7 text-yellow-300 fill-yellow-300" />
@@ -814,18 +849,17 @@ function App() {
                 </div>
               )}
               {user ? (
-                <button className="p-3 md:p-4 bg-white/20 backdrop-blur-sm hover:bg-white/30 rounded-full relative transition-all">
-                  <Bell className="w-7 h-7 md:w-8 md:h-8 text-white" />
-                  <span className="absolute top-2 right-2 md:top-3 md:right-3 w-3 h-3 md:w-4 md:h-4 bg-yellow-400 rounded-full"></span>
+                <button className="p-4 bg-white/20 backdrop-blur-sm hover:bg-white/30 rounded-full relative transition-all">
+                  <Bell className="w-8 h-8 text-white" />
+                  <span className="absolute top-3 right-3 w-4 h-4 bg-yellow-400 rounded-full"></span>
                 </button>
               ) : (
                 <button
                   onClick={() => setShowAuth(true)}
-                  className="flex items-center gap-2 md:gap-3 bg-white text-orange-600 px-4 py-2 md:px-8 md:py-4 rounded-full text-lg md:text-xl font-bold hover:bg-orange-50 transition-all shadow-xl"
+                  className="flex items-center gap-3 bg-white text-orange-600 px-8 py-4 rounded-full text-xl font-bold hover:bg-orange-50 transition-all shadow-xl"
                 >
-                  <LogIn className="w-6 h-6 md:w-7 md:h-7" />
-                  <span className="hidden md:inline">Entrar</span>
-                  <span className="md:hidden">+</span>
+                  <LogIn className="w-7 h-7" />
+                  Entrar
                 </button>
               )}
             </div>
@@ -834,7 +868,7 @@ function App() {
       </header>
 
       {/* Main content */}
-      <main className="max-w-6xl mx-auto px-2 py-4 md:px-6 md:py-8 pb-24 md:pb-8">
+      <main className="w-full md:max-w-6xl md:mx-auto px-2 md:px-4 lg:px-6 py-4 md:py-8 pb-24 md:pb-8">
         <div className="grid md:grid-cols-3 gap-8">
           {/* Sidebar - Desktop only - CON COLOR */}
           <div className="hidden md:block">
