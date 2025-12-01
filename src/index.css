@@ -24,3 +24,47 @@ code {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+/* ============================================
+   FUENTES MÁS GRANDES SOLO PARA MÓVILES
+   SIN cambiar layout ni tablet ni PC
+   ============================================ */
+@media (max-width: 767px) {
+  /* Aumentar tamaño base de fuentes */
+  html {
+    font-size: 20px;
+  }
+  
+  /* Forzar fuentes grandes en elementos principales */
+  h1 {
+    font-size: 2.5rem !important;
+  }
+  
+  h2 {
+    font-size: 2rem !important;
+  }
+  
+  h3 {
+    font-size: 1.75rem !important;
+  }
+  
+  p, span, div, button, input, textarea, select {
+    font-size: 1.25rem !important;
+  }
+  
+  /* Asegurar que los textos pequeños también crezcan */
+  .text-sm, .text-base {
+    font-size: 1.25rem !important;
+  }
+  
+  .text-lg, .text-xl {
+    font-size: 1.5rem !important;
+  }
+  
+  .text-2xl, .text-3xl {
+    font-size: 1.75rem !important;
+  }
+  
+  .text-4xl, .text-5xl {
+    font-size: 2rem !important;
+  }
+}
