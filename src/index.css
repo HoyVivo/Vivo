@@ -25,46 +25,62 @@ code {
   scrollbar-width: none;
 }
 /* ============================================
-   FUENTES MÁS GRANDES SOLO PARA MÓVILES
-   SIN cambiar layout ni tablet ni PC
+   FUENTES EXTRA GRANDES SOLO PARA MÓVILES
    ============================================ */
 @media (max-width: 767px) {
-  /* Aumentar tamaño base de fuentes */
+  /* Aumentar tamaño base MUCHO más */
   html {
-    font-size: 20px;
+    font-size: 28px !important;
   }
   
-  /* Forzar fuentes grandes en elementos principales */
+  /* Fuentes super grandes */
   h1 {
-    font-size: 2.5rem !important;
+    font-size: 3rem !important;
   }
   
   h2 {
-    font-size: 2rem !important;
+    font-size: 2.5rem !important;
   }
   
   h3 {
-    font-size: 1.75rem !important;
+    font-size: 2rem !important;
   }
   
-  p, span, div, button, input, textarea, select {
-    font-size: 1.25rem !important;
-  }
-  
-  /* Asegurar que los textos pequeños también crezcan */
-  .text-sm, .text-base {
-    font-size: 1.25rem !important;
-  }
-  
-  .text-lg, .text-xl {
+  /* Texto normal GRANDE */
+  p, span, div:not(.absolute):not(.fixed), button, input, textarea, select, label {
     font-size: 1.5rem !important;
   }
   
-  .text-2xl, .text-3xl {
+  /* Sobrescribir TODAS las clases de Tailwind */
+  .text-sm {
+    font-size: 1.5rem !important;
+  }
+  
+  .text-base {
+    font-size: 1.5rem !important;
+  }
+  
+  .text-lg {
     font-size: 1.75rem !important;
   }
   
-  .text-4xl, .text-5xl {
+  .text-xl {
     font-size: 2rem !important;
+  }
+  
+  .text-2xl {
+    font-size: 2.25rem !important;
+  }
+  
+  .text-3xl {
+    font-size: 2.5rem !important;
+  }
+  
+  .text-4xl {
+    font-size: 3rem !important;
+  }
+  
+  .text-5xl {
+    font-size: 3.5rem !important;
   }
 }
