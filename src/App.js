@@ -322,32 +322,32 @@ function App() {
     const isLiked = user && post.likedBy?.includes(user.id);
 
     return (
-      <div className="bg-white rounded-2xl md:rounded-3xl shadow-xl md:shadow-2xl mb-4 md:mb-8 overflow-hidden transform transition-all hover:scale-[1.02] border-2 md:border-4 border-orange-200">
+      <div className="bg-white rounded-3xl shadow-2xl mb-8 overflow-hidden transform transition-all hover:scale-[1.02] border-4 border-orange-200">
         {/* Header con imagen grande */}
-        <div className={`bg-gradient-to-br ${getCategoryColor()} p-4 md:p-8 lg:p-10 text-white relative overflow-hidden`}>
-          <div className="absolute top-0 right-0 text-[8rem] md:text-[12rem] opacity-30 animate-pulse">{post.image}</div>
-          <div className="absolute bottom-0 left-0 text-5xl md:text-7xl opacity-20">✨</div>
+        <div className={`bg-gradient-to-br ${getCategoryColor()} p-8 md:p-10 text-white relative overflow-hidden`}>
+          <div className="absolute top-0 right-0 text-[12rem] opacity-30 animate-pulse">{post.image}</div>
+          <div className="absolute bottom-0 left-0 text-7xl opacity-20">✨</div>
           <div className="relative z-10">
-            <div className="flex items-center justify-between mb-3 md:mb-6">
-              <div className="flex items-center gap-2 md:gap-4">
-                <div className="text-5xl md:text-6xl drop-shadow-lg">{post.avatar}</div>
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-4">
+                <div className="text-6xl drop-shadow-lg">{post.avatar}</div>
                 <div>
-                  <p className="text-3xl md:text-2xl lg:text-3xl font-bold drop-shadow">{post.author}</p>
-                  <p className="text-xl md:text-lg lg:text-xl opacity-90">{post.authorCity}</p>
+                  <p className="text-2xl md:text-3xl font-bold drop-shadow">{post.author}</p>
+                  <p className="text-lg md:text-xl opacity-90">{post.authorCity}</p>
                 </div>
               </div>
-              <div className="hidden sm:flex items-center gap-2 bg-white/30 backdrop-blur-sm px-3 md:px-5 py-2 md:py-3 rounded-full shadow-lg">
+              <div className="flex items-center gap-2 bg-white/30 backdrop-blur-sm px-5 py-3 rounded-full shadow-lg">
                 {getTypeIcon()}
-                <span className="text-sm md:text-base lg:text-lg font-bold">{getTypeLabel()}</span>
+                <span className="text-base md:text-lg font-bold">{getTypeLabel()}</span>
               </div>
             </div>
-            <h3 className="text-4xl md:text-3xl lg:text-4xl font-bold mb-2 md:mb-3 drop-shadow-lg leading-tight">{post.title}</h3>
+            <h3 className="text-3xl md:text-4xl font-bold mb-3 drop-shadow-lg leading-tight">{post.title}</h3>
           </div>
         </div>
 
         {/* Contenido */}
-        <div className="p-4 md:p-6 lg:p-8">
-          <p className="text-3xl md:text-2xl lg:text-3xl text-gray-700 mb-6 md:mb-8 leading-relaxed font-medium">{post.description}</p>
+        <div className="p-6 md:p-8">
+          <p className="text-2xl md:text-3xl text-gray-700 mb-8 leading-relaxed font-medium">{post.description}</p>
 
           {/* Detalles */}
           <div className="space-y-4 mb-8">
@@ -773,7 +773,7 @@ function App() {
           </div>
 
           <div>
-            <label className="block text-2xl font-bold mb-3 text-gray-700">📷 Foto o Vídeo</label>
+            <label className="block text-2xl font-bold mb-3 text-gray-700">📷 Foto o Vídeo (Opcional)</label>
             <input
               type="file"
               accept="image/*,video/*"
@@ -829,15 +829,15 @@ function App() {
     <div className="min-h-screen bg-gradient-to-br from-orange-100 via-red-100 to-pink-100">
       {/* Header */}
       <header className="bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 shadow-2xl sticky top-0 z-40">
-        <div className="w-full md:max-w-6xl md:mx-auto px-2 md:px-6 py-3 md:py-6">
+        <div className="max-w-6xl mx-auto px-4 md:px-6 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="text-5xl md:text-5xl animate-pulse">🌟</div>
+              <div className="text-5xl animate-pulse">🌟</div>
               <div>
-                <h1 className="text-5xl md:text-4xl lg:text-5xl font-bold text-white drop-shadow-lg">
+                <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg">
                   Hoy Vivo
                 </h1>
-                <p className="text-xl md:text-lg lg:text-xl text-white/90 font-semibold">Nunca dejes de vivir</p>
+                <p className="text-lg md:text-xl text-white/90 font-semibold">Nunca dejes de vivir</p>
               </div>
             </div>
             
@@ -868,7 +868,7 @@ function App() {
       </header>
 
       {/* Main content */}
-      <main className="w-full md:max-w-6xl md:mx-auto px-2 md:px-4 lg:px-6 py-4 md:py-8 pb-24 md:pb-8">
+      <main className="max-w-6xl mx-auto px-4 md:px-6 py-8 pb-32 md:pb-8">
         <div className="grid md:grid-cols-3 gap-8">
           {/* Sidebar - Desktop only - CON COLOR */}
           <div className="hidden md:block">
