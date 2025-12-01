@@ -1,26 +1,61 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* ============================================
+   AJUSTE AUTOMÁTICO TABLET Y MÓVIL
+   ============================================ 
+   
+   IMPORTANTE: Añadir esto AL FINAL de src/index.css
+*/
 
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* ============================================
+   TABLETS (768px - 1024px)
+   Escala automática para que quepa perfecto
+   ============================================ */
+@media (min-width: 768px) and (max-width: 1024px) {
+  body {
+    transform: scale(0.8);
+    transform-origin: top left;
+    width: 125%;
+    min-height: 125vh;
+  }
+  
+  html {
+    overflow-x: hidden;
+  }
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+/* ============================================
+   MÓVILES (< 768px)
+   Forzar que TODO quepa sin scroll horizontal
+   Mantener fuentes grandes
+   ============================================ */
+@media (max-width: 767px) {
+  /* Prevenir scroll horizontal */
+  html {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+  
+  body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+  
+  #root {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+  
+  /* Asegurar que ningún elemento se salga */
+  * {
+    max-width: 100vw;
+    box-sizing: border-box;
+  }
+  
+  /* Contenedores específicos */
+  main {
+    overflow-x: hidden !important;
+  }
+  
+  header {
+    overflow-x: hidden !important;
+  }
 }
