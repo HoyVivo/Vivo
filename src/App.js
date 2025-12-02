@@ -77,7 +77,7 @@ function App() {
   const [showNewPost, setShowNewPost] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
-  const [isRealMobile, setIsRealMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   
   const [user, setUser] = useState(null);
   const [userPoints, setUserPoints] = useState(0);
@@ -108,7 +108,22 @@ function App() {
     imagePreview: null
   });
 
+  // Detectar móvil y cambiar viewport
   useEffect(() => {
+    const screenWidth = window.screen.width;
+    const isMobileDevice = screenWidth < 600;
+    setIsMobile(isMobileDevice);
+    
+    // Cambiar viewport SOLO en móviles
+    if (isMobileDevice) {
+      const viewport = document.querySelector('meta[name="viewport"]');
+      if (viewport) {
+        viewport.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=5');
+      }
+    }
+  }, []);
+
+  useEffect(() {
     const savedUser = localStorage.getItem('vivo_user');
     if (savedUser) {
       const userData = JSON.parse(savedUser);
@@ -117,13 +132,6 @@ function App() {
       setUserPoints(userData.points || 0);
       setUserStats(userData.stats || { posts: 0, eventsAttended: 0, friends: 0 });
     }
-  }, []);
-
-  useEffect(() => {
-    // Detectar ancho REAL de pantalla física, no viewport virtual
-    // 600px = solo móviles pequeños, tablets quedan como desktop
-    const realWidth = window.screen.width;
-    setIsRealMobile(realWidth < 600);
   }, []);
 
   useEffect(() => {
@@ -340,39 +348,39 @@ function App() {
               <div className="flex items-center gap-4">
                 <div className="text-6xl drop-shadow-lg">{post.avatar}</div>
                 <div>
-                  <p className={`${isRealMobile ? 'text-4xl' : 'text-2xl md:text-3xl'} font-bold drop-shadow`}>{post.author}</p>
-                  <p className={`${isRealMobile ? 'text-2xl' : 'text-lg md:text-xl'} opacity-90`}>{post.authorCity}</p>
+                  <p className="text-4xl md:text-3xl font-bold drop-shadow">{post.author}</p>
+                  <p className="text-2xl md:text-xl opacity-90">{post.authorCity}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2 bg-white/30 backdrop-blur-sm px-5 py-3 rounded-full shadow-lg">
                 {getTypeIcon()}
-                <span className={`${isRealMobile ? 'text-xl' : 'text-base md:text-lg'} font-bold`}>{getTypeLabel()}</span>
+                <span className="text-xl md:text-lg font-bold">{getTypeLabel()}</span>
               </div>
             </div>
-            <h3 className={`${isRealMobile ? 'text-5xl' : 'text-3xl md:text-4xl'} font-bold mb-3 drop-shadow-lg leading-tight`}>{post.title}</h3>
+            <h3 className="text-5xl md:text-4xl font-bold mb-3 drop-shadow-lg leading-tight">{post.title}</h3>
           </div>
         </div>
 
         {/* Contenido */}
         <div className="p-6 md:p-8">
-          <p className={`${isRealMobile ? 'text-4xl' : 'text-2xl md:text-3xl'} text-gray-700 mb-8 leading-relaxed font-medium`}>{post.description}</p>
+          <p className="text-4xl md:text-3xl text-gray-700 mb-8 leading-relaxed font-medium">{post.description}</p>
 
           {/* Detalles */}
           <div className="space-y-4 mb-8">
             {post.date && (
-              <div className={`flex items-center gap-4 ${isRealMobile ? 'text-3xl' : 'text-xl md:text-2xl'} text-gray-700 bg-gradient-to-r from-orange-100 to-orange-200 p-5 rounded-3xl shadow-md border-2 border-orange-300`}>
+              <div className="flex items-center gap-4 text-3xl md:text-2xl text-gray-700 bg-gradient-to-r from-orange-100 to-orange-200 p-5 rounded-3xl shadow-md border-2 border-orange-300">
                 <Calendar className="w-8 h-8 text-orange-600" />
                 <span className="font-bold">{post.date} {post.time && `· ${post.time}`}</span>
               </div>
             )}
             {post.location && (
-              <div className={`flex items-center gap-4 ${isRealMobile ? 'text-3xl' : 'text-xl md:text-2xl'} text-gray-700 bg-gradient-to-r from-green-100 to-green-200 p-5 rounded-3xl shadow-md border-2 border-green-300`}>
+              <div className="flex items-center gap-4 text-3xl md:text-2xl text-gray-700 bg-gradient-to-r from-green-100 to-green-200 p-5 rounded-3xl shadow-md border-2 border-green-300">
                 <MapPin className="w-8 h-8 text-green-600" />
                 <span className="font-bold">{post.location}</span>
               </div>
             )}
             {post.rating && (
-              <div className={`flex items-center gap-4 ${isRealMobile ? 'text-3xl' : 'text-xl md:text-2xl'} text-gray-700 bg-gradient-to-r from-yellow-100 to-yellow-200 p-5 rounded-3xl shadow-md border-2 border-yellow-300`}>
+              <div className="flex items-center gap-4 text-3xl md:text-2xl text-gray-700 bg-gradient-to-r from-yellow-100 to-yellow-200 p-5 rounded-3xl shadow-md border-2 border-yellow-300">
                 <Star className="w-8 h-8 fill-yellow-400 text-yellow-600" />
                 <span className="font-bold">{post.rating} / 5 estrellas</span>
               </div>
@@ -395,7 +403,7 @@ function App() {
           <div className="flex gap-4 md:gap-6 pt-8 border-t-4 border-orange-100">
             <button 
               onClick={() => handleLike(post.id)}
-              className={`flex-1 flex items-center justify-center gap-3 py-6 md:py-7 rounded-3xl ${isRealMobile ? 'text-4xl' : 'text-2xl md:text-3xl'} font-bold transition-all shadow-lg ${
+              className={`flex-1 flex items-center justify-center gap-3 py-6 md:py-7 rounded-3xl text-4xl md:text-3xl font-bold transition-all shadow-lg ${
                 isLiked 
                   ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-2xl scale-105' 
                   : 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 hover:from-red-400 hover:to-pink-400 hover:text-white hover:scale-105 border-3 border-gray-300'
@@ -406,7 +414,7 @@ function App() {
             </button>
             <button 
               onClick={() => handleVerify(post.id)}
-              className={`flex-1 flex items-center justify-center gap-3 py-6 md:py-7 rounded-3xl ${isRealMobile ? 'text-4xl' : 'text-2xl md:text-3xl'} font-bold bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:from-green-600 hover:to-emerald-600 transition-all shadow-lg hover:scale-105 hover:shadow-2xl`}
+              className="flex-1 flex items-center justify-center gap-3 py-6 md:py-7 rounded-3xl text-4xl md:text-3xl font-bold bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:from-green-600 hover:to-emerald-600 transition-all shadow-lg hover:scale-105 hover:shadow-2xl"
             >
               <CheckCircle className="w-9 h-9 md:w-10 md:h-10" />
               <span>¡Yo fui!</span>
@@ -446,7 +454,7 @@ function App() {
             placeholder="🔍 Buscar eventos, lugares..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className={`w-full pl-20 pr-6 py-7 ${isRealMobile ? 'text-3xl' : 'text-2xl'} border-4 border-blue-300 rounded-3xl focus:border-blue-500 focus:outline-none bg-white shadow-inner`}
+            className="w-full pl-20 pr-6 py-7 text-4xl md:text-2xl border-4 border-blue-300 rounded-3xl focus:border-blue-500 focus:outline-none bg-white shadow-inner"
           />
         </div>
         
@@ -455,7 +463,7 @@ function App() {
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-8 py-5 rounded-2xl ${isRealMobile ? 'text-3xl' : 'text-xl md:text-2xl'} font-bold whitespace-nowrap transition-all shadow-lg ${
+              className={`px-8 py-5 rounded-2xl text-3xl md:text-2xl font-bold whitespace-nowrap transition-all shadow-lg ${
                 selectedCategory === cat
                   ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white scale-110 shadow-xl'
                   : 'bg-white text-gray-700 hover:bg-gradient-to-r hover:from-blue-100 hover:to-indigo-100 hover:text-blue-600 border-3 border-blue-200'
@@ -879,7 +887,7 @@ function App() {
       <main className="max-w-6xl mx-auto px-4 md:px-6 py-8 pb-32 md:pb-8">
         <div className="grid md:grid-cols-3 gap-8">
           {/* Sidebar - Desktop only - CON COLOR */}
-          {!isRealMobile && (
+          {!isMobile && (
           <div className="hidden md:block">
             <div className="bg-gradient-to-br from-purple-50 to-pink-100 rounded-3xl shadow-xl p-6 sticky top-28 border-4 border-purple-200">
               <nav className="space-y-4">
