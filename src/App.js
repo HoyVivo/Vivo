@@ -77,7 +77,6 @@ function App() {
   const [showNewPost, setShowNewPost] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
-  const [isMobile, setIsMobile] = useState(false);
   
   const [user, setUser] = useState(null);
   const [userPoints, setUserPoints] = useState(0);
@@ -103,27 +102,10 @@ function App() {
     date: '',
     time: '',
     location: '',
-    category: 'Cultural',
-    imageFile: null,
-    imagePreview: null
+    category: 'Cultural'
   });
 
-  // Detectar móvil y cambiar viewport
   useEffect(() => {
-    const screenWidth = window.screen.width;
-    const isMobileDevice = screenWidth < 600;
-    setIsMobile(isMobileDevice);
-    
-    // Cambiar viewport SOLO en móviles
-    if (isMobileDevice) {
-      const viewport = document.querySelector('meta[name="viewport"]');
-      if (viewport) {
-        viewport.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=5');
-      }
-    }
-  }, []);
-
-  useEffect(() {
     const savedUser = localStorage.getItem('vivo_user');
     if (savedUser) {
       const userData = JSON.parse(savedUser);
@@ -348,39 +330,39 @@ function App() {
               <div className="flex items-center gap-4">
                 <div className="text-6xl drop-shadow-lg">{post.avatar}</div>
                 <div>
-                  <p className="text-4xl md:text-3xl font-bold drop-shadow">{post.author}</p>
-                  <p className="text-2xl md:text-xl opacity-90">{post.authorCity}</p>
+                  <p className="text-2xl md:text-3xl font-bold drop-shadow">{post.author}</p>
+                  <p className="text-lg md:text-xl opacity-90">{post.authorCity}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2 bg-white/30 backdrop-blur-sm px-5 py-3 rounded-full shadow-lg">
                 {getTypeIcon()}
-                <span className="text-xl md:text-lg font-bold">{getTypeLabel()}</span>
+                <span className="text-base md:text-lg font-bold">{getTypeLabel()}</span>
               </div>
             </div>
-            <h3 className="text-5xl md:text-4xl font-bold mb-3 drop-shadow-lg leading-tight">{post.title}</h3>
+            <h3 className="text-3xl md:text-4xl font-bold mb-3 drop-shadow-lg leading-tight">{post.title}</h3>
           </div>
         </div>
 
         {/* Contenido */}
         <div className="p-6 md:p-8">
-          <p className="text-4xl md:text-3xl text-gray-700 mb-8 leading-relaxed font-medium">{post.description}</p>
+          <p className="text-2xl md:text-3xl text-gray-700 mb-8 leading-relaxed font-medium">{post.description}</p>
 
           {/* Detalles */}
           <div className="space-y-4 mb-8">
             {post.date && (
-              <div className="flex items-center gap-4 text-3xl md:text-2xl text-gray-700 bg-gradient-to-r from-orange-100 to-orange-200 p-5 rounded-3xl shadow-md border-2 border-orange-300">
+              <div className="flex items-center gap-4 text-xl md:text-2xl text-gray-700 bg-gradient-to-r from-orange-100 to-orange-200 p-5 rounded-3xl shadow-md border-2 border-orange-300">
                 <Calendar className="w-8 h-8 text-orange-600" />
                 <span className="font-bold">{post.date} {post.time && `· ${post.time}`}</span>
               </div>
             )}
             {post.location && (
-              <div className="flex items-center gap-4 text-3xl md:text-2xl text-gray-700 bg-gradient-to-r from-green-100 to-green-200 p-5 rounded-3xl shadow-md border-2 border-green-300">
+              <div className="flex items-center gap-4 text-xl md:text-2xl text-gray-700 bg-gradient-to-r from-green-100 to-green-200 p-5 rounded-3xl shadow-md border-2 border-green-300">
                 <MapPin className="w-8 h-8 text-green-600" />
                 <span className="font-bold">{post.location}</span>
               </div>
             )}
             {post.rating && (
-              <div className="flex items-center gap-4 text-3xl md:text-2xl text-gray-700 bg-gradient-to-r from-yellow-100 to-yellow-200 p-5 rounded-3xl shadow-md border-2 border-yellow-300">
+              <div className="flex items-center gap-4 text-xl md:text-2xl text-gray-700 bg-gradient-to-r from-yellow-100 to-yellow-200 p-5 rounded-3xl shadow-md border-2 border-yellow-300">
                 <Star className="w-8 h-8 fill-yellow-400 text-yellow-600" />
                 <span className="font-bold">{post.rating} / 5 estrellas</span>
               </div>
@@ -403,7 +385,7 @@ function App() {
           <div className="flex gap-4 md:gap-6 pt-8 border-t-4 border-orange-100">
             <button 
               onClick={() => handleLike(post.id)}
-              className={`flex-1 flex items-center justify-center gap-3 py-6 md:py-7 rounded-3xl text-4xl md:text-3xl font-bold transition-all shadow-lg ${
+              className={`flex-1 flex items-center justify-center gap-3 py-6 md:py-7 rounded-3xl text-2xl md:text-3xl font-bold transition-all shadow-lg ${
                 isLiked 
                   ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-2xl scale-105' 
                   : 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 hover:from-red-400 hover:to-pink-400 hover:text-white hover:scale-105 border-3 border-gray-300'
@@ -414,7 +396,7 @@ function App() {
             </button>
             <button 
               onClick={() => handleVerify(post.id)}
-              className="flex-1 flex items-center justify-center gap-3 py-6 md:py-7 rounded-3xl text-4xl md:text-3xl font-bold bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:from-green-600 hover:to-emerald-600 transition-all shadow-lg hover:scale-105 hover:shadow-2xl"
+              className="flex-1 flex items-center justify-center gap-3 py-6 md:py-7 rounded-3xl text-2xl md:text-3xl font-bold bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:from-green-600 hover:to-emerald-600 transition-all shadow-lg hover:scale-105 hover:shadow-2xl"
             >
               <CheckCircle className="w-9 h-9 md:w-10 md:h-10" />
               <span>¡Yo fui!</span>
@@ -454,7 +436,7 @@ function App() {
             placeholder="🔍 Buscar eventos, lugares..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-20 pr-6 py-7 text-4xl md:text-2xl border-4 border-blue-300 rounded-3xl focus:border-blue-500 focus:outline-none bg-white shadow-inner"
+            className="w-full pl-20 pr-6 py-7 text-2xl border-4 border-blue-300 rounded-3xl focus:border-blue-500 focus:outline-none bg-white shadow-inner"
           />
         </div>
         
@@ -463,7 +445,7 @@ function App() {
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-8 py-5 rounded-2xl text-3xl md:text-2xl font-bold whitespace-nowrap transition-all shadow-lg ${
+              className={`px-8 py-5 rounded-2xl text-xl md:text-2xl font-bold whitespace-nowrap transition-all shadow-lg ${
                 selectedCategory === cat
                   ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white scale-110 shadow-xl'
                   : 'bg-white text-gray-700 hover:bg-gradient-to-r hover:from-blue-100 hover:to-indigo-100 hover:text-blue-600 border-3 border-blue-200'
@@ -788,40 +770,6 @@ function App() {
             </select>
           </div>
 
-          <div>
-            <label className="block text-2xl font-bold mb-3 text-gray-700">📷 Foto o Vídeo (Opcional)</label>
-            <input
-              type="file"
-              accept="image/*,video/*"
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                if (file) {
-                  const reader = new FileReader();
-                  reader.onloadend = () => {
-                    setNewPost({...newPost, imageFile: file, imagePreview: reader.result});
-                  };
-                  reader.readAsDataURL(file);
-                }
-              }}
-              className="w-full p-4 text-xl border-3 border-blue-200 rounded-2xl focus:border-blue-400 focus:outline-none bg-white shadow-inner file:mr-4 file:py-3 file:px-6 file:rounded-full file:border-0 file:text-lg file:font-semibold file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200"
-            />
-            {newPost.imagePreview && (
-              <div className="mt-4 relative">
-                <img 
-                  src={newPost.imagePreview} 
-                  alt="Preview" 
-                  className="w-full h-64 object-cover rounded-2xl border-4 border-blue-200"
-                />
-                <button
-                  onClick={() => setNewPost({...newPost, imageFile: null, imagePreview: null})}
-                  className="absolute top-2 right-2 bg-red-500 text-white p-2 rounded-full hover:bg-red-600"
-                >
-                  <X className="w-6 h-6" />
-                </button>
-              </div>
-            )}
-          </div>
-
           <div className="flex gap-4 pt-4">
             <button
               onClick={() => setShowNewPost(false)}
@@ -851,7 +799,7 @@ function App() {
               <div className="text-5xl animate-pulse">🌟</div>
               <div>
                 <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg">
-                  Hoy Vivo
+                  VIVO
                 </h1>
                 <p className="text-lg md:text-xl text-white/90 font-semibold">Nunca dejes de vivir</p>
               </div>
@@ -887,7 +835,6 @@ function App() {
       <main className="max-w-6xl mx-auto px-4 md:px-6 py-8 pb-32 md:pb-8">
         <div className="grid md:grid-cols-3 gap-8">
           {/* Sidebar - Desktop only - CON COLOR */}
-          {!isMobile && (
           <div className="hidden md:block">
             <div className="bg-gradient-to-br from-purple-50 to-pink-100 rounded-3xl shadow-xl p-6 sticky top-28 border-4 border-purple-200">
               <nav className="space-y-4">
@@ -947,7 +894,6 @@ function App() {
               )}
             </div>
           </div>
-          )}
 
           {/* Content area */}
           <div className="md:col-span-2">
