@@ -834,8 +834,8 @@ function App() {
       {/* Main content */}
       <main className="max-w-6xl mx-auto px-4 md:px-6 py-8 pb-32 md:pb-8">
         <div className="grid md:grid-cols-3 gap-8">
-          {/* Sidebar - Desktop only - CON COLOR */}
-          <div className="hidden md:block">
+          {/* Sidebar - Desktop only (lg) - CON COLOR */}
+          <div className="hidden lg:block">
             <div className="bg-gradient-to-br from-purple-50 to-pink-100 rounded-3xl shadow-xl p-6 sticky top-28 border-4 border-purple-200">
               <nav className="space-y-4">
                 <button
@@ -921,45 +921,58 @@ function App() {
       )}
 
       {/* Menú inferior - Mobile only */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 px-4 py-5 z-40 shadow-2xl border-t-4 border-orange-600">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 px-2 py-4 z-40 shadow-2xl border-t-4 border-orange-600">
         <div className="flex justify-around items-center">
           <button
             onClick={() => setCurrentView('feed')}
-            className={`flex flex-col items-center gap-2 ${
+            className={`flex flex-col items-center gap-1 ${
               currentView === 'feed' ? 'text-white scale-110' : 'text-white/70'
             }`}
           >
-            <Home className="w-10 h-10 drop-shadow-lg" />
-            <span className="text-base font-bold drop-shadow">Inicio</span>
+            <Home className="w-9 h-9 drop-shadow-lg" />
+            <span className="text-sm font-bold drop-shadow">Inicio</span>
           </button>
           <button
-            onClick={() => setCurrentView('calendar')}
-            className={`flex flex-col items-center gap-2 ${
-              currentView === 'calendar' ? 'text-white scale-110' : 'text-white/70'
-            }`}
+            onClick={() => {
+              setCurrentView('feed');
+              setTimeout(() => {
+                const searchInput = document.querySelector('input[type="text"]');
+                if (searchInput) searchInput.focus();
+              }, 100);
+            }}
+            className={`flex flex-col items-center gap-1 text-white/70`}
           >
-            <Calendar className="w-10 h-10 drop-shadow-lg" />
-            <span className="text-base font-bold drop-shadow">Agenda</span>
+            <Search className="w-9 h-9 drop-shadow-lg" />
+            <span className="text-sm font-bold drop-shadow">Buscar</span>
           </button>
           {user && (
             <button
               onClick={() => setShowNewPost(true)}
-              className="flex flex-col items-center gap-2"
+              className="flex flex-col items-center gap-1"
             >
-              <div className="bg-yellow-400 text-orange-600 p-5 rounded-full -mt-12 shadow-2xl border-4 border-white animate-pulse">
-                <Plus className="w-10 h-10" />
+              <div className="bg-yellow-400 text-orange-600 p-4 rounded-full -mt-10 shadow-2xl border-4 border-white animate-pulse">
+                <Plus className="w-9 h-9" />
               </div>
-              <span className="text-base font-bold text-white drop-shadow">Publicar</span>
+              <span className="text-sm font-bold text-white drop-shadow">Publicar</span>
             </button>
           )}
           <button
+            onClick={() => setCurrentView('calendar')}
+            className={`flex flex-col items-center gap-1 ${
+              currentView === 'calendar' ? 'text-white scale-110' : 'text-white/70'
+            }`}
+          >
+            <Calendar className="w-9 h-9 drop-shadow-lg" />
+            <span className="text-sm font-bold drop-shadow">Agenda</span>
+          </button>
+          <button
             onClick={() => setCurrentView('profile')}
-            className={`flex flex-col items-center gap-2 ${
+            className={`flex flex-col items-center gap-1 ${
               currentView === 'profile' ? 'text-white scale-110' : 'text-white/70'
             }`}
           >
-            <User className="w-10 h-10 drop-shadow-lg" />
-            <span className="text-base font-bold drop-shadow">Perfil</span>
+            <User className="w-9 h-9 drop-shadow-lg" />
+            <span className="text-sm font-bold drop-shadow">Perfil</span>
           </button>
         </div>
       </nav>
