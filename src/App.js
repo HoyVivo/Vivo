@@ -845,7 +845,7 @@ function App() {
 
       {/* Main content */}
       <main className="max-w-6xl mx-auto px-4 md:px-6 py-8 pb-32 md:pb-8">
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className={isMobileDevice ? "block" : "grid md:grid-cols-3 gap-8"}>
           {/* Sidebar - Desktop only - CON COLOR */}
           {!isMobileDevice && (
           <div className="hidden md:block">
@@ -910,7 +910,7 @@ function App() {
           )}
 
           {/* Content area */}
-          <div className="md:col-span-2">
+          <div className={isMobileDevice ? "w-full" : "md:col-span-2"}>
             {currentView === 'feed' && <FeedView />}
             {currentView === 'profile' && <ProfileView />}
             {currentView === 'calendar' && (
