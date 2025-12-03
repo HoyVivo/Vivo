@@ -833,9 +833,9 @@ function App() {
 
       {/* Main content */}
       <main className="max-w-6xl mx-auto px-4 md:px-6 py-8 pb-32 md:pb-8">
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid lg:grid-cols-3 gap-8">
           {/* Sidebar - Desktop only - CON COLOR */}
-          <div className="hidden md:block">
+          <div className="hidden lg:block">
             <div className="bg-gradient-to-br from-purple-50 to-pink-100 rounded-3xl shadow-xl p-6 sticky top-28 border-4 border-purple-200">
               <nav className="space-y-4">
                 <button
@@ -896,7 +896,7 @@ function App() {
           </div>
 
           {/* Content area */}
-          <div className="md:col-span-2">
+          <div className="lg:col-span-2">
             {currentView === 'feed' && <FeedView />}
             {currentView === 'profile' && <ProfileView />}
             {currentView === 'calendar' && (
