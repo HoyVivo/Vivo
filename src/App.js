@@ -378,13 +378,13 @@ function App() {
                 <div>
                   <p 
                     className={isMobileDevice ? "font-bold drop-shadow" : "text-2xl md:text-3xl font-bold drop-shadow"}
-                    style={isMobileDevice ? { fontSize: `${36 * mobileScale}px` } : {}}
+                    style={isMobileDevice ? { fontSize: `${14 * mobileScale}px` } : {}}
                   >
                     {post.author}
                   </p>
                   <p 
                     className={isMobileDevice ? "opacity-90" : "text-lg md:text-xl opacity-90"}
-                    style={isMobileDevice ? { fontSize: `${26 * mobileScale}px` } : {}}
+                    style={isMobileDevice ? { fontSize: `${14 * mobileScale}px` } : {}}
                   >
                     {post.authorCity}
                   </p>
@@ -394,7 +394,7 @@ function App() {
                 {getTypeIcon()}
                 <span 
                   className={isMobileDevice ? "font-bold" : "text-base md:text-lg font-bold"}
-                  style={isMobileDevice ? { fontSize: `${22 * mobileScale}px` } : {}}
+                  style={isMobileDevice ? { fontSize: `${12 * mobileScale}px` } : {}}
                 >
                   {getTypeLabel()}
                 </span>
@@ -402,7 +402,7 @@ function App() {
             </div>
             <h3 
               className={isMobileDevice ? "font-bold mb-3 drop-shadow-lg leading-tight" : "text-3xl md:text-4xl font-bold mb-3 drop-shadow-lg leading-tight"}
-              style={isMobileDevice ? { fontSize: `${42 * mobileScale}px` } : {}}
+              style={isMobileDevice ? { fontSize: `${21 * mobileScale}px` } : {}}
             >
               {post.title}
             </h3>
@@ -413,7 +413,7 @@ function App() {
         <div className="p-6 md:p-8">
           <p 
             className={isMobileDevice ? "text-gray-700 mb-8 leading-relaxed font-medium" : "text-2xl md:text-3xl text-gray-700 mb-8 leading-relaxed font-medium"}
-            style={isMobileDevice ? { fontSize: `${34 * mobileScale}px` } : {}}
+            style={isMobileDevice ? { fontSize: `${14 * mobileScale}px` } : {}}
           >
             {post.description}
           </p>
@@ -427,7 +427,7 @@ function App() {
                 <Calendar className="w-8 h-8 text-orange-600" />
                 <span 
                   className="font-bold"
-                  style={isMobileDevice ? { fontSize: `${30 * mobileScale}px` } : {}}
+                  style={isMobileDevice ? { fontSize: `${17 * mobileScale}px` } : {}}
                 >
                   {post.date} {post.time && `· ${post.time}`}
                 </span>
@@ -440,7 +440,7 @@ function App() {
                 <MapPin className="w-8 h-8 text-green-600" />
                 <span 
                   className="font-bold"
-                  style={isMobileDevice ? { fontSize: `${30 * mobileScale}px` } : {}}
+                  style={isMobileDevice ? { fontSize: `${17 * mobileScale}px` } : {}}
                 >
                   {post.location}
                 </span>
@@ -453,7 +453,7 @@ function App() {
                 <Star className="w-8 h-8 fill-yellow-400 text-yellow-600" />
                 <span 
                   className="font-bold"
-                  style={isMobileDevice ? { fontSize: `${30 * mobileScale}px` } : {}}
+                  style={isMobileDevice ? { fontSize: `${17 * mobileScale}px` } : {}}
                 >
                   {post.rating} / 5 estrellas
                 </span>
@@ -464,7 +464,7 @@ function App() {
           <div className="flex items-center gap-3 mb-6">
             <span 
               className={`inline-block bg-gradient-to-r ${getCategoryColor()} text-white px-6 py-3 rounded-full font-bold shadow-lg ${isMobileDevice ? '' : 'text-lg'}`}
-              style={isMobileDevice ? { fontSize: `${26 * mobileScale}px` } : {}}
+              style={isMobileDevice ? { fontSize: `${15 * mobileScale}px` } : {}}
             >
               {post.category}
             </span>
@@ -473,7 +473,7 @@ function App() {
                 <CheckCircle className="w-5 h-5 text-green-600" />
                 <span 
                   className={isMobileDevice ? "text-green-700 font-bold" : "text-lg text-green-700 font-bold"}
-                  style={isMobileDevice ? { fontSize: `${26 * mobileScale}px` } : {}}
+                  style={isMobileDevice ? { fontSize: `${15 * mobileScale}px` } : {}}
                 >
                   {post.verified} ✓
                 </span>
@@ -492,7 +492,7 @@ function App() {
                   ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-2xl scale-105' 
                   : 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 hover:from-red-400 hover:to-pink-400 hover:text-white hover:scale-105 border-3 border-gray-300'
               }`}
-              style={isMobileDevice ? { fontSize: `${38 * mobileScale}px` } : {}}
+              style={isMobileDevice ? { fontSize: `${19 * mobileScale}px` } : {}}
             >
               <Heart className={`w-9 h-9 md:w-10 md:h-10 ${isLiked ? 'fill-white' : ''}`} />
               <span>{post.likes}</span>
@@ -502,7 +502,7 @@ function App() {
               className={`flex-1 flex items-center justify-center gap-3 py-6 md:py-7 rounded-3xl font-bold bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:from-green-600 hover:to-emerald-600 transition-all shadow-lg hover:scale-105 hover:shadow-2xl ${
                 isMobileDevice ? '' : 'text-2xl md:text-3xl'
               }`}
-              style={isMobileDevice ? { fontSize: `${38 * mobileScale}px` } : {}}
+              style={isMobileDevice ? { fontSize: `${19 * mobileScale}px` } : {}}
             >
               <CheckCircle className="w-9 h-9 md:w-10 md:h-10" />
               <span>¡Yo fui!</span>
@@ -543,7 +543,7 @@ function App() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className={isMobileDevice ? "w-full pl-20 pr-6 py-7 border-4 border-blue-300 rounded-3xl focus:border-blue-500 focus:outline-none bg-white shadow-inner" : "w-full pl-20 pr-6 py-7 text-2xl border-4 border-blue-300 rounded-3xl focus:border-blue-500 focus:outline-none bg-white shadow-inner"}
-            style={isMobileDevice ? { fontSize: `${32 * mobileScale}px` } : {}}
+            style={isMobileDevice ? { fontSize: `${17 * mobileScale}px` } : {}}
           />
         </div>
         
@@ -559,7 +559,7 @@ function App() {
                   ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white scale-110 shadow-xl'
                   : 'bg-white text-gray-700 hover:bg-gradient-to-r hover:from-blue-100 hover:to-indigo-100 hover:text-blue-600 border-3 border-blue-200'
               }`}
-              style={isMobileDevice ? { fontSize: `${28 * mobileScale}px` } : {}}
+              style={isMobileDevice ? { fontSize: `${17 * mobileScale}px` } : {}}
             >
               {cat}
             </button>
@@ -919,7 +919,7 @@ function App() {
                 </h1>
                 <p 
                   className={isMobileDevice ? "text-white/90 font-semibold" : "text-lg md:text-xl text-white/90 font-semibold"}
-                  style={isMobileDevice ? { fontSize: `${20 * mobileScale}px` } : {}}
+                  style={isMobileDevice ? { fontSize: `${15 * mobileScale}px` } : {}}
                 >
                   Nunca dejes de vivir
                 </p>
@@ -935,7 +935,7 @@ function App() {
                   />
                   <span 
                     className="font-bold text-white"
-                    style={isMobileDevice ? { fontSize: `${20 * mobileScale}px` } : { fontSize: '1.25rem' }}
+                    style={isMobileDevice ? { fontSize: `${15 * mobileScale}px` } : { fontSize: '1.25rem' }}
                   >
                     {userPoints}
                   </span>
@@ -968,7 +968,7 @@ function App() {
                   className="flex items-center gap-2 bg-white text-orange-600 rounded-full font-bold hover:bg-orange-50 transition-all shadow-xl"
                   style={isMobileDevice ? { 
                     padding: `${12 * mobileScale}px ${24 * mobileScale}px`,
-                    fontSize: `${20 * mobileScale}px`
+                    fontSize: `${15 * mobileScale}px`
                   } : { 
                     padding: '0.75rem 1.5rem',
                     fontSize: '1.125rem'
