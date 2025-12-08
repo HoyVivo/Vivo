@@ -843,25 +843,19 @@ function App() {
           showHeader ? 'top-0' : '-top-32'
         }`}
       >
-        <div className="max-w-6xl mx-auto px-4 md:px-6 py-4">
+        <div className="max-w-6xl mx-auto px-4 md:px-6 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div 
-                className="animate-pulse"
-                style={isMobileDevice ? { fontSize: `${70 * mobileScale}px` } : { fontSize: '3.5rem' }}
-              >
-                🌟
-              </div>
               <div>
                 <h1 
                   className={isMobileDevice ? "font-bold text-white drop-shadow-lg" : "text-4xl md:text-5xl font-bold text-white drop-shadow-lg"}
-                  style={isMobileDevice ? { fontSize: `${60 * mobileScale}px` } : {}}
+                  style={isMobileDevice ? { fontSize: `${54 * mobileScale}px` } : {}}
                 >
                   Hoy Vivo
                 </h1>
                 <p 
                   className={isMobileDevice ? "text-white/90 font-semibold" : "text-lg md:text-xl text-white/90 font-semibold"}
-                  style={isMobileDevice ? { fontSize: `${24 * mobileScale}px` } : {}}
+                  style={isMobileDevice ? { fontSize: `${22 * mobileScale}px` } : {}}
                 >
                   Nunca dejes de vivir
                 </p>
