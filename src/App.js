@@ -843,75 +843,75 @@ function App() {
           showHeader ? 'top-0' : '-top-32'
         }`}
       >
-        <div className="max-w-6xl mx-auto px-4 md:px-6 py-3">
+        <div className="max-w-6xl mx-auto px-4 md:px-6 py-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div>
                 <h1 
                   className={isMobileDevice ? "font-bold text-white drop-shadow-lg" : "text-4xl md:text-5xl font-bold text-white drop-shadow-lg"}
-                  style={isMobileDevice ? { fontSize: `${54 * mobileScale}px` } : {}}
+                  style={isMobileDevice ? { fontSize: `${48 * mobileScale}px` } : {}}
                 >
                   Hoy Vivo
                 </h1>
                 <p 
                   className={isMobileDevice ? "text-white/90 font-semibold" : "text-lg md:text-xl text-white/90 font-semibold"}
-                  style={isMobileDevice ? { fontSize: `${22 * mobileScale}px` } : {}}
+                  style={isMobileDevice ? { fontSize: `${20 * mobileScale}px` } : {}}
                 >
                   Nunca dejes de vivir
                 </p>
               </div>
             </div>
             
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col items-center gap-2">
               {user && (
-                <div className="hidden md:flex items-center gap-3 bg-white/20 backdrop-blur-sm px-6 py-4 rounded-full">
+                <div className="hidden md:flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
                   <Star 
                     className="text-yellow-300 fill-yellow-300"
-                    style={isMobileDevice ? { width: `${32 * mobileScale}px`, height: `${32 * mobileScale}px` } : { width: '2rem', height: '2rem' }}
+                    style={isMobileDevice ? { width: `${24 * mobileScale}px`, height: `${24 * mobileScale}px` } : { width: '1.5rem', height: '1.5rem' }}
                   />
                   <span 
                     className="font-bold text-white"
-                    style={isMobileDevice ? { fontSize: `${28 * mobileScale}px` } : { fontSize: '1.75rem' }}
+                    style={isMobileDevice ? { fontSize: `${20 * mobileScale}px` } : { fontSize: '1.25rem' }}
                   >
                     {userPoints}
                   </span>
                 </div>
               )}
               {user ? (
-                <button className="p-5 bg-white/20 backdrop-blur-sm hover:bg-white/30 rounded-full relative transition-all">
+                <button className="p-3 bg-white/20 backdrop-blur-sm hover:bg-white/30 rounded-full relative transition-all">
                   <Bell 
                     className="text-white"
-                    style={isMobileDevice ? { width: `${36 * mobileScale}px`, height: `${36 * mobileScale}px` } : { width: '2.25rem', height: '2.25rem' }}
+                    style={isMobileDevice ? { width: `${28 * mobileScale}px`, height: `${28 * mobileScale}px` } : { width: '1.75rem', height: '1.75rem' }}
                   />
                   <span 
                     className="absolute bg-yellow-400 rounded-full"
                     style={isMobileDevice ? { 
-                      top: `${16 * mobileScale}px`, 
-                      right: `${16 * mobileScale}px`,
-                      width: `${18 * mobileScale}px`, 
-                      height: `${18 * mobileScale}px` 
+                      top: `${10 * mobileScale}px`, 
+                      right: `${10 * mobileScale}px`,
+                      width: `${14 * mobileScale}px`, 
+                      height: `${14 * mobileScale}px` 
                     } : { 
-                      top: '1rem', 
-                      right: '1rem',
-                      width: '1.125rem', 
-                      height: '1.125rem' 
+                      top: '0.625rem', 
+                      right: '0.625rem',
+                      width: '0.875rem', 
+                      height: '0.875rem' 
                     }}
                   ></span>
                 </button>
               ) : (
                 <button
                   onClick={() => setShowAuth(true)}
-                  className="flex items-center gap-3 bg-white text-orange-600 rounded-full font-bold hover:bg-orange-50 transition-all shadow-xl"
+                  className="flex items-center gap-2 bg-white text-orange-600 rounded-full font-bold hover:bg-orange-50 transition-all shadow-xl"
                   style={isMobileDevice ? { 
-                    padding: `${16 * mobileScale}px ${32 * mobileScale}px`,
-                    fontSize: `${24 * mobileScale}px`
+                    padding: `${12 * mobileScale}px ${24 * mobileScale}px`,
+                    fontSize: `${20 * mobileScale}px`
                   } : { 
-                    padding: '1rem 2rem',
-                    fontSize: '1.25rem'
+                    padding: '0.75rem 1.5rem',
+                    fontSize: '1.125rem'
                   }}
                 >
                   <LogIn 
-                    style={isMobileDevice ? { width: `${28 * mobileScale}px`, height: `${28 * mobileScale}px` } : { width: '1.75rem', height: '1.75rem' }}
+                    style={isMobileDevice ? { width: `${24 * mobileScale}px`, height: `${24 * mobileScale}px` } : { width: '1.5rem', height: '1.5rem' }}
                   />
                   Entrar
                 </button>
