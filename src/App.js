@@ -376,53 +376,107 @@ function App() {
               <div className="flex items-center gap-4">
                 <div className="text-6xl drop-shadow-lg">{post.avatar}</div>
                 <div>
-                  <p className="text-2xl md:text-3xl font-bold drop-shadow">{post.author}</p>
-                  <p className="text-lg md:text-xl opacity-90">{post.authorCity}</p>
+                  <p 
+                    className={isMobileDevice ? "font-bold drop-shadow" : "text-2xl md:text-3xl font-bold drop-shadow"}
+                    style={isMobileDevice ? { fontSize: `${36 * mobileScale}px` } : {}}
+                  >
+                    {post.author}
+                  </p>
+                  <p 
+                    className={isMobileDevice ? "opacity-90" : "text-lg md:text-xl opacity-90"}
+                    style={isMobileDevice ? { fontSize: `${26 * mobileScale}px` } : {}}
+                  >
+                    {post.authorCity}
+                  </p>
                 </div>
               </div>
               <div className="flex items-center gap-2 bg-white/30 backdrop-blur-sm px-5 py-3 rounded-full shadow-lg">
                 {getTypeIcon()}
-                <span className="text-base md:text-lg font-bold">{getTypeLabel()}</span>
+                <span 
+                  className={isMobileDevice ? "font-bold" : "text-base md:text-lg font-bold"}
+                  style={isMobileDevice ? { fontSize: `${22 * mobileScale}px` } : {}}
+                >
+                  {getTypeLabel()}
+                </span>
               </div>
             </div>
-            <h3 className="text-3xl md:text-4xl font-bold mb-3 drop-shadow-lg leading-tight">{post.title}</h3>
+            <h3 
+              className={isMobileDevice ? "font-bold mb-3 drop-shadow-lg leading-tight" : "text-3xl md:text-4xl font-bold mb-3 drop-shadow-lg leading-tight"}
+              style={isMobileDevice ? { fontSize: `${42 * mobileScale}px` } : {}}
+            >
+              {post.title}
+            </h3>
           </div>
         </div>
 
         {/* Contenido */}
         <div className="p-6 md:p-8">
-          <p className="text-2xl md:text-3xl text-gray-700 mb-8 leading-relaxed font-medium">{post.description}</p>
+          <p 
+            className={isMobileDevice ? "text-gray-700 mb-8 leading-relaxed font-medium" : "text-2xl md:text-3xl text-gray-700 mb-8 leading-relaxed font-medium"}
+            style={isMobileDevice ? { fontSize: `${34 * mobileScale}px` } : {}}
+          >
+            {post.description}
+          </p>
 
           {/* Detalles */}
           <div className="space-y-4 mb-8">
             {post.date && (
-              <div className="flex items-center gap-4 text-xl md:text-2xl text-gray-700 bg-gradient-to-r from-orange-100 to-orange-200 p-5 rounded-3xl shadow-md border-2 border-orange-300">
+              <div 
+                className={isMobileDevice ? "flex items-center gap-4 text-gray-700 bg-gradient-to-r from-orange-100 to-orange-200 p-5 rounded-3xl shadow-md border-2 border-orange-300" : "flex items-center gap-4 text-xl md:text-2xl text-gray-700 bg-gradient-to-r from-orange-100 to-orange-200 p-5 rounded-3xl shadow-md border-2 border-orange-300"}
+              >
                 <Calendar className="w-8 h-8 text-orange-600" />
-                <span className="font-bold">{post.date} {post.time && `· ${post.time}`}</span>
+                <span 
+                  className="font-bold"
+                  style={isMobileDevice ? { fontSize: `${30 * mobileScale}px` } : {}}
+                >
+                  {post.date} {post.time && `· ${post.time}`}
+                </span>
               </div>
             )}
             {post.location && (
-              <div className="flex items-center gap-4 text-xl md:text-2xl text-gray-700 bg-gradient-to-r from-green-100 to-green-200 p-5 rounded-3xl shadow-md border-2 border-green-300">
+              <div 
+                className={isMobileDevice ? "flex items-center gap-4 text-gray-700 bg-gradient-to-r from-green-100 to-green-200 p-5 rounded-3xl shadow-md border-2 border-green-300" : "flex items-center gap-4 text-xl md:text-2xl text-gray-700 bg-gradient-to-r from-green-100 to-green-200 p-5 rounded-3xl shadow-md border-2 border-green-300"}
+              >
                 <MapPin className="w-8 h-8 text-green-600" />
-                <span className="font-bold">{post.location}</span>
+                <span 
+                  className="font-bold"
+                  style={isMobileDevice ? { fontSize: `${30 * mobileScale}px` } : {}}
+                >
+                  {post.location}
+                </span>
               </div>
             )}
             {post.rating && (
-              <div className="flex items-center gap-4 text-xl md:text-2xl text-gray-700 bg-gradient-to-r from-yellow-100 to-yellow-200 p-5 rounded-3xl shadow-md border-2 border-yellow-300">
+              <div 
+                className={isMobileDevice ? "flex items-center gap-4 text-gray-700 bg-gradient-to-r from-yellow-100 to-yellow-200 p-5 rounded-3xl shadow-md border-2 border-yellow-300" : "flex items-center gap-4 text-xl md:text-2xl text-gray-700 bg-gradient-to-r from-yellow-100 to-yellow-200 p-5 rounded-3xl shadow-md border-2 border-yellow-300"}
+              >
                 <Star className="w-8 h-8 fill-yellow-400 text-yellow-600" />
-                <span className="font-bold">{post.rating} / 5 estrellas</span>
+                <span 
+                  className="font-bold"
+                  style={isMobileDevice ? { fontSize: `${30 * mobileScale}px` } : {}}
+                >
+                  {post.rating} / 5 estrellas
+                </span>
               </div>
             )}
           </div>
 
           <div className="flex items-center gap-3 mb-6">
-            <span className={`inline-block bg-gradient-to-r ${getCategoryColor()} text-white px-6 py-3 rounded-full text-lg font-bold shadow-lg`}>
+            <span 
+              className={`inline-block bg-gradient-to-r ${getCategoryColor()} text-white px-6 py-3 rounded-full font-bold shadow-lg ${isMobileDevice ? '' : 'text-lg'}`}
+              style={isMobileDevice ? { fontSize: `${26 * mobileScale}px` } : {}}
+            >
               {post.category}
             </span>
             {post.verified > 0 && (
               <div className="flex items-center gap-2 bg-green-100 px-5 py-3 rounded-full">
                 <CheckCircle className="w-5 h-5 text-green-600" />
-                <span className="text-lg text-green-700 font-bold">{post.verified} ✓</span>
+                <span 
+                  className={isMobileDevice ? "text-green-700 font-bold" : "text-lg text-green-700 font-bold"}
+                  style={isMobileDevice ? { fontSize: `${26 * mobileScale}px` } : {}}
+                >
+                  {post.verified} ✓
+                </span>
               </div>
             )}
           </div>
@@ -431,18 +485,24 @@ function App() {
           <div className="flex gap-4 md:gap-6 pt-8 border-t-4 border-orange-100">
             <button 
               onClick={() => handleLike(post.id)}
-              className={`flex-1 flex items-center justify-center gap-3 py-6 md:py-7 rounded-3xl text-2xl md:text-3xl font-bold transition-all shadow-lg ${
+              className={`flex-1 flex items-center justify-center gap-3 py-6 md:py-7 rounded-3xl font-bold transition-all shadow-lg ${
+                isMobileDevice ? '' : 'text-2xl md:text-3xl'
+              } ${
                 isLiked 
                   ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-2xl scale-105' 
                   : 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 hover:from-red-400 hover:to-pink-400 hover:text-white hover:scale-105 border-3 border-gray-300'
               }`}
+              style={isMobileDevice ? { fontSize: `${38 * mobileScale}px` } : {}}
             >
               <Heart className={`w-9 h-9 md:w-10 md:h-10 ${isLiked ? 'fill-white' : ''}`} />
               <span>{post.likes}</span>
             </button>
             <button 
               onClick={() => handleVerify(post.id)}
-              className="flex-1 flex items-center justify-center gap-3 py-6 md:py-7 rounded-3xl text-2xl md:text-3xl font-bold bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:from-green-600 hover:to-emerald-600 transition-all shadow-lg hover:scale-105 hover:shadow-2xl"
+              className={`flex-1 flex items-center justify-center gap-3 py-6 md:py-7 rounded-3xl font-bold bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:from-green-600 hover:to-emerald-600 transition-all shadow-lg hover:scale-105 hover:shadow-2xl ${
+                isMobileDevice ? '' : 'text-2xl md:text-3xl'
+              }`}
+              style={isMobileDevice ? { fontSize: `${38 * mobileScale}px` } : {}}
             >
               <CheckCircle className="w-9 h-9 md:w-10 md:h-10" />
               <span>¡Yo fui!</span>
@@ -482,7 +542,8 @@ function App() {
             placeholder="🔍 Buscar eventos, lugares..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-20 pr-6 py-7 text-2xl border-4 border-blue-300 rounded-3xl focus:border-blue-500 focus:outline-none bg-white shadow-inner"
+            className={isMobileDevice ? "w-full pl-20 pr-6 py-7 border-4 border-blue-300 rounded-3xl focus:border-blue-500 focus:outline-none bg-white shadow-inner" : "w-full pl-20 pr-6 py-7 text-2xl border-4 border-blue-300 rounded-3xl focus:border-blue-500 focus:outline-none bg-white shadow-inner"}
+            style={isMobileDevice ? { fontSize: `${32 * mobileScale}px` } : {}}
           />
         </div>
         
@@ -491,11 +552,14 @@ function App() {
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-8 py-5 rounded-2xl text-xl md:text-2xl font-bold whitespace-nowrap transition-all shadow-lg ${
+              className={`px-8 py-5 rounded-2xl font-bold whitespace-nowrap transition-all shadow-lg ${
+                isMobileDevice ? '' : 'text-xl md:text-2xl'
+              } ${
                 selectedCategory === cat
                   ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white scale-110 shadow-xl'
                   : 'bg-white text-gray-700 hover:bg-gradient-to-r hover:from-blue-100 hover:to-indigo-100 hover:text-blue-600 border-3 border-blue-200'
               }`}
+              style={isMobileDevice ? { fontSize: `${28 * mobileScale}px` } : {}}
             >
               {cat}
             </button>
