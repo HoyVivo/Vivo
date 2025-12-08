@@ -78,6 +78,7 @@ function App() {
   const [showAuth, setShowAuth] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
   const [isMobileDevice, setIsMobileDevice] = useState(false);
+  const [mobileScale, setMobileScale] = useState(1);
   
   const [user, setUser] = useState(null);
   const [userPoints, setUserPoints] = useState(0);
@@ -110,7 +111,15 @@ function App() {
   useEffect(() => {
     const checkMobile = () => {
       const screenWidth = window.screen.width;
-      setIsMobileDevice(screenWidth < 600);
+      const isMobile = screenWidth < 600;
+      setIsMobileDevice(isMobile);
+      
+      // Calcular factor de escala para compensar viewport=1280
+      // Si móvil tiene 400px y viewport=1280, todo se escala a 400/1280 = 0.3125
+      // Para compensar, necesitamos el inverso: 1280/400 = 3.2
+      if (isMobile) {
+        setMobileScale(1280 / screenWidth);
+      }
     };
     checkMobile();
     window.addEventListener('resize', checkMobile);
@@ -812,13 +821,13 @@ function App() {
               <div>
                 <h1 
                   className={isMobileDevice ? "font-bold text-white drop-shadow-lg" : "text-4xl md:text-5xl font-bold text-white drop-shadow-lg"}
-                  style={isMobileDevice ? { fontSize: '3.75rem' } : {}}
+                  style={isMobileDevice ? { fontSize: `${60 * mobileScale}px` } : {}}
                 >
                   VIVO
                 </h1>
                 <p 
                   className={isMobileDevice ? "text-white/90 font-semibold" : "text-lg md:text-xl text-white/90 font-semibold"}
-                  style={isMobileDevice ? { fontSize: '1.5rem' } : {}}
+                  style={isMobileDevice ? { fontSize: `${24 * mobileScale}px` } : {}}
                 >
                   Nunca dejes de vivir
                 </p>
