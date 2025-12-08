@@ -79,6 +79,8 @@ function App() {
   const [isLogin, setIsLogin] = useState(true);
   const [isMobileDevice, setIsMobileDevice] = useState(false);
   const [mobileScale, setMobileScale] = useState(1);
+  const [showHeader, setShowHeader] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   
   const [user, setUser] = useState(null);
   const [userPoints, setUserPoints] = useState(0);
@@ -125,6 +127,29 @@ function App() {
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  // Manejar scroll para ocultar/mostrar header
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      if (currentScrollY < 50) {
+        // Arriba del todo, siempre mostrar
+        setShowHeader(true);
+      } else if (currentScrollY > lastScrollY) {
+        // Scrolling hacia abajo - ocultar
+        setShowHeader(false);
+      } else {
+        // Scrolling hacia arriba - mostrar
+        setShowHeader(true);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
 
   useEffect(() => {
     const savedUser = localStorage.getItem('vivo_user');
@@ -813,17 +838,26 @@ function App() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-100 via-red-100 to-pink-100">
       {/* Header */}
-      <header className="bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 shadow-2xl sticky top-0 z-40">
-        <div className="max-w-6xl mx-auto px-4 md:px-6 py-6">
+      <header 
+        className={`bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 shadow-2xl sticky z-40 transition-all duration-300 ${
+          showHeader ? 'top-0' : '-top-32'
+        }`}
+      >
+        <div className="max-w-6xl mx-auto px-4 md:px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="text-5xl animate-pulse">🌟</div>
+              <div 
+                className="animate-pulse"
+                style={isMobileDevice ? { fontSize: `${70 * mobileScale}px` } : { fontSize: '3.5rem' }}
+              >
+                🌟
+              </div>
               <div>
                 <h1 
                   className={isMobileDevice ? "font-bold text-white drop-shadow-lg" : "text-4xl md:text-5xl font-bold text-white drop-shadow-lg"}
                   style={isMobileDevice ? { fontSize: `${60 * mobileScale}px` } : {}}
                 >
-                  VIVO
+                  Hoy Vivo
                 </h1>
                 <p 
                   className={isMobileDevice ? "text-white/90 font-semibold" : "text-lg md:text-xl text-white/90 font-semibold"}
@@ -836,22 +870,55 @@ function App() {
             
             <div className="flex items-center gap-4">
               {user && (
-                <div className="hidden md:flex items-center gap-3 bg-white/20 backdrop-blur-sm px-5 py-3 rounded-full">
-                  <Star className="w-7 h-7 text-yellow-300 fill-yellow-300" />
-                  <span className="text-2xl font-bold text-white">{userPoints}</span>
+                <div className="hidden md:flex items-center gap-3 bg-white/20 backdrop-blur-sm px-6 py-4 rounded-full">
+                  <Star 
+                    className="text-yellow-300 fill-yellow-300"
+                    style={isMobileDevice ? { width: `${32 * mobileScale}px`, height: `${32 * mobileScale}px` } : { width: '2rem', height: '2rem' }}
+                  />
+                  <span 
+                    className="font-bold text-white"
+                    style={isMobileDevice ? { fontSize: `${28 * mobileScale}px` } : { fontSize: '1.75rem' }}
+                  >
+                    {userPoints}
+                  </span>
                 </div>
               )}
               {user ? (
-                <button className="p-4 bg-white/20 backdrop-blur-sm hover:bg-white/30 rounded-full relative transition-all">
-                  <Bell className="w-8 h-8 text-white" />
-                  <span className="absolute top-3 right-3 w-4 h-4 bg-yellow-400 rounded-full"></span>
+                <button className="p-5 bg-white/20 backdrop-blur-sm hover:bg-white/30 rounded-full relative transition-all">
+                  <Bell 
+                    className="text-white"
+                    style={isMobileDevice ? { width: `${36 * mobileScale}px`, height: `${36 * mobileScale}px` } : { width: '2.25rem', height: '2.25rem' }}
+                  />
+                  <span 
+                    className="absolute bg-yellow-400 rounded-full"
+                    style={isMobileDevice ? { 
+                      top: `${16 * mobileScale}px`, 
+                      right: `${16 * mobileScale}px`,
+                      width: `${18 * mobileScale}px`, 
+                      height: `${18 * mobileScale}px` 
+                    } : { 
+                      top: '1rem', 
+                      right: '1rem',
+                      width: '1.125rem', 
+                      height: '1.125rem' 
+                    }}
+                  ></span>
                 </button>
               ) : (
                 <button
                   onClick={() => setShowAuth(true)}
-                  className="flex items-center gap-3 bg-white text-orange-600 px-8 py-4 rounded-full text-xl font-bold hover:bg-orange-50 transition-all shadow-xl"
+                  className="flex items-center gap-3 bg-white text-orange-600 rounded-full font-bold hover:bg-orange-50 transition-all shadow-xl"
+                  style={isMobileDevice ? { 
+                    padding: `${16 * mobileScale}px ${32 * mobileScale}px`,
+                    fontSize: `${24 * mobileScale}px`
+                  } : { 
+                    padding: '1rem 2rem',
+                    fontSize: '1.25rem'
+                  }}
                 >
-                  <LogIn className="w-7 h-7" />
+                  <LogIn 
+                    style={isMobileDevice ? { width: `${28 * mobileScale}px`, height: `${28 * mobileScale}px` } : { width: '1.75rem', height: '1.75rem' }}
+                  />
                   Entrar
                 </button>
               )}
