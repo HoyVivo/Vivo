@@ -378,13 +378,13 @@ function App() {
                 <div>
                   <p 
                     className={isMobileDevice ? "font-bold drop-shadow" : "text-2xl md:text-3xl font-bold drop-shadow"}
-                    style={isMobileDevice ? { fontSize: `${14 * mobileScale}px` } : {}}
+                    style={isMobileDevice ? { fontSize: `${20 * mobileScale}px` } : {}}
                   >
                     {post.author}
                   </p>
                   <p 
                     className={isMobileDevice ? "opacity-90" : "text-lg md:text-xl opacity-90"}
-                    style={isMobileDevice ? { fontSize: `${14 * mobileScale}px` } : {}}
+                    style={isMobileDevice ? { fontSize: `${16 * mobileScale}px` } : {}}
                   >
                     {post.authorCity}
                   </p>
@@ -402,7 +402,7 @@ function App() {
             </div>
             <h3 
               className={isMobileDevice ? "font-bold mb-3 drop-shadow-lg leading-tight" : "text-3xl md:text-4xl font-bold mb-3 drop-shadow-lg leading-tight"}
-              style={isMobileDevice ? { fontSize: `${21 * mobileScale}px` } : {}}
+              style={isMobileDevice ? { fontSize: `${24 * mobileScale}px` } : {}}
             >
               {post.title}
             </h3>
@@ -413,7 +413,7 @@ function App() {
         <div className="p-6 md:p-8">
           <p 
             className={isMobileDevice ? "text-gray-700 mb-8 leading-relaxed font-medium" : "text-2xl md:text-3xl text-gray-700 mb-8 leading-relaxed font-medium"}
-            style={isMobileDevice ? { fontSize: `${14 * mobileScale}px` } : {}}
+            style={isMobileDevice ? { fontSize: `${20 * mobileScale}px` } : {}}
           >
             {post.description}
           </p>
@@ -907,7 +907,7 @@ function App() {
           showHeader ? 'top-0' : '-top-32'
         }`}
       >
-        <div className="max-w-6xl mx-auto px-4 md:px-6 py-2">
+        <div className="max-w-6xl mx-auto px-3 md:px-6 py-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div>
@@ -919,7 +919,7 @@ function App() {
                 </h1>
                 <p 
                   className={isMobileDevice ? "text-white/90 font-semibold" : "text-lg md:text-xl text-white/90 font-semibold"}
-                  style={isMobileDevice ? { fontSize: `${15 * mobileScale}px` } : {}}
+                  style={isMobileDevice ? { fontSize: `${18 * mobileScale}px` } : {}}
                 >
                   Nunca dejes de vivir
                 </p>
@@ -986,7 +986,7 @@ function App() {
       </header>
 
       {/* Main content */}
-      <main className="max-w-6xl mx-auto px-4 md:px-6 py-8 pb-32 md:pb-8">
+      <main className="max-w-6xl mx-auto px-3 md:px-6 py-8 pb-32 md:pb-8">
         <div className={isMobileDevice ? "block" : "grid md:grid-cols-3 gap-8"}>
           {/* Sidebar - Desktop only - CON COLOR */}
           {!isMobileDevice && (
