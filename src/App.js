@@ -77,10 +77,6 @@ function App() {
   const [showNewPost, setShowNewPost] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
-  const [isMobileDevice, setIsMobileDevice] = useState(false);
-  const [mobileScale, setMobileScale] = useState(1);
-  const [showHeader, setShowHeader] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
   
   const [user, setUser] = useState(null);
   const [userPoints, setUserPoints] = useState(0);
@@ -108,48 +104,6 @@ function App() {
     location: '',
     category: 'Cultural'
   });
-
-  // Detectar dispositivo móvil REAL
-  useEffect(() => {
-    const checkMobile = () => {
-      const screenWidth = window.screen.width;
-      const isMobile = screenWidth < 600;
-      setIsMobileDevice(isMobile);
-      
-      // Calcular factor de escala para compensar viewport=1280
-      // Si móvil tiene 400px y viewport=1280, todo se escala a 400/1280 = 0.3125
-      // Para compensar, necesitamos el inverso: 1280/400 = 3.2
-      if (isMobile) {
-        setMobileScale(1280 / screenWidth);
-      }
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  // Manejar scroll para ocultar/mostrar header
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      if (currentScrollY < 50) {
-        // Arriba del todo, siempre mostrar
-        setShowHeader(true);
-      } else if (currentScrollY > lastScrollY) {
-        // Scrolling hacia abajo - ocultar
-        setShowHeader(false);
-      } else {
-        // Scrolling hacia arriba - mostrar
-        setShowHeader(true);
-      }
-      
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
 
   useEffect(() => {
     const savedUser = localStorage.getItem('vivo_user');
@@ -376,107 +330,53 @@ function App() {
               <div className="flex items-center gap-4">
                 <div className="text-6xl drop-shadow-lg">{post.avatar}</div>
                 <div>
-                  <p 
-                    className={isMobileDevice ? "font-bold drop-shadow" : "text-2xl md:text-3xl font-bold drop-shadow"}
-                    style={isMobileDevice ? { fontSize: `${20 * mobileScale}px` } : {}}
-                  >
-                    {post.author}
-                  </p>
-                  <p 
-                    className={isMobileDevice ? "opacity-90" : "text-lg md:text-xl opacity-90"}
-                    style={isMobileDevice ? { fontSize: `${16 * mobileScale}px` } : {}}
-                  >
-                    {post.authorCity}
-                  </p>
+                  <p className="text-2xl md:text-3xl font-bold drop-shadow">{post.author}</p>
+                  <p className="text-lg md:text-xl opacity-90">{post.authorCity}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2 bg-white/30 backdrop-blur-sm px-5 py-3 rounded-full shadow-lg">
                 {getTypeIcon()}
-                <span 
-                  className={isMobileDevice ? "font-bold" : "text-base md:text-lg font-bold"}
-                  style={isMobileDevice ? { fontSize: `${12 * mobileScale}px` } : {}}
-                >
-                  {getTypeLabel()}
-                </span>
+                <span className="text-base md:text-lg font-bold">{getTypeLabel()}</span>
               </div>
             </div>
-            <h3 
-              className={isMobileDevice ? "font-bold mb-3 drop-shadow-lg leading-tight" : "text-3xl md:text-4xl font-bold mb-3 drop-shadow-lg leading-tight"}
-              style={isMobileDevice ? { fontSize: `${24 * mobileScale}px` } : {}}
-            >
-              {post.title}
-            </h3>
+            <h3 className="text-3xl md:text-4xl font-bold mb-3 drop-shadow-lg leading-tight">{post.title}</h3>
           </div>
         </div>
 
         {/* Contenido */}
         <div className="p-6 md:p-8">
-          <p 
-            className={isMobileDevice ? "text-gray-700 mb-8 leading-relaxed font-medium" : "text-2xl md:text-3xl text-gray-700 mb-8 leading-relaxed font-medium"}
-            style={isMobileDevice ? { fontSize: `${20 * mobileScale}px` } : {}}
-          >
-            {post.description}
-          </p>
+          <p className="text-2xl md:text-3xl text-gray-700 mb-8 leading-relaxed font-medium">{post.description}</p>
 
           {/* Detalles */}
           <div className="space-y-4 mb-8">
             {post.date && (
-              <div 
-                className={isMobileDevice ? "flex items-center gap-4 text-gray-700 bg-gradient-to-r from-orange-100 to-orange-200 p-5 rounded-3xl shadow-md border-2 border-orange-300" : "flex items-center gap-4 text-xl md:text-2xl text-gray-700 bg-gradient-to-r from-orange-100 to-orange-200 p-5 rounded-3xl shadow-md border-2 border-orange-300"}
-              >
+              <div className="flex items-center gap-4 text-xl md:text-2xl text-gray-700 bg-gradient-to-r from-orange-100 to-orange-200 p-5 rounded-3xl shadow-md border-2 border-orange-300">
                 <Calendar className="w-8 h-8 text-orange-600" />
-                <span 
-                  className="font-bold"
-                  style={isMobileDevice ? { fontSize: `${17 * mobileScale}px` } : {}}
-                >
-                  {post.date} {post.time && `· ${post.time}`}
-                </span>
+                <span className="font-bold">{post.date} {post.time && `· ${post.time}`}</span>
               </div>
             )}
             {post.location && (
-              <div 
-                className={isMobileDevice ? "flex items-center gap-4 text-gray-700 bg-gradient-to-r from-green-100 to-green-200 p-5 rounded-3xl shadow-md border-2 border-green-300" : "flex items-center gap-4 text-xl md:text-2xl text-gray-700 bg-gradient-to-r from-green-100 to-green-200 p-5 rounded-3xl shadow-md border-2 border-green-300"}
-              >
+              <div className="flex items-center gap-4 text-xl md:text-2xl text-gray-700 bg-gradient-to-r from-green-100 to-green-200 p-5 rounded-3xl shadow-md border-2 border-green-300">
                 <MapPin className="w-8 h-8 text-green-600" />
-                <span 
-                  className="font-bold"
-                  style={isMobileDevice ? { fontSize: `${17 * mobileScale}px` } : {}}
-                >
-                  {post.location}
-                </span>
+                <span className="font-bold">{post.location}</span>
               </div>
             )}
             {post.rating && (
-              <div 
-                className={isMobileDevice ? "flex items-center gap-4 text-gray-700 bg-gradient-to-r from-yellow-100 to-yellow-200 p-5 rounded-3xl shadow-md border-2 border-yellow-300" : "flex items-center gap-4 text-xl md:text-2xl text-gray-700 bg-gradient-to-r from-yellow-100 to-yellow-200 p-5 rounded-3xl shadow-md border-2 border-yellow-300"}
-              >
+              <div className="flex items-center gap-4 text-xl md:text-2xl text-gray-700 bg-gradient-to-r from-yellow-100 to-yellow-200 p-5 rounded-3xl shadow-md border-2 border-yellow-300">
                 <Star className="w-8 h-8 fill-yellow-400 text-yellow-600" />
-                <span 
-                  className="font-bold"
-                  style={isMobileDevice ? { fontSize: `${17 * mobileScale}px` } : {}}
-                >
-                  {post.rating} / 5 estrellas
-                </span>
+                <span className="font-bold">{post.rating} / 5 estrellas</span>
               </div>
             )}
           </div>
 
           <div className="flex items-center gap-3 mb-6">
-            <span 
-              className={`inline-block bg-gradient-to-r ${getCategoryColor()} text-white px-6 py-3 rounded-full font-bold shadow-lg ${isMobileDevice ? '' : 'text-lg'}`}
-              style={isMobileDevice ? { fontSize: `${15 * mobileScale}px` } : {}}
-            >
+            <span className={`inline-block bg-gradient-to-r ${getCategoryColor()} text-white px-6 py-3 rounded-full text-lg font-bold shadow-lg`}>
               {post.category}
             </span>
             {post.verified > 0 && (
               <div className="flex items-center gap-2 bg-green-100 px-5 py-3 rounded-full">
                 <CheckCircle className="w-5 h-5 text-green-600" />
-                <span 
-                  className={isMobileDevice ? "text-green-700 font-bold" : "text-lg text-green-700 font-bold"}
-                  style={isMobileDevice ? { fontSize: `${15 * mobileScale}px` } : {}}
-                >
-                  {post.verified} ✓
-                </span>
+                <span className="text-lg text-green-700 font-bold">{post.verified} ✓</span>
               </div>
             )}
           </div>
@@ -485,24 +385,18 @@ function App() {
           <div className="flex gap-4 md:gap-6 pt-8 border-t-4 border-orange-100">
             <button 
               onClick={() => handleLike(post.id)}
-              className={`flex-1 flex items-center justify-center gap-3 py-6 md:py-7 rounded-3xl font-bold transition-all shadow-lg ${
-                isMobileDevice ? '' : 'text-2xl md:text-3xl'
-              } ${
+              className={`flex-1 flex items-center justify-center gap-3 py-6 md:py-7 rounded-3xl text-2xl md:text-3xl font-bold transition-all shadow-lg ${
                 isLiked 
                   ? 'bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-2xl scale-105' 
                   : 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 hover:from-red-400 hover:to-pink-400 hover:text-white hover:scale-105 border-3 border-gray-300'
               }`}
-              style={isMobileDevice ? { fontSize: `${19 * mobileScale}px` } : {}}
             >
               <Heart className={`w-9 h-9 md:w-10 md:h-10 ${isLiked ? 'fill-white' : ''}`} />
               <span>{post.likes}</span>
             </button>
             <button 
               onClick={() => handleVerify(post.id)}
-              className={`flex-1 flex items-center justify-center gap-3 py-6 md:py-7 rounded-3xl font-bold bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:from-green-600 hover:to-emerald-600 transition-all shadow-lg hover:scale-105 hover:shadow-2xl ${
-                isMobileDevice ? '' : 'text-2xl md:text-3xl'
-              }`}
-              style={isMobileDevice ? { fontSize: `${19 * mobileScale}px` } : {}}
+              className="flex-1 flex items-center justify-center gap-3 py-6 md:py-7 rounded-3xl text-2xl md:text-3xl font-bold bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:from-green-600 hover:to-emerald-600 transition-all shadow-lg hover:scale-105 hover:shadow-2xl"
             >
               <CheckCircle className="w-9 h-9 md:w-10 md:h-10" />
               <span>¡Yo fui!</span>
@@ -542,8 +436,7 @@ function App() {
             placeholder="🔍 Buscar eventos, lugares..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className={isMobileDevice ? "w-full pl-20 pr-6 py-7 border-4 border-blue-300 rounded-3xl focus:border-blue-500 focus:outline-none bg-white shadow-inner" : "w-full pl-20 pr-6 py-7 text-2xl border-4 border-blue-300 rounded-3xl focus:border-blue-500 focus:outline-none bg-white shadow-inner"}
-            style={isMobileDevice ? { fontSize: `${17 * mobileScale}px` } : {}}
+            className="w-full pl-20 pr-6 py-7 text-2xl border-4 border-blue-300 rounded-3xl focus:border-blue-500 focus:outline-none bg-white shadow-inner"
           />
         </div>
         
@@ -552,14 +445,11 @@ function App() {
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-8 py-5 rounded-2xl font-bold whitespace-nowrap transition-all shadow-lg ${
-                isMobileDevice ? '' : 'text-xl md:text-2xl'
-              } ${
+              className={`px-8 py-5 rounded-2xl text-xl md:text-2xl font-bold whitespace-nowrap transition-all shadow-lg ${
                 selectedCategory === cat
                   ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white scale-110 shadow-xl'
                   : 'bg-white text-gray-700 hover:bg-gradient-to-r hover:from-blue-100 hover:to-indigo-100 hover:text-blue-600 border-3 border-blue-200'
               }`}
-              style={isMobileDevice ? { fontSize: `${17 * mobileScale}px` } : {}}
             >
               {cat}
             </button>
@@ -786,21 +676,21 @@ function App() {
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
       <div className="bg-gradient-to-br from-white to-blue-50 rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-8 border-4 border-blue-200">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+          <h2 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
             ✨ Nueva Publicación
           </h2>
           <button onClick={() => setShowNewPost(false)} className="text-gray-500 hover:text-gray-700">
-            <X className="w-10 h-10" />
+            <X className="w-12 h-12" />
           </button>
         </div>
 
         <div className="space-y-6">
           <div>
-            <label className="block text-2xl font-bold mb-3 text-gray-700">Tipo</label>
+            <label className="block text-3xl font-bold mb-4 text-gray-700">Tipo</label>
             <select
               value={newPost.type}
               onChange={(e) => setNewPost({...newPost, type: e.target.value})}
-              className="w-full p-5 text-2xl border-3 border-blue-200 rounded-2xl focus:border-blue-400 focus:outline-none bg-white shadow-inner"
+              className="w-full p-6 text-3xl border-3 border-blue-200 rounded-2xl focus:border-blue-400 focus:outline-none bg-white shadow-inner"
             >
               <option value="event">🎉 Evento</option>
               <option value="place">📍 Lugar</option>
@@ -810,67 +700,67 @@ function App() {
           </div>
 
           <div>
-            <label className="block text-2xl font-bold mb-3 text-gray-700">Título</label>
+            <label className="block text-3xl font-bold mb-4 text-gray-700">Título</label>
             <input
               type="text"
               value={newPost.title}
               onChange={(e) => setNewPost({...newPost, title: e.target.value})}
               placeholder="Ej: Clase de Yoga"
-              className="w-full p-5 text-2xl border-3 border-blue-200 rounded-2xl focus:border-blue-400 focus:outline-none bg-white shadow-inner"
+              className="w-full p-6 text-3xl border-3 border-blue-200 rounded-2xl focus:border-blue-400 focus:outline-none bg-white shadow-inner"
             />
           </div>
 
           <div>
-            <label className="block text-2xl font-bold mb-3 text-gray-700">Descripción</label>
+            <label className="block text-3xl font-bold mb-4 text-gray-700">Descripción</label>
             <textarea
               value={newPost.description}
               onChange={(e) => setNewPost({...newPost, description: e.target.value})}
               placeholder="Cuenta los detalles..."
               rows="4"
-              className="w-full p-5 text-2xl border-3 border-blue-200 rounded-2xl focus:border-blue-400 focus:outline-none bg-white shadow-inner"
+              className="w-full p-6 text-3xl border-3 border-blue-200 rounded-2xl focus:border-blue-400 focus:outline-none bg-white shadow-inner"
             />
           </div>
 
           {(newPost.type === 'event' || newPost.type === 'companion') && (
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-2xl font-bold mb-3 text-gray-700">Fecha</label>
+                <label className="block text-3xl font-bold mb-4 text-gray-700">Fecha</label>
                 <input
                   type="date"
                   value={newPost.date}
                   onChange={(e) => setNewPost({...newPost, date: e.target.value})}
-                  className="w-full p-5 text-2xl border-3 border-blue-200 rounded-2xl focus:border-blue-400 focus:outline-none bg-white shadow-inner"
+                  className="w-full p-6 text-3xl border-3 border-blue-200 rounded-2xl focus:border-blue-400 focus:outline-none bg-white shadow-inner"
                 />
               </div>
               <div>
-                <label className="block text-2xl font-bold mb-3 text-gray-700">Hora</label>
+                <label className="block text-3xl font-bold mb-4 text-gray-700">Hora</label>
                 <input
                   type="time"
                   value={newPost.time}
                   onChange={(e) => setNewPost({...newPost, time: e.target.value})}
-                  className="w-full p-5 text-2xl border-3 border-blue-200 rounded-2xl focus:border-blue-400 focus:outline-none bg-white shadow-inner"
+                  className="w-full p-6 text-3xl border-3 border-blue-200 rounded-2xl focus:border-blue-400 focus:outline-none bg-white shadow-inner"
                 />
               </div>
             </div>
           )}
 
           <div>
-            <label className="block text-2xl font-bold mb-3 text-gray-700">Ubicación</label>
+            <label className="block text-3xl font-bold mb-4 text-gray-700">Ubicación</label>
             <input
               type="text"
               value={newPost.location}
               onChange={(e) => setNewPost({...newPost, location: e.target.value})}
               placeholder="Ej: Parque del Retiro"
-              className="w-full p-5 text-2xl border-3 border-blue-200 rounded-2xl focus:border-blue-400 focus:outline-none bg-white shadow-inner"
+              className="w-full p-6 text-3xl border-3 border-blue-200 rounded-2xl focus:border-blue-400 focus:outline-none bg-white shadow-inner"
             />
           </div>
 
           <div>
-            <label className="block text-2xl font-bold mb-3 text-gray-700">Categoría</label>
+            <label className="block text-3xl font-bold mb-4 text-gray-700">Categoría</label>
             <select
               value={newPost.category}
               onChange={(e) => setNewPost({...newPost, category: e.target.value})}
-              className="w-full p-5 text-2xl border-3 border-blue-200 rounded-2xl focus:border-blue-400 focus:outline-none bg-white shadow-inner"
+              className="w-full p-6 text-3xl border-3 border-blue-200 rounded-2xl focus:border-blue-400 focus:outline-none bg-white shadow-inner"
             >
               <option value="Cultural">Cultural</option>
               <option value="Deportivo">Deportivo</option>
@@ -883,13 +773,13 @@ function App() {
           <div className="flex gap-4 pt-4">
             <button
               onClick={() => setShowNewPost(false)}
-              className="flex-1 px-8 py-5 bg-gray-200 text-gray-700 rounded-2xl text-2xl font-bold hover:bg-gray-300 transition-all"
+              className="flex-1 px-8 py-6 bg-gray-200 text-gray-700 rounded-2xl text-3xl font-bold hover:bg-gray-300 transition-all"
             >
               Cancelar
             </button>
             <button
               onClick={handleNewPost}
-              className="flex-1 px-8 py-5 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-2xl text-2xl font-bold hover:from-blue-600 hover:to-indigo-600 transition-all shadow-xl"
+              className="flex-1 px-8 py-6 bg-gradient-to-r from-blue-500 to-indigo-500 text-white rounded-2xl text-3xl font-bold hover:from-blue-600 hover:to-indigo-600 transition-all shadow-xl"
             >
               Publicar 🎉
             </button>
@@ -902,81 +792,37 @@ function App() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-100 via-red-100 to-pink-100">
       {/* Header */}
-      <header 
-        className={`bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 shadow-2xl sticky z-40 transition-all duration-300 ${
-          showHeader ? 'top-0' : '-top-32'
-        }`}
-      >
-        <div className="max-w-6xl mx-auto px-3 md:px-6 py-2">
+      <header className="bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 shadow-2xl sticky top-0 z-40">
+        <div className="max-w-6xl mx-auto px-4 md:px-6 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
+              <div className="text-5xl animate-pulse">🌟</div>
               <div>
-                <h1 
-                  className={isMobileDevice ? "font-bold text-white drop-shadow-lg" : "text-4xl md:text-5xl font-bold text-white drop-shadow-lg"}
-                  style={isMobileDevice ? { fontSize: `${48 * mobileScale}px` } : {}}
-                >
-                  Hoy Vivo
+                <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg">
+                  VIVO
                 </h1>
-                <p 
-                  className={isMobileDevice ? "text-white/90 font-semibold" : "text-lg md:text-xl text-white/90 font-semibold"}
-                  style={isMobileDevice ? { fontSize: `${18 * mobileScale}px` } : {}}
-                >
-                  Nunca dejes de vivir
-                </p>
+                <p className="text-lg md:text-xl text-white/90 font-semibold">Nunca dejes de vivir</p>
               </div>
             </div>
             
-            <div className="flex flex-col items-center gap-2">
+            <div className="flex items-center gap-4">
               {user && (
-                <div className="hidden md:flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full">
-                  <Star 
-                    className="text-yellow-300 fill-yellow-300"
-                    style={isMobileDevice ? { width: `${24 * mobileScale}px`, height: `${24 * mobileScale}px` } : { width: '1.5rem', height: '1.5rem' }}
-                  />
-                  <span 
-                    className="font-bold text-white"
-                    style={isMobileDevice ? { fontSize: `${15 * mobileScale}px` } : { fontSize: '1.25rem' }}
-                  >
-                    {userPoints}
-                  </span>
+                <div className="hidden md:flex items-center gap-3 bg-white/20 backdrop-blur-sm px-5 py-3 rounded-full">
+                  <Star className="w-7 h-7 text-yellow-300 fill-yellow-300" />
+                  <span className="text-2xl font-bold text-white">{userPoints}</span>
                 </div>
               )}
               {user ? (
-                <button className="p-3 bg-white/20 backdrop-blur-sm hover:bg-white/30 rounded-full relative transition-all">
-                  <Bell 
-                    className="text-white"
-                    style={isMobileDevice ? { width: `${28 * mobileScale}px`, height: `${28 * mobileScale}px` } : { width: '1.75rem', height: '1.75rem' }}
-                  />
-                  <span 
-                    className="absolute bg-yellow-400 rounded-full"
-                    style={isMobileDevice ? { 
-                      top: `${10 * mobileScale}px`, 
-                      right: `${10 * mobileScale}px`,
-                      width: `${14 * mobileScale}px`, 
-                      height: `${14 * mobileScale}px` 
-                    } : { 
-                      top: '0.625rem', 
-                      right: '0.625rem',
-                      width: '0.875rem', 
-                      height: '0.875rem' 
-                    }}
-                  ></span>
+                <button className="p-4 bg-white/20 backdrop-blur-sm hover:bg-white/30 rounded-full relative transition-all">
+                  <Bell className="w-8 h-8 text-white" />
+                  <span className="absolute top-3 right-3 w-4 h-4 bg-yellow-400 rounded-full"></span>
                 </button>
               ) : (
                 <button
                   onClick={() => setShowAuth(true)}
-                  className="flex items-center gap-2 bg-white text-orange-600 rounded-full font-bold hover:bg-orange-50 transition-all shadow-xl"
-                  style={isMobileDevice ? { 
-                    padding: `${12 * mobileScale}px ${24 * mobileScale}px`,
-                    fontSize: `${15 * mobileScale}px`
-                  } : { 
-                    padding: '0.75rem 1.5rem',
-                    fontSize: '1.125rem'
-                  }}
+                  className="flex items-center gap-3 bg-white text-orange-600 px-8 py-4 rounded-full text-xl font-bold hover:bg-orange-50 transition-all shadow-xl"
                 >
-                  <LogIn 
-                    style={isMobileDevice ? { width: `${24 * mobileScale}px`, height: `${24 * mobileScale}px` } : { width: '1.5rem', height: '1.5rem' }}
-                  />
+                  <LogIn className="w-7 h-7" />
                   Entrar
                 </button>
               )}
@@ -986,10 +832,9 @@ function App() {
       </header>
 
       {/* Main content */}
-      <main className="max-w-6xl mx-auto px-3 md:px-6 py-8 pb-32 md:pb-8">
-        <div className={isMobileDevice ? "block" : "grid md:grid-cols-3 gap-8"}>
+      <main className="max-w-6xl mx-auto px-4 md:px-6 py-8 pb-32 md:pb-8">
+        <div className="grid md:grid-cols-3 gap-8">
           {/* Sidebar - Desktop only - CON COLOR */}
-          {!isMobileDevice && (
           <div className="hidden md:block">
             <div className="bg-gradient-to-br from-purple-50 to-pink-100 rounded-3xl shadow-xl p-6 sticky top-28 border-4 border-purple-200">
               <nav className="space-y-4">
@@ -1049,10 +894,9 @@ function App() {
               )}
             </div>
           </div>
-          )}
 
           {/* Content area */}
-          <div className={isMobileDevice ? "w-full" : "md:col-span-2"}>
+          <div className="md:col-span-2">
             {currentView === 'feed' && <FeedView />}
             {currentView === 'profile' && <ProfileView />}
             {currentView === 'calendar' && (
