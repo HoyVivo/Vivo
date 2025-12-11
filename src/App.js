@@ -676,11 +676,11 @@ function App() {
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
       <div className="bg-gradient-to-br from-white to-blue-50 rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-8 border-4 border-blue-200">
         <div className="flex justify-between items-center mb-8">
-          <h2 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
+          <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
             ✨ Nueva Publicación
           </h2>
           <button onClick={() => setShowNewPost(false)} className="text-gray-500 hover:text-gray-700">
-            <X className="w-12 h-12" />
+            <X className="w-10 h-10" />
           </button>
         </div>
 
